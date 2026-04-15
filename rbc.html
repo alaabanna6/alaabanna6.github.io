@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RBC Mobile App — Alaa El Banna</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Montserrat', 'sans-serif'] },
+          colors: {
+            primary:   '#18181B',
+            secondary: '#3F3F46',
+            accent:    '#2563EB',
+            surface:   '#FAFAFA',
+            border:    '#E4E4E7',
+          },
+        },
+      },
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
+
+  <style>
+    .reveal { opacity:0; transform:translateY(20px); transition:opacity .6s ease,transform .6s ease; }
+    .reveal.visible { opacity:1; transform:translateY(0); }
+    .nav-link { position:relative; }
+    .nav-link::after { content:''; position:absolute; bottom:-2px; left:0; width:0; height:1px; background:#18181B; transition:width .25s ease; }
+    .nav-link:hover::after { width:100%; }
+  </style>
+</head>
+
+<body class="bg-surface text-primary font-sans antialiased overflow-x-hidden">
+
+  <!-- ─── NAVBAR ─────────────────────────────────────────────────────────── -->
+  <header class="fixed top-0 inset-x-0 z-50 bg-surface/90 backdrop-blur-sm border-b border-border">
+    <nav class="max-w-6xl mx-auto px-6 lg:px-8 h-16 flex items-center justify-between">
+      <a href="index.html" class="text-sm font-700 tracking-widest uppercase text-primary">Alaa El Banna</a>
+      <ul class="hidden md:flex items-center gap-8 text-sm font-500 text-secondary">
+        <li><a href="index.html#home"     class="nav-link hover:text-primary transition-colors duration-200">Home</a></li>
+        <li><a href="index.html#projects" class="nav-link hover:text-primary transition-colors duration-200">Projects</a></li>
+        <li><a href="index.html#about"    class="nav-link hover:text-primary transition-colors duration-200">About</a></li>
+        <li><a href="index.html#contact"  class="nav-link hover:text-primary transition-colors duration-200">Contact</a></li>
+      </ul>
+      <button id="menu-toggle" class="md:hidden flex flex-col gap-1.5 cursor-pointer p-2 -mr-2" aria-label="Toggle navigation">
+        <span class="block w-6 h-0.5 bg-primary"></span>
+        <span class="block w-6 h-0.5 bg-primary"></span>
+        <span class="block w-4 h-0.5 bg-primary"></span>
+      </button>
+    </nav>
+    <div id="mobile-menu" class="hidden md:hidden border-t border-border bg-surface/95 backdrop-blur-sm">
+      <ul class="flex flex-col px-6 py-4 gap-4 text-sm font-500 text-secondary">
+        <li><a href="index.html#home"     onclick="closeMobileMenu()">Home</a></li>
+        <li><a href="index.html#projects" onclick="closeMobileMenu()">Projects</a></li>
+        <li><a href="index.html#about"    onclick="closeMobileMenu()">About</a></li>
+        <li><a href="index.html#contact"  onclick="closeMobileMenu()">Contact</a></li>
+      </ul>
+    </div>
+  </header>
+
+
+  <!-- ─── HERO ───────────────────────────────────────────────────────────── -->
+  <section class="pt-32 pb-16 md:pt-40 md:pb-24 bg-white border-b border-border">
+    <div class="max-w-6xl mx-auto px-6 lg:px-8">
+
+      <!-- Breadcrumb -->
+      <div class="reveal flex items-center gap-2 text-xs text-secondary/60 font-500 mb-8">
+        <a href="index.html#projects" class="hover:text-accent transition-colors cursor-pointer">Projects</a>
+        <span>/</span>
+        <span class="text-primary">RBC Mobile App</span>
+      </div>
+
+      <p class="reveal text-xs font-600 tracking-[0.25em] uppercase text-accent mb-4">UX / UI · Product Design</p>
+
+      <h1 class="reveal text-5xl sm:text-6xl md:text-7xl font-800 leading-tight tracking-tight text-primary max-w-4xl" style="transition-delay:.1s">
+        RBC Mobile<br />Case Study
+      </h1>
+
+      <p class="reveal text-lg md:text-xl text-secondary font-400 mt-6 max-w-2xl leading-relaxed" style="transition-delay:.2s">
+        A usability-driven redesign of the RBC Mobile app's Running Balance feature
+      </p>
+
+      <!-- Meta row -->
+      <div class="reveal grid grid-cols-2 sm:grid-cols-3 gap-6 mt-12 pt-10 border-t border-border" style="transition-delay:.3s">
+        <div>
+          <p class="text-xs font-600 uppercase tracking-widest text-secondary/50 mb-1">My Role</p>
+          <p class="text-sm font-600 text-primary">UX/UI Product Designer (Academic Case Study)</p>
+        </div>
+        <div>
+          <p class="text-xs font-600 uppercase tracking-widest text-secondary/50 mb-1">Tools</p>
+          <p class="text-sm font-600 text-primary">Figma, Figjam, Notion, Google Workspace</p>
+        </div>
+        <div>
+          <p class="text-xs font-600 uppercase tracking-widest text-secondary/50 mb-1">Deliverables</p>
+          <p class="text-sm font-600 text-primary">Heuristic Evaluation, Design Analysis, Low-Fidelity Wireframes, High-Fidelity Prototype, Usability Test Plan &amp; Report</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Hero image -->
+  <div class="w-full bg-[#F0F4F8] flex items-center justify-center py-14 px-6">
+    <img src="img/rbc1.jpeg" alt="RBC Mobile App redesign overview" class="w-full max-w-4xl h-auto object-contain rounded-2xl shadow-[0_8px_48px_-4px_rgba(37,99,235,0.18)]" />
+  </div>
+
+
+  <!-- ─── PROJECT OVERVIEW ──────────────────────────────────────────────── -->
+  <section class="py-20 md:py-28 border-b border-border">
+    <div class="max-w-6xl mx-auto px-6 lg:px-8">
+      <div class="max-w-3xl">
+        <p class="reveal text-xs font-600 tracking-[0.25em] uppercase text-accent mb-3">Overview</p>
+        <h2 class="reveal text-3xl md:text-4xl font-700 tracking-tight mb-8">Project Overview</h2>
+        <p class="reveal text-secondary text-base leading-relaxed mb-4">
+          This project is a university case study completed as part of my academic work.
+        </p>
+        <p class="reveal text-secondary text-base leading-relaxed mb-4">
+          RBC Mobile is one of Canada's most widely used banking apps.
+        </p>
+        <p class="reveal text-secondary text-base leading-relaxed">
+          Users rely on the Transactions page to understand how their balance changes, but the original design presents only one static balance at the top.
+        </p>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ─── EMPATHIZE ─────────────────────────────────────────────────────── -->
+  <section class="py-20 md:py-28 bg-white border-b border-border">
+    <div class="max-w-6xl mx-auto px-6 lg:px-8">
+
+      <div class="reveal mb-12">
+        <p class="text-xs font-600 tracking-[0.25em] uppercase text-accent mb-3">01 — Empathize</p>
+        <h2 class="text-3xl md:text-4xl font-700 tracking-tight">Understanding the Users</h2>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+        <div>
+          <p class="reveal text-secondary text-base leading-relaxed mb-4">
+            For this case study, I focused on everyday mobile banking users between the ages of 18 and 60.
+          </p>
+          <p class="reveal text-secondary text-base leading-relaxed mb-8">
+            Most of these users rely on the Transactions page to confirm purchases.
+          </p>
+
+          <!-- Pain points -->
+          <div class="reveal space-y-3">
+            <h3 class="text-sm font-700 text-primary uppercase tracking-widest mb-4">Key Pain Points</h3>
+
+            <div class="flex gap-4 p-4 rounded-xl border border-border bg-surface">
+              <span class="text-accent font-700 text-sm shrink-0 mt-0.5">01</span>
+              <p class="text-sm font-600 text-primary">No visibility into balance changes</p>
+            </div>
+
+            <div class="flex gap-4 p-4 rounded-xl border border-border bg-surface">
+              <span class="text-accent font-700 text-sm shrink-0 mt-0.5">02</span>
+              <p class="text-sm font-600 text-primary">High cognitive effort</p>
+            </div>
+
+            <div class="flex gap-4 p-4 rounded-xl border border-border bg-surface">
+              <span class="text-accent font-700 text-sm shrink-0 mt-0.5">03</span>
+              <p class="text-sm font-600 text-primary">Difficulty verifying account activity</p>
+            </div>
+
+            <div class="flex gap-4 p-4 rounded-xl border border-border bg-surface">
+              <span class="text-accent font-700 text-sm shrink-0 mt-0.5">04</span>
+              <p class="text-sm font-600 text-primary">Misalignment with real-world expectations</p>
+            </div>
+
+            <div class="flex gap-4 p-4 rounded-xl border border-border bg-surface">
+              <span class="text-accent font-700 text-sm shrink-0 mt-0.5">05</span>
+              <p class="text-sm font-600 text-primary">Higher risk of errors</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-8">
+          <!-- Heuristic evaluation -->
+          <div class="reveal p-6 rounded-2xl border border-border bg-surface">
+            <h3 class="text-sm font-700 text-primary uppercase tracking-widest mb-4">Heuristic Evaluation</h3>
+            <ul class="space-y-2">
+              <li class="flex items-center gap-2 text-sm text-secondary">
+                <span class="w-1.5 h-1.5 rounded-full bg-accent shrink-0"></span>
+                Visibility of system status
+              </li>
+              <li class="flex items-center gap-2 text-sm text-secondary">
+                <span class="w-1.5 h-1.5 rounded-full bg-accent shrink-0"></span>
+                Recognition over recall
+              </li>
+              <li class="flex items-center gap-2 text-sm text-secondary">
+                <span class="w-1.5 h-1.5 rounded-full bg-accent shrink-0"></span>
+                Error prevention
+              </li>
+              <li class="flex items-center gap-2 text-sm text-secondary">
+                <span class="w-1.5 h-1.5 rounded-full bg-accent shrink-0"></span>
+                Match between system and real world
+              </li>
+              <li class="flex items-center gap-2 text-sm text-secondary">
+                <span class="w-1.5 h-1.5 rounded-full bg-accent shrink-0"></span>
+                Flexibility and efficiency of use
+              </li>
+            </ul>
+          </div>
+
+          <!-- Persona -->
+          <div class="reveal p-6 rounded-2xl border border-border bg-surface">
+            <h3 class="text-sm font-700 text-primary uppercase tracking-widest mb-4">Persona — The Everyday Spender</h3>
+            <div class="flex items-center gap-4 mb-4">
+              <div class="w-12 h-12 rounded-full bg-gradient-to-br from-[#003168] to-[#0072BC] flex items-center justify-center text-white font-700 text-lg shrink-0">G</div>
+              <div>
+                <p class="text-sm font-700 text-primary">Gabriel, 29</p>
+                <p class="text-xs text-secondary">Everyday Spender</p>
+              </div>
+            </div>
+            <p class="text-sm text-secondary leading-relaxed">
+              Gabriel is a young professional who uses mobile banking several times a week.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Task flow before -->
+      <div class="reveal mt-12">
+        <h3 class="text-sm font-700 text-primary uppercase tracking-widest mb-4">Task Flow — Before Redesign</h3>
+        <img src="img/taskflow.jpeg" alt="Task flow before redesign" class="w-full h-auto object-contain rounded-2xl shadow-[0_8px_48px_-4px_rgba(37,99,235,0.18)]" />
+      </div>
+
+      <!-- Research insights -->
+      <div class="reveal mt-6 p-6 md:p-8 rounded-2xl border border-border bg-surface">
+        <h3 class="text-sm font-700 text-primary uppercase tracking-widest mb-4">Research Insights</h3>
+        <p class="text-sm text-secondary leading-relaxed">
+          Across user research, heuristic evaluation, and analysis of the original task flow, a clear pattern emerged.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ─── DEFINE ────────────────────────────────────────────────────────── -->
+  <section class="py-20 md:py-28 border-b border-border">
+    <div class="max-w-6xl mx-auto px-6 lg:px-8">
+      <div class="reveal mb-10">
+        <p class="text-xs font-600 tracking-[0.25em] uppercase text-accent mb-3">02 — Define</p>
+        <h2 class="text-3xl md:text-4xl font-700 tracking-tight">Defining the User Needs</h2>
+      </div>
+      <div class="reveal max-w-3xl">
+        <p class="text-secondary text-base leading-relaxed">
+          Problem Statement restated with focus on solution.
+        </p>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ─── IDEATE ────────────────────────────────────────────────────────── -->
+  <section class="py-20 md:py-28 bg-white border-b border-border">
+    <div class="max-w-6xl mx-auto px-6 lg:px-8">
+
+      <div class="reveal mb-14">
+        <p class="text-xs font-600 tracking-[0.25em] uppercase text-accent mb-3">03 — Ideate</p>
+        <h2 class="text-3xl md:text-4xl font-700 tracking-tight">Designing the Solution</h2>
+      </div>
+
+      <!-- Task flow after — full width -->
+      <div class="reveal mb-14">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-sm font-700 text-primary uppercase tracking-widest">Task Flow — After Redesign</h3>
+          <button onclick="openLightbox('img/taskflow2.jpeg','Task flow after redesign')" class="text-xs font-600 text-accent hover:underline cursor-pointer flex items-center gap-1">
+            View full
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor"><path d="M3 4a1 1 0 011-1h4a1 1 0 010 2H6.414l2.293 2.293a1 1 0 11-1.414 1.414L5 6.414V8a1 1 0 01-2 0V4zm9 1a1 1 0 010-2h4a1 1 0 011 1v4a1 1 0 01-2 0V6.414l-2.293 2.293a1 1 0 11-1.414-1.414L13.586 5H12zm-9 7a1 1 0 012 0v1.586l2.293-2.293a1 1 0 111.414 1.414L6.414 15H8a1 1 0 010 2H4a1 1 0 01-1-1v-4zm13 2a1 1 0 01-2 0v-1.586l-2.293 2.293a1 1 0 01-1.414-1.414L13.586 15H12a1 1 0 010-2h4a1 1 0 011 1v4z"/></svg>
+          </button>
+        </div>
+        <img src="img/taskflow2.jpeg" alt="Task flow after redesign" onclick="openLightbox('img/taskflow2.jpeg','Task flow after redesign')" class="w-full h-auto object-contain rounded-2xl shadow-[0_8px_48px_-4px_rgba(37,99,235,0.18)] cursor-zoom-in" />
+      </div>
+
+      <!-- Low-fi — full width -->
+      <div class="reveal mb-14">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-sm font-700 text-primary uppercase tracking-widest">Low-Fidelity Concepts</h3>
+          <button onclick="openLightbox('img/rbc-low-fid.jpeg','Low-fidelity wireframes')" class="text-xs font-600 text-accent hover:underline cursor-pointer flex items-center gap-1">
+            View full
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor"><path d="M3 4a1 1 0 011-1h4a1 1 0 010 2H6.414l2.293 2.293a1 1 0 11-1.414 1.414L5 6.414V8a1 1 0 01-2 0V4zm9 1a1 1 0 010-2h4a1 1 0 011 1v4a1 1 0 01-2 0V6.414l-2.293 2.293a1 1 0 11-1.414-1.414L13.586 5H12zm-9 7a1 1 0 012 0v1.586l2.293-2.293a1 1 0 111.414 1.414L6.414 15H8a1 1 0 010 2H4a1 1 0 01-1-1v-4zm13 2a1 1 0 01-2 0v-1.586l-2.293 2.293a1 1 0 01-1.414-1.414L13.586 15H12a1 1 0 010-2h4a1 1 0 011 1v4z"/></svg>
+          </button>
+        </div>
+        <img src="img/rbc-low-fid.jpeg" alt="RBC low fidelity wireframes" onclick="openLightbox('img/rbc-low-fid.jpeg','Low-fidelity wireframes')" class="w-full h-auto object-contain rounded-2xl shadow-[0_8px_48px_-4px_rgba(37,99,235,0.18)] cursor-zoom-in" />
+      </div>
+
+      <!-- High-fi V1 — full width -->
+      <div class="reveal">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-sm font-700 text-primary uppercase tracking-widest">First High-Fidelity Prototype</h3>
+          <button onclick="openLightbox('img/rbc-high-fid.jpeg','High-fidelity prototype V1')" class="text-xs font-600 text-accent hover:underline cursor-pointer flex items-center gap-1">
+            View full
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor"><path d="M3 4a1 1 0 011-1h4a1 1 0 010 2H6.414l2.293 2.293a1 1 0 11-1.414 1.414L5 6.414V8a1 1 0 01-2 0V4zm9 1a1 1 0 010-2h4a1 1 0 011 1v4a1 1 0 01-2 0V6.414l-2.293 2.293a1 1 0 11-1.414-1.414L13.586 5H12zm-9 7a1 1 0 012 0v1.586l2.293-2.293a1 1 0 111.414 1.414L6.414 15H8a1 1 0 010 2H4a1 1 0 01-1-1v-4zm13 2a1 1 0 01-2 0v-1.586l-2.293 2.293a1 1 0 01-1.414-1.414L13.586 15H12a1 1 0 010-2h4a1 1 0 011 1v4z"/></svg>
+          </button>
+        </div>
+        <img src="img/rbc-high-fid.jpeg" alt="RBC high fidelity prototype V1" onclick="openLightbox('img/rbc-high-fid.jpeg','High-fidelity prototype V1')" class="w-full h-auto object-contain rounded-2xl shadow-[0_8px_48px_-4px_rgba(37,99,235,0.18)] cursor-zoom-in mb-5" />
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <a href="https://www.figma.com/proto/LBa8phH2RJfLuZd63pSfYB/RBC-interface?node-id=39-34&starting-point-node-id=39%3A34" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-sm font-600 text-accent hover:underline cursor-pointer">View in Figma →</a>
+          <div class="flex flex-wrap gap-x-6 gap-y-1">
+            <span class="text-xs text-secondary flex items-center gap-1.5"><span class="text-red-400">–</span> Transaction list used half the screen height</span>
+            <span class="text-xs text-secondary flex items-center gap-1.5"><span class="text-red-400">–</span> Typography too small</span>
+            <span class="text-xs text-secondary flex items-center gap-1.5"><span class="text-red-400">–</span> Excessive scrolling required</span>
+            <span class="text-xs text-secondary flex items-center gap-1.5"><span class="text-red-400">–</span> Running balance area felt cramped</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ─── TEST ──────────────────────────────────────────────────────────── -->
+  <section class="py-20 md:py-28 border-b border-border">
+    <div class="max-w-6xl mx-auto px-6 lg:px-8">
+
+      <div class="reveal mb-12">
+        <p class="text-xs font-600 tracking-[0.25em] uppercase text-accent mb-3">04 — Test</p>
+        <h2 class="text-3xl md:text-4xl font-700 tracking-tight">Usability Testing</h2>
+      </div>
+
+      <!-- V2 — full width -->
+      <div class="reveal mb-16">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-sm font-700 text-primary uppercase tracking-widest">High-Fidelity Prototype V2 — Final</h3>
+          <button onclick="openLightbox('img/rbc-high-fid-v2.jpeg','High-fidelity prototype V2 — Final')" class="text-xs font-600 text-accent hover:underline cursor-pointer flex items-center gap-1">
+            View full
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor"><path d="M3 4a1 1 0 011-1h4a1 1 0 010 2H6.414l2.293 2.293a1 1 0 11-1.414 1.414L5 6.414V8a1 1 0 01-2 0V4zm9 1a1 1 0 010-2h4a1 1 0 011 1v4a1 1 0 01-2 0V6.414l-2.293 2.293a1 1 0 11-1.414-1.414L13.586 5H12zm-9 7a1 1 0 012 0v1.586l2.293-2.293a1 1 0 111.414 1.414L6.414 15H8a1 1 0 010 2H4a1 1 0 01-1-1v-4zm13 2a1 1 0 01-2 0v-1.586l-2.293 2.293a1 1 0 01-1.414-1.414L13.586 15H12a1 1 0 010-2h4a1 1 0 011 1v4z"/></svg>
+          </button>
+        </div>
+        <img src="img/rbc-high-fid-v2.jpeg" alt="RBC high fidelity prototype V2 final" onclick="openLightbox('img/rbc-high-fid-v2.jpeg','High-fidelity prototype V2 — Final')" class="w-full h-auto object-contain rounded-2xl shadow-[0_8px_48px_-4px_rgba(37,99,235,0.18)] cursor-zoom-in mb-5" />
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <a href="https://www.figma.com/proto/LBa8phH2RJfLuZd63pSfYB/RBC-interface?node-id=406-788&p=f&t=n3GC5tL6YaDxxmQt-0&scaling=scale-down&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=561%3A590" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-sm font-600 text-accent hover:underline cursor-pointer">View in Figma →</a>
+          <div class="flex flex-wrap gap-x-6 gap-y-1">
+            <span class="text-xs text-secondary flex items-center gap-1.5"><span class="text-green-500">✓</span> Increased transaction list height</span>
+            <span class="text-xs text-secondary flex items-center gap-1.5"><span class="text-green-500">✓</span> Enlarged typography</span>
+            <span class="text-xs text-secondary flex items-center gap-1.5"><span class="text-green-500">✓</span> Red/green colour coding</span>
+            <span class="text-xs text-secondary flex items-center gap-1.5"><span class="text-green-500">✓</span> Dark blue daily balance</span>
+            <span class="text-xs text-secondary flex items-center gap-1.5"><span class="text-green-500">✓</span> Maintained RBC's minimal style</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Method & Participants -->
+      <div class="reveal p-6 md:p-8 rounded-2xl border border-border bg-white mb-8">
+        <h3 class="text-sm font-700 text-primary uppercase tracking-widest mb-4">Method &amp; Participants</h3>
+        <p class="text-sm text-secondary leading-relaxed mb-2">The study followed a formative, moderated testing method.</p>
+        <p class="text-sm text-secondary leading-relaxed mb-2">Sessions were run in a quiet space over Zoom.</p>
+        <p class="text-sm text-secondary leading-relaxed">Each test lasted around 15–20 minutes.</p>
+      </div>
+
+      <!-- Tasks -->
+      <div class="reveal p-6 md:p-8 rounded-2xl border border-border bg-white mb-8">
+        <h3 class="text-sm font-700 text-primary uppercase tracking-widest mb-4">Tasks</h3>
+        <ol class="space-y-2 list-decimal list-inside text-sm text-secondary">
+          <li>Navigate from home to Chequing account</li>
+          <li>Turn Running Balance toggle on</li>
+          <li>Scroll through transactions</li>
+          <li>Turn toggle off and compare</li>
+          <li>Identify running balance after specific transaction</li>
+        </ol>
+      </div>
+
+      <!-- Key Findings -->
+      <div class="reveal mb-8">
+        <h3 class="text-sm font-700 text-primary uppercase tracking-widest mb-4">Key Findings</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="p-5 rounded-xl border border-border bg-surface">
+            <p class="text-sm text-secondary leading-relaxed">Users easily found the Running Balance toggle</p>
+          </div>
+          <div class="p-5 rounded-xl border border-border bg-surface">
+            <p class="text-sm text-secondary leading-relaxed">The taller transaction list and larger typography improved readability</p>
+          </div>
+          <div class="p-5 rounded-xl border border-border bg-surface">
+            <p class="text-sm text-secondary leading-relaxed">The color coding helped users quickly interpret financial changes</p>
+          </div>
+          <div class="p-5 rounded-xl border border-border bg-surface">
+            <p class="text-sm text-secondary leading-relaxed">Participants liked having the option to switch between simple and detailed views</p>
+          </div>
+          <div class="p-5 rounded-xl border border-border bg-surface">
+            <p class="text-sm text-secondary leading-relaxed">The V2 design was consistently preferred</p>
+          </div>
+          <div class="p-5 rounded-xl border border-border bg-surface">
+            <p class="text-sm text-secondary leading-relaxed">Overall, V2 felt clearer, more logical, and more similar to real banking app behavior</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Design Tweaks After Testing -->
+      <div class="reveal p-6 md:p-8 rounded-2xl border border-border bg-white">
+        <h3 class="text-sm font-700 text-primary uppercase tracking-widest mb-4">Design Tweaks After Testing</h3>
+        <div class="space-y-2">
+          <div class="flex items-start gap-3 text-sm text-secondary">
+            <span class="text-accent shrink-0 mt-0.5">–</span>
+            Increased spacing under section headers
+          </div>
+          <div class="flex items-start gap-3 text-sm text-secondary">
+            <span class="text-accent shrink-0 mt-0.5">–</span>
+            Enhanced contrast for running balance numbers
+          </div>
+          <div class="flex items-start gap-3 text-sm text-secondary">
+            <span class="text-accent shrink-0 mt-0.5">–</span>
+            Added slightly more padding in transaction rows
+          </div>
+          <div class="flex items-start gap-3 text-sm text-secondary">
+            <span class="text-accent shrink-0 mt-0.5">–</span>
+            Improved alignment for a cleaner, more consistent RBC-style layout
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ─── CONCLUSION ─────────────────────────────────────────────────────── -->
+  <section class="py-20 md:py-28 bg-primary text-surface">
+    <div class="max-w-6xl mx-auto px-6 lg:px-8">
+      <div class="max-w-2xl">
+        <p class="reveal text-xs font-600 tracking-[0.25em] uppercase text-accent mb-3">Conclusion</p>
+        <h2 class="reveal text-3xl md:text-4xl font-700 tracking-tight mb-6">Outcome</h2>
+        <p class="reveal text-surface/70 text-base leading-relaxed">
+          This project focused on improving the clarity and usability of the Running Balance feature. The final design reduces cognitive load, improves readability.
+        </p>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ─── NEXT PROJECT ───────────────────────────────────────────────────── -->
+  <section class="py-16 border-t border-white/10 bg-primary">
+    <div class="max-w-6xl mx-auto px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-6">
+      <a href="index.html#projects" class="text-sm font-600 text-surface/50 hover:text-surface transition-colors cursor-pointer flex items-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+        </svg>
+        All Projects
+      </a>
+      <a href="stageup.html" class="text-sm font-600 text-surface hover:text-accent transition-colors cursor-pointer flex items-center gap-2">
+        Next: StageUP Mobile App
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+        </svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- ─── FOOTER ─────────────────────────────────────────────────────────── -->
+  <footer class="bg-primary border-t border-white/5 py-8">
+    <div class="max-w-6xl mx-auto px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4 text-surface/30 text-xs font-500">
+      <p>© 2025 Alaa El Banna. All rights reserved.</p>
+      <p>Product Designer · Toronto, Canada</p>
+    </div>
+  </footer>
+
+  <!-- Lightbox -->
+  <div id="lightbox" class="fixed inset-0 z-[999] bg-black/90 backdrop-blur-sm hidden items-center justify-center p-4" onclick="closeLightbox()">
+    <button onclick="closeLightbox()" class="absolute top-5 right-5 text-white/60 hover:text-white cursor-pointer">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
+      </svg>
+    </button>
+    <img id="lightbox-img" src="" alt="" class="max-w-full max-h-[90vh] object-contain rounded-xl shadow-2xl" onclick="event.stopPropagation()" />
+  </div>
+
+  <script>
+    const observer = new IntersectionObserver(
+      entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
+      { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
+    );
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    const toggle = document.getElementById('menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    toggle.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+    function closeMobileMenu() { mobileMenu.classList.add('hidden'); }
+
+    function openLightbox(src, alt) {
+      const lb = document.getElementById('lightbox');
+      document.getElementById('lightbox-img').src = src;
+      document.getElementById('lightbox-img').alt = alt;
+      lb.classList.remove('hidden');
+      lb.classList.add('flex');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLightbox() {
+      const lb = document.getElementById('lightbox');
+      lb.classList.add('hidden');
+      lb.classList.remove('flex');
+      document.body.style.overflow = '';
+    }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+  </script>
+
+</body>
+</html>

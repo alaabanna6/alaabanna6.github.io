@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StageUp Mobile App — Alaa El Banna</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Montserrat', 'sans-serif'] },
+          colors: {
+            primary:   '#18181B',
+            secondary: '#3F3F46',
+            accent:    '#16A34A',
+            surface:   '#FAFAFA',
+            border:    '#E4E4E7',
+          },
+        },
+      },
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
+
+  <style>
+    .reveal { opacity:0; transform:translateY(20px); transition:opacity .6s ease,transform .6s ease; }
+    .reveal.visible { opacity:1; transform:translateY(0); }
+    .nav-link { position:relative; }
+    .nav-link::after { content:''; position:absolute; bottom:-2px; left:0; width:0; height:1px; background:#18181B; transition:width .25s ease; }
+    .nav-link:hover::after { width:100%; }
+  </style>
+</head>
+
+<body class="bg-surface text-primary font-sans antialiased overflow-x-hidden">
+
+  <!-- ─── NAVBAR ─────────────────────────────────────────────────────────── -->
+  <header class="fixed top-0 inset-x-0 z-50 bg-surface/90 backdrop-blur-sm border-b border-border">
+    <nav class="max-w-6xl mx-auto px-6 lg:px-8 h-16 flex items-center justify-between">
+      <a href="index.html" class="text-sm font-700 tracking-widest uppercase text-primary">Alaa El Banna</a>
+      <ul class="hidden md:flex items-center gap-8 text-sm font-500 text-secondary">
+        <li><a href="index.html#home"     class="nav-link hover:text-primary transition-colors duration-200">Home</a></li>
+        <li><a href="index.html#projects" class="nav-link hover:text-primary transition-colors duration-200">Projects</a></li>
+        <li><a href="index.html#about"    class="nav-link hover:text-primary transition-colors duration-200">About</a></li>
+        <li><a href="index.html#contact"  class="nav-link hover:text-primary transition-colors duration-200">Contact</a></li>
+      </ul>
+      <button id="menu-toggle" class="md:hidden flex flex-col gap-1.5 cursor-pointer p-2 -mr-2" aria-label="Toggle navigation">
+        <span class="block w-6 h-0.5 bg-primary"></span>
+        <span class="block w-6 h-0.5 bg-primary"></span>
+        <span class="block w-4 h-0.5 bg-primary"></span>
+      </button>
+    </nav>
+    <div id="mobile-menu" class="hidden md:hidden border-t border-border bg-surface/95 backdrop-blur-sm">
+      <ul class="flex flex-col px-6 py-4 gap-4 text-sm font-500 text-secondary">
+        <li><a href="index.html#home"     onclick="closeMobileMenu()">Home</a></li>
+        <li><a href="index.html#projects" onclick="closeMobileMenu()">Projects</a></li>
+        <li><a href="index.html#about"    onclick="closeMobileMenu()">About</a></li>
+        <li><a href="index.html#contact"  onclick="closeMobileMenu()">Contact</a></li>
+      </ul>
+    </div>
+  </header>
+
+
+  <!-- ─── HERO ───────────────────────────────────────────────────────────── -->
+  <section class="pt-32 pb-16 md:pt-40 md:pb-24 bg-white border-b border-border">
+    <div class="max-w-6xl mx-auto px-6 lg:px-8">
+
+      <div class="reveal flex items-center gap-2 text-xs text-secondary/60 font-500 mb-8">
+        <a href="index.html#projects" class="hover:text-accent transition-colors cursor-pointer">Projects</a>
+        <span>/</span>
+        <span class="text-primary">StageUp Mobile App</span>
+      </div>
+
+      <p class="reveal text-xs font-600 tracking-[0.25em] uppercase text-accent mb-4">UX / UI · Product Design</p>
+
+      <h1 class="reveal text-5xl sm:text-6xl md:text-7xl font-800 leading-tight tracking-tight text-primary max-w-4xl" style="transition-delay:.1s">
+        StageUp Mobile App<br />(Case Study)
+      </h1>
+
+      <p class="reveal text-lg md:text-xl text-secondary font-400 mt-6 max-w-2xl leading-relaxed" style="transition-delay:.2s">
+        A product design case study exploring how to unify fragmented learning into one clear career growth experience.
+      </p>
+
+      <div class="reveal grid grid-cols-2 sm:grid-cols-4 gap-6 mt-12 pt-10 border-t border-border" style="transition-delay:.3s">
+        <div>
+          <p class="text-xs font-600 uppercase tracking-widest text-secondary/50 mb-1">My Role</p>
+          <p class="text-sm font-600 text-primary">Solo Product Designer</p>
+        </div>
+        <div>
+          <p class="text-xs font-600 uppercase tracking-widest text-secondary/50 mb-1">Tools</p>
+          <p class="text-sm font-600 text-primary">Figma, FigJam, Notion</p>
+        </div>
+        <div>
+          <p class="text-xs font-600 uppercase tracking-widest text-secondary/50 mb-1">Platform</p>
+          <p class="text-sm font-600 text-primary">Web and Mobile</p>
+        </div>
+        <div>
+          <p class="text-xs font-600 uppercase tracking-widest text-secondary/50 mb-1">Deliverables</p>
+          <p class="text-sm font-600 text-primary">Research, Information Architecture, Task Flow, Wireframes, High-Fidelity UI, Interactive Prototype</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Hero image -->
+  <div class="w-full bg-[#F0FDF4] flex items-center justify-center py-14 px-6">
+    <img src="img/stageup.jpeg" alt="StageUp app screens" class="w-full max-w-4xl h-auto object-contain rounded-2xl shadow-[0_8px_48px_-4px_rgba(22,163,74,0.15)]" />
+  </div>
+
+
+  <!-- ─── PROJECT OVERVIEW ──────────────────────────────────────────────── -->
+  <section class="py-20 md:py-28 border-b border-border">
+    <div class="max-w-6xl mx-auto px-6 lg:px-8">
+      <div class="max-w-3xl">
+        <p class="reveal text-xs font-600 tracking-[0.25em] uppercase text-accent mb-3">Overview</p>
+        <h2 class="reveal text-3xl md:text-4xl font-700 tracking-tight mb-8">Project Overview</h2>
+        <p class="reveal text-secondary text-base leading-relaxed mb-4">
+          StageUp is an original product design project created to solve a problem I experienced firsthand as a learner. Professionals today learn from multiple platforms at the same time. Coursera, Udemy, YouTube, and LinkedIn Learning are all great on their own. But each platform tracks progress independently, leaving learners with no single place to understand their overall skill growth or how close they are to their career goals.
+        </p>
+        <p class="reveal text-secondary text-base leading-relaxed mb-4">
+          This case study walks through my full design process. Starting from identifying the core problem through research and information architecture, to wireframing, high-fidelity design, and an interactive prototype. The result is a product that connects fragmented learning to real career outcomes.
+        </p>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ─── PROBLEM STATEMENT ─────────────────────────────────────────────── -->
+  <section class="py-20 md:py-28 bg-white border-b border-border">
+    <div class="max-w-6xl mx-auto px-6 lg:px-8">
+
+      <div class="reveal grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-12">
+        <div>
+          <p class="text-xs font-600 tracking-[0.25em] uppercase text-accent mb-3">Problem</p>
+          <h2 class="text-3xl md:text-4xl font-700 tracking-tight mb-6">Problem Statement</h2>
+          <p class="text-secondary text-base leading-relaxed">
+            Learners building professional skills today face a fragmented experience. Using multiple platforms at the same time creates challenges that go beyond just staying organized.
+          </p>
+        </div>
+        <img src="img/stageup3.jpeg" alt="StageUp problem" onclick="openLightbox('img/stageup3.jpeg','Problem Statement')" class="w-3/4 mx-auto h-auto object-contain rounded-xl mix-blend-multiply cursor-zoom-in" />
+      </div>
+
+      <div class="reveal grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+
+        <div class="p-6 rounded-2xl border border-border bg-surface">
+          <h3 class="text-sm font-700 text-primary mb-2">Fragmented Progress Tracking</h3>
+          <p class="text-sm text-secondary leading-relaxed">Learning progress is scattered across platforms, forcing users to manually track their own development with no unified view.</p>
+        </div>
+
+        <div class="p-6 rounded-2xl border border-border bg-surface">
+          <h3 class="text-sm font-700 text-primary mb-2">Inconsistent Progress Metrics</h3>
+          <p class="text-sm text-secondary leading-relaxed">Each platform measures progress differently. Some use certificates, others use percentages, hours, or no tracking at all.</p>
+        </div>
+
+        <div class="p-6 rounded-2xl border border-border bg-surface">
+          <h3 class="text-sm font-700 text-primary mb-2">Weak Connection to Career Goals</h3>
+          <p class="text-sm text-secondary leading-relaxed">Most platforms focus on course completion rather than long-term skill development. Finishing a course does not tell you how close you are to your goal.</p>
+        </div>
+
+        <div class="p-6 rounded-2xl border border-border bg-surface">
+          <h3 class="text-sm font-700 text-primary mb-2">Low Motivation Over Time</h3>
+          <p class="text-sm text-secondary leading-relaxed">Without clear visibility into skill growth, learners lose momentum. Progress feels invisible even when it is real.</p>
+        </div>
+
+        <div class="p-6 rounded-2xl border border-border bg-surface sm:col-span-2 lg:col-span-1">
+          <h3 class="text-sm font-700 text-primary mb-2">Difficulty Demonstrating Skills</h3>
+          <p class="text-sm text-secondary leading-relaxed">When applying for jobs or promotions, learners struggle to communicate their actual skill level because their progress lives across five different platforms.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ─── SOLUTION ──────────────────────────────────────────────────────── -->
+  <section class="py-20 md:py-28 border-b border-border">
+    <div class="max-w-6xl mx-auto px-6 lg:px-8">
+
+      <div class="reveal mb-10">
+        <p class="text-xs font-600 tracking-[0.25em] uppercase text-accent mb-3">Solution</p>
+        <h2 class="text-3xl md:text-4xl font-700 tracking-tight">The Solution</h2>
+      </div>
+
+      <p class="reveal text-secondary text-base leading-relaxed max-w-3xl mb-4">
+        StageUp acts as a connective layer between learning platforms. It syncs learning activity from Coursera, Udemy, LinkedIn Learning and others, maps everything to a unified skill profile, and recommends next steps based on the user's career goals.
+      </p>
+      <p class="reveal text-secondary text-base leading-relaxed max-w-3xl mb-12">
+        Rather than replacing existing platforms, StageUp makes them work together. Users get one place to understand their growth, track their progress across all platforms, and stay motivated toward a real career outcome.
+      </p>
+
+      <div class="reveal grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+
+        <div class="p-6 rounded-2xl border border-border bg-surface">
+          <h3 class="text-sm font-700 text-primary mb-2">Learning Sync</h3>
+          <p class="text-sm text-secondary leading-relaxed">Connects to multiple platforms and pulls in learning activity automatically.</p>
+        </div>
+
+        <div class="p-6 rounded-2xl border border-border bg-surface">
+          <h3 class="text-sm font-700 text-primary mb-2">Skill Mapping</h3>
+          <p class="text-sm text-secondary leading-relaxed">Translates completed courses into skill tags such as UX Design, Data Analysis, and Product Strategy.</p>
+        </div>
+
+        <div class="p-6 rounded-2xl border border-border bg-surface">
+          <h3 class="text-sm font-700 text-primary mb-2">Skill Growth Visualization</h3>
+          <p class="text-sm text-secondary leading-relaxed">Shows how skills are developing over time through charts and progress indicators.</p>
+        </div>
+
+        <div class="p-6 rounded-2xl border border-border bg-surface">
+          <h3 class="text-sm font-700 text-primary mb-2">Skill Gap Identification</h3>
+          <p class="text-sm text-secondary leading-relaxed">Compares current skills against a chosen career goal and highlights what is missing.</p>
+        </div>
+
+        <div class="p-6 rounded-2xl border border-border bg-surface sm:col-span-2 lg:col-span-1">
+          <h3 class="text-sm font-700 text-primary mb-2">Personalized Recommendations</h3>
+          <p class="text-sm text-secondary leading-relaxed">Suggests the next course or learning path based on where the user is and where they want to go.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ─── RESEARCH INSIGHTS ─────────────────────────────────────────────── -->
+  <section class="py-20 md:py-28 bg-white border-b border-border">
+    <div class="max-w-6xl mx-auto px-6 lg:px-8">
+
+      <div class="reveal grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-12">
+        <img src="img/stageup2.png" alt="StageUp research" onclick="openLightbox('img/stageup2.png','Research Insights')" class="w-3/4 mx-auto h-auto object-contain rounded-xl mix-blend-multiply cursor-zoom-in order-last lg:order-first" />
+        <div>
+          <p class="text-xs font-600 tracking-[0.25em] uppercase text-accent mb-3">Research</p>
+          <h2 class="text-3xl md:text-4xl font-700 tracking-tight mb-6">Research Insights</h2>
+          <p class="text-secondary text-base leading-relaxed">
+            To understand the problem space, I reviewed the four major learning platforms that professionals use most. Coursera, Udemy, LinkedIn Learning, and YouTube. I analyzed how each one handles progress tracking, goal setting, and skill visibility.
+          </p>
+        </div>
+      </div>
+
+      <div class="reveal grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+        <div class="p-6 rounded-2xl border border-border bg-surface">
+          <h3 class="text-sm font-700 text-primary mb-2">Guided Onboarding Improves Engagement</h3>
+          <p class="text-sm text-secondary leading-relaxed">Learners who go through a structured onboarding process understand the product value faster and are more likely to continue using it. Platforms that drop users directly into a course library see higher drop-off rates.</p>
+        </div>
+
+        <div class="p-6 rounded-2xl border border-border bg-surface">
+          <h3 class="text-sm font-700 text-primary mb-2">Goal-Driven Personalization Increases Retention</h3>
+          <p class="text-sm text-secondary leading-relaxed">Users stay engaged when the product connects their learning activity to a specific career outcome. Generic course recommendations do not motivate the same way a personalized learning path tied to a real goal does.</p>
+        </div>
+
+        <div class="p-6 rounded-2xl border border-border bg-surface">
+          <h3 class="text-sm font-700 text-primary mb-2">Visual Progress Motivates Learners</h3>
+          <p class="text-sm text-secondary leading-relaxed">Charts, milestones, and skill indicators sustain motivation far better than text-based summaries. Seeing growth visually makes progress feel real and worth continuing.</p>
+        </div>
+
+        <div class="p-6 rounded-2xl border border-border bg-surface">
+          <h3 class="text-sm font-700 text-primary mb-2">Mobile Users Need Simplified Dashboards</h3>
+          <p class="text-sm text-secondary leading-relaxed">Most users check their progress quickly on mobile. Information needs to be scannable, prioritized, and immediately meaningful. Not buried inside menus or data-heavy screens.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ─── CORE DESIGN CHALLENGE ─────────────────────────────────────────── -->
+  <section class="py-20 md:py-28 border-b border-border">
+    <div class="max-w-6xl mx-auto px-6 lg:px-8">
+
+      <div class="reveal grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-12">
+        <div>
+          <p class="text-xs font-600 tracking-[0.25em] uppercase text-accent mb-3">Challenge</p>
+          <h2 class="text-3xl md:text-4xl font-700 tracking-tight mb-4">Core Design Challenge</h2>
+          <h3 class="text-xl font-700 text-primary mb-4">Normalizing Learning Data Across Platforms</h3>
+          <p class="text-secondary text-base leading-relaxed">
+            The biggest design challenge was not visual. It was structural. Different platforms track learning progress in completely different ways. There was no universal standard to work with.
+          </p>
+        </div>
+        <img src="img/stageup1.jpeg" alt="StageUp design challenge" onclick="openLightbox('img/stageup1.jpeg','Core Design Challenge')" class="w-3/4 mx-auto h-auto object-contain rounded-xl mix-blend-multiply cursor-zoom-in" />
+      </div>
+
+      <div class="reveal grid grid-cols-2 sm:grid-cols-4 gap-4 mb-12">
+
+        <div class="p-5 rounded-2xl border border-border bg-surface text-center">
+          <p class="text-sm font-700 text-primary mb-1">Coursera</p>
+          <p class="text-xs text-secondary leading-relaxed">tracks progress through certificates and course completion.</p>
+        </div>
+
+        <div class="p-5 rounded-2xl border border-border bg-surface text-center">
+          <p class="text-sm font-700 text-primary mb-1">Udemy</p>
+          <p class="text-xs text-secondary leading-relaxed">tracks progress through percentage of video content watched.</p>
+        </div>
+
+        <div class="p-5 rounded-2xl border border-border bg-surface text-center">
+          <p class="text-sm font-700 text-primary mb-1">LinkedIn Learning</p>
+          <p class="text-xs text-secondary leading-relaxed">tracks progress through hours spent learning.</p>
+        </div>
+
+        <div class="p-5 rounded-2xl border border-border bg-surface text-center">
+          <p class="text-sm font-700 text-primary mb-1">YouTube</p>
+          <p class="text-xs text-secondary leading-relaxed">has no progress tracking at all.</p>
+        </div>
+
+      </div>
+
+      <p class="reveal text-secondary text-base leading-relaxed max-w-3xl mb-6">
+        The challenge was: how do you take four completely different data formats and turn them into one meaningful skill profile?
+      </p>
+
+      <div class="reveal p-6 md:p-8 rounded-2xl border border-border bg-white max-w-3xl">
+        <h3 class="text-sm font-700 text-primary uppercase tracking-widest mb-4">The Solution to the Challenge</h3>
+        <p class="text-sm text-secondary leading-relaxed mb-4">
+          StageUp solves this by converting all learning activity into skill tags weighted by engagement depth. Completing a full course sends a strong signal. Watching part of a video sends a lighter signal. Courses that include hands-on projects carry a higher weight than passive video content.
+        </p>
+        <p class="text-sm text-secondary leading-relaxed mb-4">
+          This creates a dynamic skill profile that reflects what users actually know, not just what they started or clicked on.
+        </p>
+        <p class="text-sm text-secondary leading-relaxed font-600 text-primary">
+          This was the most important systems design decision in the entire project. Without solving this, the rest of the product could not exist.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ─── PERSONA ───────────────────────────────────────────────────────── -->
+  <section class="py-20 md:py-28 bg-white border-b border-border">
+    <div class="max-w-6xl mx-auto px-6 lg:px-8">
+
+      <div class="reveal mb-10">
+        <p class="text-xs font-600 tracking-[0.25em] uppercase text-accent mb-3">Persona</p>
+        <h2 class="text-3xl md:text-4xl font-700 tracking-tight">Sarah — The Ambitious Career Switcher</h2>
+      </div>
+
+      <div class="reveal grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+        <!-- About -->
+        <div class="lg:col-span-1 p-6 rounded-2xl border border-border bg-surface">
+          <div class="flex items-center gap-4 mb-6">
+            <div class="w-14 h-14 rounded-full bg-gradient-to-br from-[#14532D] to-[#16A34A] flex items-center justify-center text-white font-700 text-xl shrink-0">S</div>
+            <div>
+              <p class="text-base font-700 text-primary">Sarah Mitchell, 26</p>
+              <p class="text-xs text-secondary">The Ambitious Career Switcher</p>
+            </div>
+          </div>
+          <h3 class="text-xs font-700 text-primary uppercase tracking-widest mb-2">About</h3>
+          <p class="text-sm text-secondary leading-relaxed">
+            Sarah is a marketing coordinator who wants to transition into UX design. She is taking courses on Coursera and Udemy at the same time while watching YouTube tutorials on the side. She is motivated and committed but feels overwhelmed because she has no clear picture of how far she has come or what she still needs to learn to land her first UX role.
+          </p>
+        </div>
+
+        <!-- Goals, Frustrations, Behaviours -->
+        <div class="lg:col-span-2 grid grid-cols-1 sm:grid-cols-3 gap-4">
+
+          <div class="p-6 rounded-2xl border border-border bg-surface">
+            <h3 class="text-xs font-700 text-primary uppercase tracking-widest mb-4">Goals</h3>
+            <ul class="space-y-2 text-sm text-secondary">
+              <li class="flex items-start gap-2"><span class="text-accent shrink-0 mt-0.5">–</span>Track all her learning in one place</li>
+              <li class="flex items-start gap-2"><span class="text-accent shrink-0 mt-0.5">–</span>Understand exactly what skills she has built so far</li>
+              <li class="flex items-start gap-2"><span class="text-accent shrink-0 mt-0.5">–</span>Know what is missing before she can apply for UX jobs</li>
+              <li class="flex items-start gap-2"><span class="text-accent shrink-0 mt-0.5">–</span>Stay motivated through a long career transition</li>
+            </ul>
+          </div>
+
+          <div class="p-6 rounded-2xl border border-border bg-surface">
+            <h3 class="text-xs font-700 text-primary uppercase tracking-widest mb-4">Frustrations</h3>
+            <ul class="space-y-2 text-sm text-secondary">
+              <li class="flex items-start gap-2"><span class="text-red-400 shrink-0 mt-0.5">–</span>Has to check three different platforms to understand her progress</li>
+              <li class="flex items-start gap-2"><span class="text-red-400 shrink-0 mt-0.5">–</span>Cannot connect her completed courses to real job requirements</li>
+              <li class="flex items-start gap-2"><span class="text-red-400 shrink-0 mt-0.5">–</span>Loses motivation when progress feels invisible</li>
+              <li class="flex items-start gap-2"><span class="text-red-400 shrink-0 mt-0.5">–</span>Does not know which course to take next</li>
+            </ul>
+          </div>
+
+          <div class="p-6 rounded-2xl border border-border bg-surface">
+            <h3 class="text-xs font-700 text-primary uppercase tracking-widest mb-4">Behaviours</h3>
+            <ul class="space-y-2 text-sm text-secondary">
+              <li class="flex items-start gap-2"><span class="text-accent shrink-0 mt-0.5">–</span>Learns in short sessions on mobile during commutes</li>
+              <li class="flex items-start gap-2"><span class="text-accent shrink-0 mt-0.5">–</span>Checks progress frequently for reassurance</li>
+              <li class="flex items-start gap-2"><span class="text-accent shrink-0 mt-0.5">–</span>Searches for job postings to understand what skills she needs</li>
+              <li class="flex items-start gap-2"><span class="text-accent shrink-0 mt-0.5">–</span>Uses LinkedIn to research what designers in her target role have studied</li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ─── INFORMATION ARCHITECTURE ─────────────────────────────────────── -->
+  <section class="py-20 md:py-28 border-b border-border">
+    <div class="max-w-6xl mx-auto px-6 lg:px-8">
+
+      <div class="reveal mb-10">
+        <p class="text-xs font-600 tracking-[0.25em] uppercase text-accent mb-3">Structure</p>
+        <h2 class="text-3xl md:text-4xl font-700 tracking-tight">Information Architecture</h2>
+      </div>
+
+      <p class="reveal text-secondary text-base leading-relaxed max-w-3xl mb-10">
+        The platform separates the setup experience from the daily usage experience. Pre-login covers the landing page, features, pricing, and authentication. Post-login begins with onboarding where users connect their learning sources and set their career goal, then moves into the main dashboard.
+      </p>
+
+      <div class="reveal mb-4">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-sm font-700 text-primary uppercase tracking-widest">IA Diagram</h3>
+          <button onclick="openLightbox('img/stageup-information-architecture.jpeg','Information Architecture')" class="text-xs font-600 text-accent hover:underline cursor-pointer flex items-center gap-1">View full <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor"><path d="M3 4a1 1 0 011-1h4a1 1 0 010 2H6.414l2.293 2.293a1 1 0 11-1.414 1.414L5 6.414V8a1 1 0 01-2 0V4zm9 1a1 1 0 010-2h4a1 1 0 011 1v4a1 1 0 01-2 0V6.414l-2.293 2.293a1 1 0 11-1.414-1.414L13.586 5H12zm-9 7a1 1 0 012 0v1.586l2.293-2.293a1 1 0 111.414 1.414L6.414 15H8a1 1 0 010 2H4a1 1 0 01-1-1v-4zm13 2a1 1 0 01-2 0v-1.586l-2.293 2.293a1 1 0 01-1.414-1.414L13.586 15H12a1 1 0 010-2h4a1 1 0 011 1v4z"/></svg></button>
+        </div>
+        <img src="img/stageup-information-architecture.jpeg" alt="StageUp information architecture" onclick="openLightbox('img/stageup-information-architecture.jpeg','Information Architecture')" class="w-full h-auto object-contain rounded-2xl shadow-[0_8px_48px_-4px_rgba(22,163,74,0.15)] cursor-zoom-in mb-10" />
+      </div>
+
+      <div class="reveal mb-4">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-sm font-700 text-primary uppercase tracking-widest">Key User Flow — Connecting a Learning Source</h3>
+          <button onclick="openLightbox('img/stageup-user-flow.jpeg','Key User Flow')" class="text-xs font-600 text-accent hover:underline cursor-pointer flex items-center gap-1">View full <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor"><path d="M3 4a1 1 0 011-1h4a1 1 0 010 2H6.414l2.293 2.293a1 1 0 11-1.414 1.414L5 6.414V8a1 1 0 01-2 0V4zm9 1a1 1 0 010-2h4a1 1 0 011 1v4a1 1 0 01-2 0V6.414l-2.293 2.293a1 1 0 11-1.414-1.414L13.586 5H12zm-9 7a1 1 0 012 0v1.586l2.293-2.293a1 1 0 111.414 1.414L6.414 15H8a1 1 0 010 2H4a1 1 0 01-1-1v-4zm13 2a1 1 0 01-2 0v-1.586l-2.293 2.293a1 1 0 01-1.414-1.414L13.586 15H12a1 1 0 010-2h4a1 1 0 011 1v4z"/></svg></button>
+        </div>
+        <p class="text-sm text-secondary leading-relaxed mb-4">The most critical onboarding action is connecting a learning platform. Without learning data the product cannot generate skill insights or personalized recommendations. The flow includes a recovery path in case the platform connection fails, ensuring users are never stuck without a next step.</p>
+        <img src="img/stageup-user-flow.jpeg" alt="StageUp key user flow" onclick="openLightbox('img/stageup-user-flow.jpeg','Key User Flow')" class="w-full h-auto object-contain rounded-2xl shadow-[0_8px_48px_-4px_rgba(22,163,74,0.15)] cursor-zoom-in" />
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ─── DESIGN PROCESS ────────────────────────────────────────────────── -->
+  <section class="py-20 md:py-28 bg-white border-b border-border">
+    <div class="max-w-6xl mx-auto px-6 lg:px-8">
+
+      <div class="reveal mb-12">
+        <p class="text-xs font-600 tracking-[0.25em] uppercase text-accent mb-3">Design Process</p>
+        <h2 class="text-3xl md:text-4xl font-700 tracking-tight">Design Process</h2>
+      </div>
+
+      <!-- Low fi -->
+      <div class="reveal mb-14">
+        <h3 class="text-xl font-700 text-primary mb-4">Low fidelity Wireframes</h3>
+        <p class="text-secondary text-base leading-relaxed max-w-3xl mb-6">
+          Before moving into high fidelity design, I mapped out the core screens in low fidelity. The goal at this stage was to focus entirely on structure, layout, and user flow without getting distracted by visual details. The wireframes are divided into two sections — onboarding and home, and the dashboard and profile experience.
+        </p>
+        <div class="flex items-center justify-between mb-4">
+          <span></span>
+          <button onclick="openLightbox('img/stageup-low-fid-wireframe.jpeg','Low Fidelity Wireframes')" class="text-xs font-600 text-accent hover:underline cursor-pointer flex items-center gap-1">View full <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor"><path d="M3 4a1 1 0 011-1h4a1 1 0 010 2H6.414l2.293 2.293a1 1 0 11-1.414 1.414L5 6.414V8a1 1 0 01-2 0V4zm9 1a1 1 0 010-2h4a1 1 0 011 1v4a1 1 0 01-2 0V6.414l-2.293 2.293a1 1 0 11-1.414-1.414L13.586 5H12zm-9 7a1 1 0 012 0v1.586l2.293-2.293a1 1 0 111.414 1.414L6.414 15H8a1 1 0 010 2H4a1 1 0 01-1-1v-4zm13 2a1 1 0 01-2 0v-1.586l-2.293 2.293a1 1 0 01-1.414-1.414L13.586 15H12a1 1 0 010-2h4a1 1 0 011 1v4z"/></svg></button>
+        </div>
+        <img src="img/stageup-low-fid-wireframe.jpeg" alt="StageUp low fidelity wireframes" onclick="openLightbox('img/stageup-low-fid-wireframe.jpeg','Low Fidelity Wireframes')" class="w-full h-auto object-contain rounded-2xl shadow-[0_8px_48px_-4px_rgba(22,163,74,0.15)] cursor-zoom-in" />
+      </div>
+
+      <!-- Mid fi -->
+      <div class="reveal mb-14">
+        <h3 class="text-xl font-700 text-primary mb-4">Mid Fidelity Prototype</h3>
+        <p class="text-secondary text-base leading-relaxed max-w-3xl mb-6">
+          With the low fidelity structure validated, I moved into mid fidelity to bring the product closer to its final form. At this stage I introduced real content, refined the visual hierarchy, and defined the core UI components. This allowed me to test how the design felt with actual data before committing to the final visual direction.
+        </p>
+        <div class="flex items-center justify-between mb-4">
+          <span></span>
+          <button onclick="openLightbox('img/stageup-mid-fid.jpeg','Mid Fidelity Prototype')" class="text-xs font-600 text-accent hover:underline cursor-pointer flex items-center gap-1">View full <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor"><path d="M3 4a1 1 0 011-1h4a1 1 0 010 2H6.414l2.293 2.293a1 1 0 11-1.414 1.414L5 6.414V8a1 1 0 01-2 0V4zm9 1a1 1 0 010-2h4a1 1 0 011 1v4a1 1 0 01-2 0V6.414l-2.293 2.293a1 1 0 11-1.414-1.414L13.586 5H12zm-9 7a1 1 0 012 0v1.586l2.293-2.293a1 1 0 111.414 1.414L6.414 15H8a1 1 0 010 2H4a1 1 0 01-1-1v-4zm13 2a1 1 0 01-2 0v-1.586l-2.293 2.293a1 1 0 01-1.414-1.414L13.586 15H12a1 1 0 010-2h4a1 1 0 011 1v4z"/></svg></button>
+        </div>
+        <img src="img/stageup-mid-fid.jpeg" alt="StageUp mid fidelity prototype" onclick="openLightbox('img/stageup-mid-fid.jpeg','Mid Fidelity Prototype')" class="w-full h-auto object-contain rounded-2xl shadow-[0_8px_48px_-4px_rgba(22,163,74,0.15)] cursor-zoom-in mb-4" />
+        <a href="https://www.figma.com/proto/yepF52QARjfNiK8x8hRl3x/Mid-Fidelity-Prototype?node-id=1-75&t=cGNTNcGP0Out01ge-1&scaling=scale-down&content-scaling=fixed&page-id=0%3A1" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-sm font-600 text-accent hover:underline cursor-pointer">
+          View in Figma →
+        </a>
+      </div>
+
+      <!-- High fi -->
+      <div class="reveal">
+        <h3 class="text-xl font-700 text-primary mb-4">High-Fidelity Prototype</h3>
+        <p class="text-secondary text-base leading-relaxed max-w-3xl mb-4">
+          After testing the mid fidelity prototype with real users, I collected feedback on layout clarity, navigation flow, and how easily users could understand their skill progress. Several improvements were identified based on what users struggled with and what they responded to positively.
+        </p>
+        <p class="text-secondary text-base leading-relaxed max-w-3xl mb-6">
+          The high fidelity design is the direct result of those iterations. I refined the typography, color system, spacing, and component consistency to create a polished and intuitive experience. Every screen was designed with two priorities in mind. Clarity of information so users always know where they are and what to do next. And motivation to keep learning so the product feels rewarding to use every day.
+        </p>
+        <div class="flex items-center justify-between mb-4">
+          <span></span>
+          <button onclick="openLightbox('img/stageup-high-fid.jpeg','High Fidelity Prototype')" class="text-xs font-600 text-accent hover:underline cursor-pointer flex items-center gap-1">View full <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor"><path d="M3 4a1 1 0 011-1h4a1 1 0 010 2H6.414l2.293 2.293a1 1 0 11-1.414 1.414L5 6.414V8a1 1 0 01-2 0V4zm9 1a1 1 0 010-2h4a1 1 0 011 1v4a1 1 0 01-2 0V6.414l-2.293 2.293a1 1 0 11-1.414-1.414L13.586 5H12zm-9 7a1 1 0 012 0v1.586l2.293-2.293a1 1 0 111.414 1.414L6.414 15H8a1 1 0 010 2H4a1 1 0 01-1-1v-4zm13 2a1 1 0 01-2 0v-1.586l-2.293 2.293a1 1 0 01-1.414-1.414L13.586 15H12a1 1 0 010-2h4a1 1 0 011 1v4z"/></svg></button>
+        </div>
+        <img src="img/stageup-high-fid.jpeg" alt="StageUp high fidelity prototype" onclick="openLightbox('img/stageup-high-fid.jpeg','High Fidelity Prototype')" class="w-full h-auto object-contain rounded-2xl shadow-[0_8px_48px_-4px_rgba(22,163,74,0.15)] cursor-zoom-in mb-4" />
+        <a href="https://www.figma.com/proto/xqp4QvUCPa4g2vx7qUaBKl/High-fidelity-prototype?node-id=1-88&t=vK9xWqMMgIAFNzBE-1&scaling=scale-down&content-scaling=fixed&page-id=0%3A1" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-sm font-600 text-accent hover:underline cursor-pointer">
+          View in Figma →
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ─── KEY DESIGN DECISIONS ──────────────────────────────────────────── -->
+  <section class="py-20 md:py-28 border-b border-border">
+    <div class="max-w-6xl mx-auto px-6 lg:px-8">
+
+      <div class="reveal mb-10">
+        <p class="text-xs font-600 tracking-[0.25em] uppercase text-accent mb-3">Decisions</p>
+        <h2 class="text-3xl md:text-4xl font-700 tracking-tight">Key Design Decisions</h2>
+      </div>
+
+      <div class="reveal grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+        <div class="p-6 rounded-2xl border border-border bg-surface">
+          <h3 class="text-sm font-700 text-primary mb-2">Skill Growth Visualization</h3>
+          <p class="text-sm text-secondary leading-relaxed">Progress needed to feel real and motivating. I used an 8-week chart so users can see momentum building over time, not just a static number.</p>
+        </div>
+
+        <div class="p-6 rounded-2xl border border-border bg-surface">
+          <h3 class="text-sm font-700 text-primary mb-2">Career Goal as the North Star</h3>
+          <p class="text-sm text-secondary leading-relaxed">Every screen connects back to the user's career goal. The dashboard always shows how far they are and what they still need to learn.</p>
+        </div>
+
+        <div class="p-6 rounded-2xl border border-border bg-surface">
+          <h3 class="text-sm font-700 text-primary mb-2">Mobile First</h3>
+          <p class="text-sm text-secondary leading-relaxed">Most users check progress quickly on mobile. The most important information appears first without any scrolling needed.</p>
+        </div>
+
+        <div class="p-6 rounded-2xl border border-border bg-surface">
+          <h3 class="text-sm font-700 text-primary mb-2">Onboarding as a Trust Builder</h3>
+          <p class="text-sm text-secondary leading-relaxed">I designed onboarding as a guided 3-step flow so users feel confident and understand the product before they reach the dashboard.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ─── USABILITY TESTING ─────────────────────────────────────────────── -->
+  <section class="py-20 md:py-28 bg-white border-b border-border">
+    <div class="max-w-6xl mx-auto px-6 lg:px-8">
+
+      <div class="reveal mb-10">
+        <p class="text-xs font-600 tracking-[0.25em] uppercase text-accent mb-3">Test</p>
+        <h2 class="text-3xl md:text-4xl font-700 tracking-tight">Usability Testing</h2>
+      </div>
+
+      <p class="reveal text-secondary text-base leading-relaxed max-w-3xl mb-12">
+        I conducted two rounds of usability testing throughout the design process. The first round tested the mid fidelity prototype to validate core flows before moving into high fidelity. The second round tested the final high fidelity prototype to confirm that the design improvements were successful.
+      </p>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+        <!-- Round 1 -->
+        <div class="reveal p-6 md:p-8 rounded-2xl border border-border bg-surface">
+          <h3 class="text-base font-700 text-primary mb-2">Mid Fidelity Testing</h3>
+          <p class="text-sm text-secondary leading-relaxed mb-6">
+            Participants were asked to complete key tasks including connecting a learning source, setting a career goal, and navigating the dashboard.
+          </p>
+          <h4 class="text-xs font-700 text-primary uppercase tracking-widest mb-4">Key Findings</h4>
+          <div class="space-y-4">
+            <div>
+              <p class="text-sm font-700 text-primary mb-1">Onboarding Was Clear and Easy to Follow</p>
+              <p class="text-sm text-secondary leading-relaxed">Users completed the 3-step onboarding flow without confusion and understood the product value immediately.</p>
+            </div>
+            <div>
+              <p class="text-sm font-700 text-primary mb-1">Career Goal Connection Was the Most Valued Feature</p>
+              <p class="text-sm text-secondary leading-relaxed">Every participant highlighted the career goal progress bar as the most useful part of the dashboard.</p>
+            </div>
+            <div>
+              <p class="text-sm font-700 text-primary mb-1">Navigation Needed Simplification</p>
+              <p class="text-sm text-secondary leading-relaxed">Some users were unsure which tab to use for finding new courses. This led to simplifying the navigation labels in the high fidelity version.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Round 2 -->
+        <div class="reveal p-6 md:p-8 rounded-2xl border border-border bg-surface">
+          <h3 class="text-base font-700 text-primary mb-2">High Fidelity Testing</h3>
+          <p class="text-sm text-secondary leading-relaxed mb-6">
+            After applying the improvements from round one, I tested the final high fidelity prototype with users. The feedback was overwhelmingly positive.
+          </p>
+          <h4 class="text-xs font-700 text-primary uppercase tracking-widest mb-4">Key Findings</h4>
+          <div class="space-y-4">
+            <div>
+              <p class="text-sm font-700 text-primary mb-1">Navigation Was Significantly Clearer</p>
+              <p class="text-sm text-secondary leading-relaxed">Users moved through the app confidently with no confusion about where to find courses or track their progress.</p>
+            </div>
+            <div>
+              <p class="text-sm font-700 text-primary mb-1">Visual Design Was Received Very Positively</p>
+              <p class="text-sm text-secondary leading-relaxed">Users responded enthusiastically to the polished interface, describing it as clean, motivating, and easy to use.</p>
+            </div>
+            <div>
+              <p class="text-sm font-700 text-primary mb-1">Skill Progress Visualization Was Highly Engaging</p>
+              <p class="text-sm text-secondary leading-relaxed">Users found the 8-week skill growth chart compelling and said it made them want to keep learning.</p>
+            </div>
+            <div>
+              <p class="text-sm font-700 text-primary mb-1">The Product Felt Complete and Ready to Use</p>
+              <p class="text-sm text-secondary leading-relaxed">Multiple participants said StageUp felt like a real product they would download and use immediately.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ─── PROTOTYPE ─────────────────────────────────────────────────────── -->
+  <section class="py-20 md:py-28 border-b border-border">
+    <div class="max-w-6xl mx-auto px-6 lg:px-8">
+
+      <div class="reveal mb-10">
+        <p class="text-xs font-600 tracking-[0.25em] uppercase text-accent mb-3">Prototype</p>
+        <h2 class="text-3xl md:text-4xl font-700 tracking-tight">Prototype</h2>
+      </div>
+
+      <p class="reveal text-secondary text-base leading-relaxed max-w-3xl mb-4">
+        Throughout the design process I built and tested two interactive prototypes. The mid fidelity prototype was used to validate core flows with real users, and the high fidelity prototype represents the final polished experience.
+      </p>
+      <p class="reveal text-secondary text-base leading-relaxed max-w-3xl mb-8">
+        Explore the full high fidelity prototype below to experience the complete StageUp user journey from onboarding to the personalized dashboard.
+      </p>
+
+      <div class="reveal mb-6">
+        <div class="flex items-center justify-between mb-4">
+          <span></span>
+          <button onclick="openLightbox('img/stageup-high-fid.jpeg','StageUp Prototype')" class="text-xs font-600 text-accent hover:underline cursor-pointer flex items-center gap-1">View full <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor"><path d="M3 4a1 1 0 011-1h4a1 1 0 010 2H6.414l2.293 2.293a1 1 0 11-1.414 1.414L5 6.414V8a1 1 0 01-2 0V4zm9 1a1 1 0 010-2h4a1 1 0 011 1v4a1 1 0 01-2 0V6.414l-2.293 2.293a1 1 0 11-1.414-1.414L13.586 5H12zm-9 7a1 1 0 012 0v1.586l2.293-2.293a1 1 0 111.414 1.414L6.414 15H8a1 1 0 010 2H4a1 1 0 01-1-1v-4zm13 2a1 1 0 01-2 0v-1.586l-2.293 2.293a1 1 0 01-1.414-1.414L13.586 15H12a1 1 0 010-2h4a1 1 0 011 1v4z"/></svg></button>
+        </div>
+        <img src="img/stageup-high-fid.jpeg" alt="StageUp prototype screens" onclick="openLightbox('img/stageup-high-fid.jpeg','StageUp Prototype')" class="w-full h-auto object-contain rounded-2xl shadow-[0_8px_48px_-4px_rgba(22,163,74,0.15)] cursor-zoom-in" />
+      </div>
+
+      <a href="#" class="reveal inline-flex items-center gap-2 text-sm font-600 text-accent hover:underline cursor-pointer">
+        View in Figma →
+      </a>
+
+    </div>
+  </section>
+
+
+  <!-- ─── REFLECTION ────────────────────────────────────────────────────── -->
+  <section class="py-20 md:py-28 bg-primary text-surface">
+    <div class="max-w-6xl mx-auto px-6 lg:px-8">
+
+      <div class="reveal mb-10">
+        <p class="text-xs font-600 tracking-[0.25em] uppercase text-accent mb-3">Reflection</p>
+        <h2 class="text-3xl md:text-4xl font-700 tracking-tight mb-6">Reflection</h2>
+      </div>
+
+      <p class="reveal text-surface/70 text-base leading-relaxed max-w-3xl mb-4">
+        StageUp taught me that the hardest design challenges are structural, not visual. The biggest problem was not how the product looked. It was how to create a meaningful system from learning data that was never designed to work together.
+      </p>
+      <p class="reveal text-surface/70 text-base leading-relaxed max-w-3xl mb-4">
+        Reframing the problem was the most important decision I made. Users do not want to simply sync their learning platforms. They want to become UX designers, get promoted, or transition into new careers. By focusing on career goals rather than course completion, StageUp transforms fragmented learning activity into a clear path for growth.
+      </p>
+      <p class="reveal text-surface/70 text-base leading-relaxed max-w-3xl mb-12">
+        Designing a long term feedback loop where the product becomes more useful the more it is used was the most valuable lesson from this project.
+      </p>
+
+      <div class="reveal">
+        <h3 class="text-sm font-700 text-surface uppercase tracking-widest mb-6">What I Would Build Next</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+
+          <div class="p-6 rounded-2xl border border-white/10 bg-white/5">
+            <h4 class="text-sm font-700 text-surface mb-2">AI Powered Skill Recommendations</h4>
+            <p class="text-sm text-surface/60 leading-relaxed">A smarter recommendation engine that learns from user behavior over time and suggests the most impactful next step toward their career goal.</p>
+          </div>
+
+          <div class="p-6 rounded-2xl border border-white/10 bg-white/5">
+            <h4 class="text-sm font-700 text-surface mb-2">Employer Integration</h4>
+            <p class="text-sm text-surface/60 leading-relaxed">Connecting skill profiles to real job requirements so users can see exactly how their learning maps to roles they are applying for.</p>
+          </div>
+
+          <div class="p-6 rounded-2xl border border-white/10 bg-white/5">
+            <h4 class="text-sm font-700 text-surface mb-2">Progress Sharing</h4>
+            <p class="text-sm text-surface/60 leading-relaxed">Allowing users to share their skill profile publicly, giving them a way to demonstrate real growth to employers beyond a traditional resume.</p>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ─── NEXT PROJECT ───────────────────────────────────────────────────── -->
+  <section class="py-16 border-t border-white/10 bg-primary">
+    <div class="max-w-6xl mx-auto px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-6">
+      <a href="rbc.html" class="text-sm font-600 text-surface/50 hover:text-surface transition-colors cursor-pointer flex items-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+        </svg>
+        Previous: RBC Mobile App
+      </a>
+      <a href="index.html#projects" class="text-sm font-600 text-surface hover:text-accent transition-colors cursor-pointer flex items-center gap-2">
+        All Projects
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+        </svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- ─── FOOTER ─────────────────────────────────────────────────────────── -->
+  <footer class="bg-primary border-t border-white/5 py-8">
+    <div class="max-w-6xl mx-auto px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4 text-surface/30 text-xs font-500">
+      <p>© 2025 Alaa El Banna. All rights reserved.</p>
+      <p>Product Designer · Toronto, Canada</p>
+    </div>
+  </footer>
+
+  <!-- Lightbox -->
+  <div id="lightbox" class="fixed inset-0 z-[999] bg-black/90 backdrop-blur-sm hidden items-center justify-center p-4" onclick="closeLightbox()">
+    <button onclick="closeLightbox()" class="absolute top-5 right-5 text-white/60 hover:text-white cursor-pointer">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
+      </svg>
+    </button>
+    <img id="lightbox-img" src="" alt="" class="max-w-full max-h-[90vh] object-contain rounded-xl shadow-2xl" onclick="event.stopPropagation()" />
+  </div>
+
+  <script>
+    const observer = new IntersectionObserver(
+      entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
+      { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
+    );
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    const toggle = document.getElementById('menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    toggle.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+    function closeMobileMenu() { mobileMenu.classList.add('hidden'); }
+
+    function openLightbox(src, alt) {
+      const lb = document.getElementById('lightbox');
+      document.getElementById('lightbox-img').src = src;
+      document.getElementById('lightbox-img').alt = alt;
+      lb.classList.remove('hidden');
+      lb.classList.add('flex');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLightbox() {
+      const lb = document.getElementById('lightbox');
+      lb.classList.add('hidden');
+      lb.classList.remove('flex');
+      document.body.style.overflow = '';
+    }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+  </script>
+
+</body>
+</html>

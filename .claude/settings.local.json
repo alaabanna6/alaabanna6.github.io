@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:alaabanna.com)",
+      "mcp__Claude_in_Chrome__tabs_context_mcp",
+      "Bash(python3 ~/.claude/skills/ui-ux-pro-max/scripts/search.py \"modern professional elegant\" --domain typography)",
+      "Bash(python3 ~/.claude/skills/ui-ux-pro-max/scripts/search.py \"portfolio designer\" --domain color)",
+      "Bash(python3 ~/.claude/skills/ui-ux-pro-max/scripts/search.py \"portfolio storytelling hero\" --domain landing)",
+      "Bash(python3 ~/.claude/skills/ui-ux-pro-max/scripts/search.py \"animation scroll\" --domain ux)",
+      "Bash(python3 ~/.claude/skills/ui-ux-pro-max/scripts/search.py \"layout responsive\" --stack html-tailwind)"
+    ]
+  }
+}
