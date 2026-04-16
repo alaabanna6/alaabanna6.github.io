@@ -391,9 +391,32 @@
 
         </div>
 
-        <!-- Right — profile photo -->
-        <div class="reveal flex justify-center lg:justify-end mt-32">
-          <img src="img/profile.jpeg" alt="Alaa El Banna" class="w-full max-w-sm rounded-3xl object-cover shadow-lg" />
+        <!-- Right — floating glass cards -->
+        <div class="reveal relative hidden lg:block" style="min-height:420px; background: radial-gradient(ellipse at 60% 50%, rgba(232,244,253,0.5) 0%, transparent 60%), radial-gradient(ellipse at 80% 20%, rgba(240,236,248,0.4) 0%, transparent 45%), radial-gradient(ellipse at 40% 80%, rgba(232,248,240,0.4) 0%, transparent 45%); border-radius:24px;">
+          <!-- Card A — blue -->
+          <div style="position:absolute; top:12%; left:10%; animation:float1 10s ease-in-out infinite;">
+            <div class="float-card" style="background:rgba(30,130,210,0.10); width:148px; height:88px; transition:transform 0.4s cubic-bezier(0.23,1,0.32,1);"></div>
+          </div>
+          <!-- Card B — lavender -->
+          <div style="position:absolute; top:15%; left:55%; animation:float3 9s ease-in-out infinite 1.5s;">
+            <div class="float-card" style="background:rgba(120,70,200,0.09); width:118px; height:70px; transition:transform 0.4s cubic-bezier(0.23,1,0.32,1);"></div>
+          </div>
+          <!-- Card C — green -->
+          <div style="position:absolute; top:42%; left:30%; animation:float2 12s ease-in-out infinite 0.8s;">
+            <div class="float-card" style="background:rgba(34,160,90,0.09); width:158px; height:94px; transition:transform 0.4s cubic-bezier(0.23,1,0.32,1);"></div>
+          </div>
+          <!-- Card D — yellow -->
+          <div style="position:absolute; top:45%; left:62%; animation:float5 11s ease-in-out infinite 2.5s;">
+            <div class="float-card" style="background:rgba(210,160,20,0.09); width:108px; height:66px; transition:transform 0.4s cubic-bezier(0.23,1,0.32,1);"></div>
+          </div>
+          <!-- Card E — red -->
+          <div style="position:absolute; top:70%; left:15%; animation:float4 13s ease-in-out infinite 3s;">
+            <div class="float-card" style="background:rgba(210,50,50,0.08); width:128px; height:76px; transition:transform 0.4s cubic-bezier(0.23,1,0.32,1);"></div>
+          </div>
+          <!-- Card F — gray -->
+          <div style="position:absolute; top:68%; left:55%; animation:float6 8s ease-in-out infinite 1s;">
+            <div class="float-card" style="background:rgba(100,100,110,0.07); width:138px; height:82px; transition:transform 0.4s cubic-bezier(0.23,1,0.32,1);"></div>
+          </div>
         </div>
 
       </div>
@@ -455,7 +478,8 @@
 
           <!-- Resume -->
           <a
-            href="#"
+            href="Alaa El Banna–Resume .pdf"
+            download="Alaa El Banna Resume.pdf"
             class="group flex items-center gap-4 p-5 border border-white/10 rounded-xl hover:border-white/30 hover:bg-white/5 transition-all duration-200 cursor-pointer"
           >
             <div class="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center shrink-0">
@@ -540,6 +564,37 @@
     heroSection.addEventListener('mouseleave', () => {
       floatCards.forEach(card => card.style.transform = 'translate(0,0)');
     });
+
+    // About section card repulsion
+    const aboutCards = document.querySelectorAll('#about .float-card');
+    const aboutSection = document.getElementById('about');
+    if (aboutSection) {
+      aboutSection.addEventListener('mousemove', (e) => {
+        const rect = aboutSection.getBoundingClientRect();
+        const mx = e.clientX - rect.left;
+        const my = e.clientY - rect.top;
+        aboutCards.forEach(card => {
+          const wrap = card.parentElement;
+          const wRect = wrap.getBoundingClientRect();
+          const cx = wRect.left - rect.left + wRect.width  / 2;
+          const cy = wRect.top  - rect.top  + wRect.height / 2;
+          const dx = mx - cx;
+          const dy = my - cy;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          const maxDist = 180;
+          if (dist < maxDist && dist > 0) {
+            const force = (1 - dist / maxDist) * 38;
+            const angle = Math.atan2(dy, dx);
+            card.style.transform = `translate(${-Math.cos(angle)*force}px, ${-Math.sin(angle)*force}px)`;
+          } else {
+            card.style.transform = 'translate(0,0)';
+          }
+        });
+      });
+      aboutSection.addEventListener('mouseleave', () => {
+        aboutCards.forEach(card => card.style.transform = 'translate(0,0)');
+      });
+    }
 
     function filterProjects(category) {
       const cards = document.querySelectorAll('.project-card');
