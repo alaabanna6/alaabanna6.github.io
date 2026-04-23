@@ -1,0 +1,174 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1900 280" width="1900" height="280" font-family="'Montserrat', 'Segoe UI', Arial, sans-serif">
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#6B7280"/>
+    </marker>
+    <marker id="arr-up" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#6B7280"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1900" height="280" rx="14" fill="#18181B"/>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- ARROWS — drawn before shapes so shapes sit on top  -->
+  <!-- ═══════════════════════════════════════════════════ -->
+
+  <!-- Start → Opens StageUp -->
+  <line x1="107" y1="172" x2="125" y2="172" stroke="#6B7280" stroke-width="1.8" marker-end="url(#arr)"/>
+
+  <!-- Opens StageUp → Has Account? -->
+  <line x1="267" y1="172" x2="286" y2="172" stroke="#6B7280" stroke-width="1.8" marker-end="url(#arr)"/>
+
+  <!-- Has Account? → User Logs In (Yes, right) -->
+  <line x1="422" y1="172" x2="440" y2="172" stroke="#6B7280" stroke-width="1.8" marker-end="url(#arr)"/>
+  <!-- Yes label -->
+  <text x="428" y="167" font-size="11" fill="#9CA3AF">Yes</text>
+
+  <!-- Has Account? → User Signs Up (No, up) -->
+  <line x1="354" y1="139" x2="354" y2="106" stroke="#6B7280" stroke-width="1.8"/>
+  <line x1="354" y1="106" x2="360" y2="106" stroke="#6B7280" stroke-width="1.8" marker-end="url(#arr)"/>
+  <!-- No label -->
+  <text x="359" y="102" font-size="11" fill="#9CA3AF">No</text>
+
+  <!-- User Signs Up → User Logs In (rejoin) -->
+  <line x1="492" y1="106" x2="510" y2="106" stroke="#6B7280" stroke-width="1.8"/>
+  <line x1="510" y1="106" x2="510" y2="155" stroke="#6B7280" stroke-width="1.8" marker-end="url(#arr)"/>
+
+  <!-- User Logs In → Onboarding -->
+  <line x1="562" y1="172" x2="580" y2="172" stroke="#6B7280" stroke-width="1.8" marker-end="url(#arr)"/>
+
+  <!-- Onboarding → Sets Goal -->
+  <line x1="760" y1="172" x2="778" y2="172" stroke="#6B7280" stroke-width="1.8" marker-end="url(#arr)"/>
+
+  <!-- Sets Goal → Connects Platform -->
+  <line x1="928" y1="172" x2="946" y2="172" stroke="#6B7280" stroke-width="1.8" marker-end="url(#arr)"/>
+
+  <!-- Connects Platform → Connection OK? -->
+  <line x1="1098" y1="172" x2="1108" y2="172" stroke="#6B7280" stroke-width="1.8" marker-end="url(#arr)"/>
+
+  <!-- Connection OK? → System Syncs (Yes, right) -->
+  <line x1="1245" y1="172" x2="1263" y2="172" stroke="#6B7280" stroke-width="1.8" marker-end="url(#arr)"/>
+  <!-- Yes label -->
+  <text x="1248" y="167" font-size="11" fill="#9CA3AF">Yes</text>
+
+  <!-- Connection OK? → Error Message (No, up) -->
+  <line x1="1176" y1="140" x2="1176" y2="106" stroke="#6B7280" stroke-width="1.8"/>
+  <line x1="1176" y1="106" x2="1190" y2="106" stroke="#6B7280" stroke-width="1.8" marker-end="url(#arr)"/>
+  <!-- No label -->
+  <text x="1180" y="102" font-size="11" fill="#9CA3AF">No</text>
+
+  <!-- Error Message → User Retries -->
+  <line x1="1332" y1="106" x2="1350" y2="106" stroke="#6B7280" stroke-width="1.8" marker-end="url(#arr)"/>
+
+  <!-- User Retries loop back to Connection OK? (loop over top) -->
+  <polyline points="1488,106 1510,106 1510,46 1176,46 1176,108" stroke="#6B7280" stroke-width="1.8" fill="none" marker-end="url(#arr)"/>
+  <!-- Retry label -->
+  <text x="1320" y="42" font-size="11" fill="#9CA3AF">Retry</text>
+
+  <!-- System Syncs → Skill Map -->
+  <line x1="1415" y1="172" x2="1433" y2="172" stroke="#6B7280" stroke-width="1.8" marker-end="url(#arr)"/>
+
+  <!-- Skill Map → Redirected -->
+  <line x1="1565" y1="172" x2="1583" y2="172" stroke="#6B7280" stroke-width="1.8" marker-end="url(#arr)"/>
+
+  <!-- Redirected → End -->
+  <line x1="1740" y1="172" x2="1757" y2="172" stroke="#6B7280" stroke-width="1.8" marker-end="url(#arr)"/>
+
+  <!-- ═══════════ -->
+  <!-- SHAPES      -->
+  <!-- ═══════════ -->
+
+  <!-- Start oval -->
+  <ellipse cx="68" cy="172" rx="46" ry="26" fill="#15803D"/>
+  <text x="68" y="176" text-anchor="middle" font-size="12" font-weight="700" fill="#F9FAFB">Start</text>
+
+  <!-- Opens StageUp -->
+  <rect x="125" y="150" width="142" height="44" rx="8" fill="#0F766E"/>
+  <text x="196" y="170" text-anchor="middle" font-size="11.5" font-weight="600" fill="#F9FAFB">Opens</text>
+  <text x="196" y="184" text-anchor="middle" font-size="11.5" font-weight="600" fill="#F9FAFB">StageUp</text>
+
+  <!-- Has Account? diamond -->
+  <!-- cx=354, cy=172; half-w=68, half-h=38 -->
+  <polygon points="354,134 422,172 354,210 286,172" fill="#1D4ED8"/>
+  <text x="354" y="169" text-anchor="middle" font-size="10.5" font-weight="600" fill="#F9FAFB">Has</text>
+  <text x="354" y="182" text-anchor="middle" font-size="10.5" font-weight="600" fill="#F9FAFB">Account?</text>
+
+  <!-- User Signs Up (upper branch) -->
+  <rect x="360" y="84" width="132" height="44" rx="8" fill="#0F766E"/>
+  <text x="426" y="104" text-anchor="middle" font-size="11.5" font-weight="600" fill="#F9FAFB">User</text>
+  <text x="426" y="118" text-anchor="middle" font-size="11.5" font-weight="600" fill="#F9FAFB">Signs Up</text>
+
+  <!-- User Logs In -->
+  <rect x="440" y="150" width="122" height="44" rx="8" fill="#0F766E"/>
+  <text x="501" y="170" text-anchor="middle" font-size="11.5" font-weight="600" fill="#F9FAFB">User</text>
+  <text x="501" y="184" text-anchor="middle" font-size="11.5" font-weight="600" fill="#F9FAFB">Logs In</text>
+
+  <!-- Onboarding (3 lines) -->
+  <rect x="580" y="143" width="180" height="58" rx="8" fill="#0F766E"/>
+  <text x="670" y="162" text-anchor="middle" font-size="11" font-weight="600" fill="#F9FAFB">Completes</text>
+  <text x="670" y="175" text-anchor="middle" font-size="11" font-weight="600" fill="#F9FAFB">Onboarding</text>
+  <text x="670" y="188" text-anchor="middle" font-size="10" fill="#A7F3D0">(goals, role, level)</text>
+
+  <!-- Sets Goal -->
+  <rect x="778" y="150" width="150" height="44" rx="8" fill="#0F766E"/>
+  <text x="853" y="170" text-anchor="middle" font-size="11.5" font-weight="600" fill="#F9FAFB">Sets</text>
+  <text x="853" y="184" text-anchor="middle" font-size="11.5" font-weight="600" fill="#F9FAFB">Learning Goal</text>
+
+  <!-- Connects Platform -->
+  <rect x="946" y="143" width="152" height="58" rx="8" fill="#0F766E"/>
+  <text x="1022" y="162" text-anchor="middle" font-size="11" font-weight="600" fill="#F9FAFB">Connects</text>
+  <text x="1022" y="175" text-anchor="middle" font-size="11" font-weight="600" fill="#F9FAFB">Learning</text>
+  <text x="1022" y="188" text-anchor="middle" font-size="11" font-weight="600" fill="#F9FAFB">Platform</text>
+
+  <!-- Connection OK? diamond -->
+  <!-- cx=1176, cy=172; half-w=69, half-h=38 -->
+  <polygon points="1176,134 1245,172 1176,210 1107,172" fill="#1D4ED8"/>
+  <text x="1176" y="169" text-anchor="middle" font-size="10" font-weight="600" fill="#F9FAFB">Connection</text>
+  <text x="1176" y="182" text-anchor="middle" font-size="10" font-weight="600" fill="#F9FAFB">OK?</text>
+
+  <!-- Error Message (upper) -->
+  <rect x="1190" y="84" width="142" height="44" rx="8" fill="#7F1D1D"/>
+  <text x="1261" y="104" text-anchor="middle" font-size="11.5" font-weight="600" fill="#FECACA">Error</text>
+  <text x="1261" y="118" text-anchor="middle" font-size="11.5" font-weight="600" fill="#FECACA">Message</text>
+
+  <!-- User Retries (upper) -->
+  <rect x="1350" y="84" width="138" height="44" rx="8" fill="#0F766E"/>
+  <text x="1419" y="104" text-anchor="middle" font-size="11.5" font-weight="600" fill="#F9FAFB">User</text>
+  <text x="1419" y="118" text-anchor="middle" font-size="11.5" font-weight="600" fill="#F9FAFB">Retries</text>
+
+  <!-- System Syncs -->
+  <rect x="1263" y="150" width="152" height="44" rx="8" fill="#0F766E"/>
+  <text x="1339" y="170" text-anchor="middle" font-size="11.5" font-weight="600" fill="#F9FAFB">System</text>
+  <text x="1339" y="184" text-anchor="middle" font-size="11.5" font-weight="600" fill="#F9FAFB">Syncs Data</text>
+
+  <!-- Skill Map -->
+  <rect x="1433" y="150" width="132" height="44" rx="8" fill="#0F766E"/>
+  <text x="1499" y="170" text-anchor="middle" font-size="11.5" font-weight="600" fill="#F9FAFB">Views Skill</text>
+  <text x="1499" y="184" text-anchor="middle" font-size="11.5" font-weight="600" fill="#F9FAFB">Map</text>
+
+  <!-- Redirected to Dashboard (3 lines) -->
+  <rect x="1583" y="143" width="157" height="58" rx="8" fill="#0F766E"/>
+  <text x="1661" y="162" text-anchor="middle" font-size="11" font-weight="600" fill="#F9FAFB">Redirected</text>
+  <text x="1661" y="175" text-anchor="middle" font-size="11" font-weight="600" fill="#F9FAFB">to</text>
+  <text x="1661" y="188" text-anchor="middle" font-size="11" font-weight="600" fill="#F9FAFB">Dashboard</text>
+
+  <!-- End oval -->
+  <ellipse cx="1820" cy="172" rx="62" ry="30" fill="#15803D"/>
+  <text x="1820" y="176" text-anchor="middle" font-size="12" font-weight="700" fill="#F9FAFB">End</text>
+
+  <!-- ═══════════════════════════════════ -->
+  <!-- LEGEND                              -->
+  <!-- ═══════════════════════════════════ -->
+  <g transform="translate(30, 238)">
+    <rect x="0" y="0" width="12" height="12" rx="3" fill="#15803D"/>
+    <text x="17" y="10" font-size="10" fill="#9CA3AF">Start / End</text>
+    <rect x="100" y="0" width="12" height="12" rx="3" fill="#0F766E"/>
+    <text x="117" y="10" font-size="10" fill="#9CA3AF">Process</text>
+    <polygon points="195,6 207,0 219,6 207,12" fill="#1D4ED8"/>
+    <text x="225" y="10" font-size="10" fill="#9CA3AF">Decision</text>
+    <rect x="310" y="0" width="12" height="12" rx="3" fill="#7F1D1D"/>
+    <text x="327" y="10" font-size="10" fill="#9CA3AF">Error State</text>
+  </g>
+</svg>
