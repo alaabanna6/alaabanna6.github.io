@@ -225,9 +225,14 @@
           <p class="text-sm text-secondary leading-relaxed">Compares current skills against a chosen career goal and highlights what is missing.</p>
         </div>
 
-        <div class="p-6 rounded-2xl bg-white border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)] sm:col-span-2 lg:col-span-1">
+        <div class="p-6 rounded-2xl bg-white border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
           <h3 class="text-sm font-700 text-primary mb-2">Personalized Recommendations</h3>
           <p class="text-sm text-secondary leading-relaxed">Suggests the next course or learning path based on where the user is and where they want to go.</p>
+        </div>
+
+        <div class="p-6 rounded-2xl bg-white border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
+          <h3 class="text-sm font-700 text-primary mb-2">Shareable Skill Profile</h3>
+          <p class="text-sm text-secondary leading-relaxed">Consolidates all earned skills into a single profile users can share with employers — turning fragmented learning into visible, provable growth.</p>
         </div>
 
       </div>
@@ -410,12 +415,15 @@
         <p class="text-sm text-secondary leading-relaxed mb-4">
           StageUp solves this by converting all learning activity into skill tags weighted by engagement depth. Completing a full course sends a strong signal. Watching part of a video sends a lighter signal. Courses that include hands-on projects carry a higher weight than passive video content.
         </p>
-        <p class="text-sm text-secondary leading-relaxed mb-4">
-          This creates a dynamic skill profile that reflects what users actually know, not just what they started or clicked on.
-        </p>
-        <p class="text-sm text-secondary leading-relaxed font-600 text-primary">
-          This was the most important systems design decision in the entire project. Without solving this, the rest of the product could not exist.
-        </p>
+        <div class="read-more-extra">
+          <p class="text-sm text-secondary leading-relaxed mb-4">
+            This creates a dynamic skill profile that reflects what users actually know, not just what they started or clicked on.
+          </p>
+          <p class="text-sm text-secondary leading-relaxed font-600 text-primary">
+            This was the most important systems design decision in the entire project. Without solving this, the rest of the product could not exist.
+          </p>
+        </div>
+        <button class="text-xs font-600 text-accent hover:underline cursor-pointer mt-2 block" onclick="toggleReadMore(this)">Read more</button>
       </div>
 
     </div>
@@ -430,7 +438,7 @@
         <p class="text-xs font-600 tracking-[0.25em] uppercase text-accent mb-3">Structure</p>
         <h2 class="text-3xl md:text-4xl font-700 tracking-tight mb-4">Information Architecture</h2>
         <p class="text-secondary text-base leading-relaxed max-w-3xl">
-          With the core data challenge solved at the systems level, I could map out the full product structure. The IA separates the pre-login marketing and auth experience from the post-login product experience.
+          With Sarah's journey mapped and the core data challenge solved, I could define the full product structure. The IA reflects exactly how a user like Sarah moves through the product — from first landing on the app to connecting her learning platforms and reaching her personalised dashboard. It separates the pre-login marketing and auth experience from the post-login product experience.
         </p>
       </div>
 
@@ -512,6 +520,10 @@
           </div>
 
         </div>
+
+        <p class="text-secondary text-base leading-relaxed max-w-3xl mb-6">
+          To measure usability, I ran a <strong class="text-primary font-700">UMUX-LITE</strong> questionnaire with all 5 participants after testing. The score came back at <strong class="text-primary font-700">88.33 — a Grade A result</strong> — confirming the design was performing well despite the two issues identified. Those issues became the direct brief for the high-fidelity redesign.
+        </p>
 
         <!-- UMUX images -->
         <div class="mb-4">
@@ -635,8 +647,13 @@
             <img src="" alt="Skill Growth Visualization" class="w-full h-full object-cover" />
           </div>
           <div class="p-6">
+            <p class="text-xs font-600 text-accent uppercase tracking-widest mb-2">From Research</p>
             <h3 class="text-sm font-700 text-primary mb-2">Skill Growth Visualization</h3>
-            <p class="text-sm text-secondary leading-relaxed">Progress needed to feel real and motivating. I used an 8-week chart so users can see momentum building over time, not just a static number.</p>
+            <p class="text-sm text-secondary leading-relaxed">Research showed visual progress motivates learners far better than text summaries alone. I used an 8-week chart so users see momentum building over time.</p>
+            <div class="read-more-extra">
+              <p class="text-sm text-secondary leading-relaxed mt-2">Platforms with visual tracking consistently see higher completion rates and daily engagement. A static number is easy to ignore — a chart that grows is not.</p>
+            </div>
+            <button class="text-xs font-600 text-accent hover:underline cursor-pointer mt-3 block" onclick="toggleReadMore(this)">Read more</button>
           </div>
         </div>
 
@@ -645,8 +662,13 @@
             <img src="" alt="Career Goal as the North Star" class="w-full h-full object-cover" />
           </div>
           <div class="p-6">
+            <p class="text-xs font-600 text-accent uppercase tracking-widest mb-2">From Research</p>
             <h3 class="text-sm font-700 text-primary mb-2">Career Goal as the North Star</h3>
-            <p class="text-sm text-secondary leading-relaxed">Every screen connects back to the user's career goal. The dashboard always shows how far they are and what they still need to learn.</p>
+            <p class="text-sm text-secondary leading-relaxed">Research confirmed goal-driven personalisation keeps users engaged longer than generic suggestions. Every screen connects back to the user's career goal.</p>
+            <div class="read-more-extra">
+              <p class="text-sm text-secondary leading-relaxed mt-2">The dashboard always shows how far they are and what is still missing. This turns course completion from a finish line into a stepping stone.</p>
+            </div>
+            <button class="text-xs font-600 text-accent hover:underline cursor-pointer mt-3 block" onclick="toggleReadMore(this)">Read more</button>
           </div>
         </div>
 
@@ -655,8 +677,13 @@
             <img src="" alt="Mobile First" class="w-full h-full object-cover" />
           </div>
           <div class="p-6">
+            <p class="text-xs font-600 text-accent uppercase tracking-widest mb-2">From Research</p>
             <h3 class="text-sm font-700 text-primary mb-2">Mobile First</h3>
-            <p class="text-sm text-secondary leading-relaxed">Most users check progress quickly on mobile. The most important information appears first without any scrolling needed.</p>
+            <p class="text-sm text-secondary leading-relaxed">Research found mobile users need information that is scannable and immediately meaningful. The most important info appears first — no scrolling needed.</p>
+            <div class="read-more-extra">
+              <p class="text-sm text-secondary leading-relaxed mt-2">Most learners check progress in short breaks or during commutes. Complex, data-heavy screens cause frustration. The first screen answers one question instantly: how am I doing?</p>
+            </div>
+            <button class="text-xs font-600 text-accent hover:underline cursor-pointer mt-3 block" onclick="toggleReadMore(this)">Read more</button>
           </div>
         </div>
 
@@ -665,8 +692,13 @@
             <img src="" alt="Onboarding as a Trust Builder" class="w-full h-full object-cover" />
           </div>
           <div class="p-6">
+            <p class="text-xs font-600 text-accent uppercase tracking-widest mb-2">From Research</p>
             <h3 class="text-sm font-700 text-primary mb-2">Onboarding as a Trust Builder</h3>
-            <p class="text-sm text-secondary leading-relaxed">I designed onboarding as a guided 3-step flow so users feel confident and understand the product before they reach the dashboard.</p>
+            <p class="text-sm text-secondary leading-relaxed">Research showed guided onboarding reduces drop-off significantly. I designed a 3-step flow so users understand the product before reaching the dashboard.</p>
+            <div class="read-more-extra">
+              <p class="text-sm text-secondary leading-relaxed mt-2">Platforms that drop users directly into a course library see higher abandonment. A structured first experience that communicates value leads to stronger long-term retention.</p>
+            </div>
+            <button class="text-xs font-600 text-accent hover:underline cursor-pointer mt-3 block" onclick="toggleReadMore(this)">Read more</button>
           </div>
         </div>
 
@@ -687,12 +719,17 @@
       <p class="reveal text-surface/70 text-base leading-relaxed max-w-3xl mb-4">
         StageUp taught me that the hardest design challenges are structural, not visual. The biggest problem was not how the product looked. It was how to create a meaningful system from learning data that was never designed to work together.
       </p>
-      <p class="reveal text-surface/70 text-base leading-relaxed max-w-3xl mb-4">
-        Reframing the problem was the most important decision I made. Users do not want to simply sync their learning platforms. They want to become UX designers, get promoted, or transition into new careers. By focusing on career goals rather than course completion, StageUp transforms fragmented learning activity into a clear path for growth.
-      </p>
-      <p class="reveal text-surface/70 text-base leading-relaxed max-w-3xl mb-12">
-        Designing a long term feedback loop where the product becomes more useful the more it is used was the most valuable lesson from this project.
-      </p>
+      <div class="reveal max-w-3xl mb-12">
+        <div class="read-more-extra">
+          <p class="text-surface/70 text-base leading-relaxed mb-4">
+            Reframing the problem was the most important decision I made. Users do not want to simply sync their learning platforms. They want to become UX designers, get promoted, or transition into new careers. By focusing on career goals rather than course completion, StageUp transforms fragmented learning activity into a clear path for growth.
+          </p>
+          <p class="text-surface/70 text-base leading-relaxed">
+            Designing a long term feedback loop where the product becomes more useful the more it is used was the most valuable lesson from this project.
+          </p>
+        </div>
+        <button class="text-xs font-600 text-accent hover:underline cursor-pointer mt-2 block" onclick="toggleReadMore(this)">Read more</button>
+      </div>
 
       <div class="reveal">
         <h3 class="text-sm font-700 text-surface uppercase tracking-widest mb-6">What I Would Build Next</h3>
