@@ -274,73 +274,103 @@
       </div>
 
       <!-- Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="flex flex-col gap-6">
 
         <!-- Card 1 — RBC Mobile App -->
-        <a href="rbc.html" data-category="product-design" class="project-card block rounded-2xl overflow-hidden border border-border bg-surface hover:shadow-xl hover:shadow-black/5 transition-all duration-300">
-          <div class="relative bg-[#EFF6FF] h-64 flex items-center justify-center p-6 overflow-hidden">
+        <a href="rbc.html" data-category="product-design" class="project-card flex flex-col sm:flex-row rounded-2xl overflow-hidden border border-border bg-surface hover:shadow-xl hover:shadow-black/5 transition-all duration-300">
+          <div class="relative bg-[#EFF6FF] sm:w-2/5 h-64 sm:h-auto flex items-center justify-center p-6 overflow-hidden shrink-0">
             <img src="img/rbc1.jpeg" alt="RBC Mobile App" class="max-h-full max-w-full object-contain rounded-2xl drop-shadow-lg" />
             <div class="overlay absolute inset-0 bg-primary/70 flex items-end p-6">
               <span class="text-surface text-sm font-500">View Project →</span>
             </div>
           </div>
-          <div class="p-6">
+          <div class="p-8 flex flex-col justify-center">
             <p class="text-xs font-600 tracking-widest uppercase text-accent mb-2">Product Design</p>
-            <h3 class="text-xl font-700 text-primary">RBC Mobile App</h3>
-            <p class="text-sm font-400 text-secondary mt-2 leading-relaxed">
-              Redesigning mobile banking for one of Canada's largest financial institutions.
-            </p>
+            <h3 class="text-2xl font-700 text-primary mb-3">RBC Mobile App</h3>
+            <p class="text-sm font-400 text-secondary leading-relaxed">Redesigning mobile banking for one of Canada's largest financial institutions.</p>
+            <div class="mt-4 flex flex-wrap gap-2">
+              <span class="text-xs font-500 px-3 py-1 rounded-full bg-[#EFF6FF] text-blue-600 border border-blue-100">UX Research</span>
+              <span class="text-xs font-500 px-3 py-1 rounded-full bg-[#EFF6FF] text-blue-600 border border-blue-100">Product Design</span>
+              <span class="text-xs font-500 px-3 py-1 rounded-full bg-[#EFF6FF] text-blue-600 border border-blue-100">Mobile</span>
+            </div>
           </div>
         </a>
 
         <!-- Card 2 — StageUP -->
-        <a href="stageup.html" data-category="product-design" class="project-card block rounded-2xl overflow-hidden border border-border bg-surface hover:shadow-xl hover:shadow-black/5 transition-all duration-300">
-          <div class="relative bg-[#F0FDF4] h-64 flex items-center justify-center p-6 overflow-hidden">
+        <a href="stageup.html" data-category="product-design" class="project-card flex flex-col sm:flex-row rounded-2xl overflow-hidden border border-border bg-surface hover:shadow-xl hover:shadow-black/5 transition-all duration-300">
+          <div class="relative bg-[#F0FDF4] sm:w-2/5 h-64 sm:h-auto flex items-center justify-center p-6 overflow-hidden shrink-0">
             <img src="img/stageup.jpeg" alt="StageUp Mobile App" class="max-h-full max-w-full object-contain rounded-2xl drop-shadow-lg" />
             <div class="overlay absolute inset-0 bg-primary/70 flex items-end p-6">
               <span class="text-surface text-sm font-500">View Project →</span>
             </div>
           </div>
-          <div class="p-6">
+          <div class="p-8 flex flex-col justify-center">
             <p class="text-xs font-600 tracking-widest uppercase text-accent mb-2">Product Design</p>
-            <h3 class="text-xl font-700 text-primary">StageUP Mobile App</h3>
-            <p class="text-sm font-400 text-secondary mt-2 leading-relaxed">
-              A platform helping emerging artists manage and grow their careers.
-            </p>
+            <h3 class="text-2xl font-700 text-primary mb-3">StageUp Mobile App</h3>
+            <p class="text-sm font-400 text-secondary leading-relaxed">A product that unifies fragmented learning across platforms into one clear career growth experience.</p>
+            <div class="mt-4 flex flex-wrap gap-2">
+              <span class="text-xs font-500 px-3 py-1 rounded-full bg-[#F0FDF4] text-accent border border-green-100">UX Research</span>
+              <span class="text-xs font-500 px-3 py-1 rounded-full bg-[#F0FDF4] text-accent border border-green-100">Product Design</span>
+              <span class="text-xs font-500 px-3 py-1 rounded-full bg-[#F0FDF4] text-accent border border-green-100">Mobile</span>
+            </div>
           </div>
         </a>
 
-        <!-- Card 3 — Alexa "i" -->
-        <a href="alexa-i.html" data-category="ai-creative" class="project-card block rounded-2xl overflow-hidden border border-border bg-surface hover:shadow-xl hover:shadow-black/5 transition-all duration-300 hidden">
-          <div class="relative bg-[#F4F4F5] h-64 flex items-center justify-center p-6 overflow-hidden">
+        <!-- Card 3 — Monstrum (Coming Soon) -->
+        <div data-category="product-design" class="project-card flex flex-col sm:flex-row rounded-2xl overflow-hidden border border-border bg-surface opacity-80 cursor-default">
+          <div class="relative bg-[#0A0A0A] sm:w-2/5 h-64 sm:h-auto flex items-center justify-center p-6 overflow-hidden shrink-0">
+            <img src="img/monstrum.jpeg" alt="Monstrum" class="max-h-full max-w-full object-contain rounded-2xl drop-shadow-lg" />
+            <div class="absolute top-4 left-4">
+              <span class="inline-flex items-center gap-1.5 text-xs font-700 px-3 py-1.5 rounded-full bg-primary text-surface tracking-widest uppercase">
+                <span class="w-1.5 h-1.5 rounded-full bg-accent animate-pulse inline-block"></span>
+                Coming Soon
+              </span>
+            </div>
+          </div>
+          <div class="p-8 flex flex-col justify-center">
+            <p class="text-xs font-600 tracking-widest uppercase text-accent mb-2">AI-Powered Content Optimization · Internal SaaS</p>
+            <h3 class="text-2xl font-700 text-primary mb-3">Monstrum</h3>
+            <p class="text-sm font-400 text-secondary leading-relaxed">Designing an AI tool that helps a design agency optimize content for SEO, AEO, and GEO — from research to actionable recommendations. Leveraging agentic AI workflows including Claude Code and Figma MCP to accelerate research, iteration, and design decisions.</p>
+            <div class="mt-4 flex flex-wrap gap-2 mb-6">
+              <span class="text-xs font-500 px-3 py-1 rounded-full bg-surface text-secondary border border-border">Lead Product Designer</span>
+              <span class="text-xs font-500 px-3 py-1 rounded-full bg-surface text-secondary border border-border">Figma</span>
+              <span class="text-xs font-500 px-3 py-1 rounded-full bg-surface text-secondary border border-border">Claude Code</span>
+              <span class="text-xs font-500 px-3 py-1 rounded-full bg-surface text-secondary border border-border">AI Workflows</span>
+            </div>
+            <a href="https://www.monstrum.digital/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-sm font-600 text-accent hover:underline cursor-pointer w-fit">
+              Visit monstrum.digital
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor"><path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z"/><path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Card 4 — Alexa "i" -->
+        <a href="alexa-i.html" data-category="ai-creative" class="project-card flex flex-col sm:flex-row rounded-2xl overflow-hidden border border-border bg-surface hover:shadow-xl hover:shadow-black/5 transition-all duration-300 hidden">
+          <div class="relative bg-[#F4F4F5] sm:w-2/5 h-64 sm:h-auto flex items-center justify-center p-6 overflow-hidden shrink-0">
             <img src="img/alexa.jpeg" alt="Alexa i" class="max-h-full max-w-full object-contain rounded-2xl drop-shadow-lg" />
             <div class="overlay absolute inset-0 bg-primary/70 flex items-end p-6">
               <span class="text-surface text-sm font-500">View Project →</span>
             </div>
           </div>
-          <div class="p-6">
+          <div class="p-8 flex flex-col justify-center">
             <p class="text-xs font-600 tracking-widest uppercase text-accent mb-2">AI &amp; Media</p>
-            <h3 class="text-xl font-700 text-primary">Alexa "i"</h3>
-            <p class="text-sm font-400 text-secondary mt-2 leading-relaxed">
-              Exploring the intersection of conversational AI and immersive media experiences.
-            </p>
+            <h3 class="text-2xl font-700 text-primary mb-3">Alexa "i"</h3>
+            <p class="text-sm font-400 text-secondary leading-relaxed">Exploring the intersection of conversational AI and immersive media experiences.</p>
           </div>
         </a>
 
-        <!-- Card 4 — Red Team Project -->
-        <a href="red-team.html" data-category="ai-creative" class="project-card block rounded-2xl overflow-hidden border border-border bg-surface hover:shadow-xl hover:shadow-black/5 transition-all duration-300 hidden">
-          <div class="relative bg-[#FFF1F2] h-64 flex items-center justify-center p-6 overflow-hidden">
+        <!-- Card 5 — Red Team Project -->
+        <a href="red-team.html" data-category="ai-creative" class="project-card flex flex-col sm:flex-row rounded-2xl overflow-hidden border border-border bg-surface hover:shadow-xl hover:shadow-black/5 transition-all duration-300 hidden">
+          <div class="relative bg-[#FFF1F2] sm:w-2/5 h-64 sm:h-auto flex items-center justify-center p-6 overflow-hidden shrink-0">
             <img src="img/redteam.jpeg" alt="Red Team Project" class="max-h-full max-w-full object-contain rounded-2xl drop-shadow-lg" />
             <div class="overlay absolute inset-0 bg-primary/70 flex items-end p-6">
               <span class="text-surface text-sm font-500">View Project →</span>
             </div>
           </div>
-          <div class="p-6">
+          <div class="p-8 flex flex-col justify-center">
             <p class="text-xs font-600 tracking-widest uppercase text-accent mb-2">AI &amp; Media</p>
-            <h3 class="text-xl font-700 text-primary">Red Team Project</h3>
-            <p class="text-sm font-400 text-secondary mt-2 leading-relaxed">
-              Critically examining AI systems through a design and media lens.
-            </p>
+            <h3 class="text-2xl font-700 text-primary mb-3">Red Team Project</h3>
+            <p class="text-sm font-400 text-secondary leading-relaxed">Critically examining AI systems through a design and media lens.</p>
           </div>
         </a>
 
