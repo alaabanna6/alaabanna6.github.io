@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Monstrum — Alaa El Banna</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Montserrat', 'sans-serif'] },
+          colors: {
+            primary:   '#18181B',
+            secondary: '#3F3F46',
+            accent:    '#16A34A',
+            surface:   '#FAFAFA',
+            border:    '#E4E4E7',
+          },
+        },
+      },
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
+
+  <style>
+    .reveal { opacity:0; transform:translateY(20px); transition:opacity .6s ease,transform .6s ease; }
+    .reveal.visible { opacity:1; transform:translateY(0); }
+    .nav-link { position:relative; }
+    .nav-link::after { content:''; position:absolute; bottom:-2px; left:0; width:0; height:1px; background:#18181B; transition:width .25s ease; }
+    .nav-link:hover::after { width:100%; }
+  </style>
+</head>
+
+<body class="bg-surface text-primary font-sans antialiased overflow-x-hidden">
+
+  <!-- ─── NAVBAR ─────────────────────────────────────────────────────────── -->
+  <header class="fixed top-0 inset-x-0 z-50 bg-surface/90 backdrop-blur-sm border-b border-border">
+    <nav class="max-w-6xl mx-auto px-6 lg:px-8 h-16 flex items-center justify-between">
+      <a href="index.html" class="text-sm font-700 tracking-widest uppercase text-primary">Alaa El Banna</a>
+      <ul class="hidden md:flex items-center gap-8 text-sm font-500 text-secondary">
+        <li><a href="index.html#home"     class="nav-link hover:text-primary transition-colors duration-200">Home</a></li>
+        <li><a href="index.html#projects" class="nav-link hover:text-primary transition-colors duration-200">Projects</a></li>
+        <li><a href="index.html#about"    class="nav-link hover:text-primary transition-colors duration-200">About</a></li>
+        <li><a href="index.html#contact"  class="nav-link hover:text-primary transition-colors duration-200">Contact</a></li>
+      </ul>
+      <button id="menu-toggle" class="md:hidden flex flex-col gap-1.5 cursor-pointer p-2 -mr-2" aria-label="Toggle navigation">
+        <span class="block w-6 h-0.5 bg-primary"></span>
+        <span class="block w-6 h-0.5 bg-primary"></span>
+        <span class="block w-4 h-0.5 bg-primary"></span>
+      </button>
+    </nav>
+    <div id="mobile-menu" class="hidden md:hidden border-t border-border bg-surface/95 backdrop-blur-sm">
+      <ul class="flex flex-col px-6 py-4 gap-4 text-sm font-500 text-secondary">
+        <li><a href="index.html#home"     onclick="closeMobileMenu()">Home</a></li>
+        <li><a href="index.html#projects" onclick="closeMobileMenu()">Projects</a></li>
+        <li><a href="index.html#about"    onclick="closeMobileMenu()">About</a></li>
+        <li><a href="index.html#contact"  onclick="closeMobileMenu()">Contact</a></li>
+      </ul>
+    </div>
+  </header>
+
+
+  <!-- ─── HERO ───────────────────────────────────────────────────────────── -->
+  <section class="pt-32 pb-16 md:pt-40 md:pb-24 bg-white border-b border-border">
+    <div class="max-w-6xl mx-auto px-6 lg:px-8">
+
+      <div class="reveal flex items-center gap-2 text-xs text-secondary/60 font-500 mb-8">
+        <a href="index.html#projects" class="hover:text-accent transition-colors cursor-pointer">Projects</a>
+        <span>/</span>
+        <span class="text-primary">Monstrum</span>
+      </div>
+
+      <div class="reveal flex items-center gap-3 mb-6">
+        <p class="text-xs font-600 tracking-[0.25em] uppercase text-accent">UX / UI · Product Design</p>
+        <span class="inline-flex items-center gap-1.5 text-xs font-700 px-3 py-1 rounded-full bg-primary text-surface tracking-widest uppercase">
+          <span class="w-1.5 h-1.5 rounded-full bg-accent animate-pulse inline-block"></span>
+          Coming Soon
+        </span>
+      </div>
+
+      <h1 class="reveal text-5xl sm:text-6xl md:text-7xl font-800 leading-tight tracking-tight text-primary max-w-4xl" style="transition-delay:.1s">
+        Monstrum
+      </h1>
+
+      <p class="reveal text-lg md:text-xl text-secondary font-400 mt-6 max-w-2xl leading-relaxed" style="transition-delay:.2s">
+        AI-Powered Content Optimization · Internal SaaS
+      </p>
+
+      <div class="reveal grid grid-cols-2 sm:grid-cols-4 gap-6 mt-12 pt-10 border-t border-border" style="transition-delay:.3s">
+        <div>
+          <p class="text-xs font-600 uppercase tracking-widest text-secondary/50 mb-1">My Role</p>
+          <p class="text-sm font-600 text-primary">Lead Product Designer</p>
+        </div>
+        <div>
+          <p class="text-xs font-600 uppercase tracking-widest text-secondary/50 mb-1">Tools</p>
+          <p class="text-sm font-600 text-primary">Figma, Claude Code, Figma MCP, AI Workflows</p>
+        </div>
+        <div>
+          <p class="text-xs font-600 uppercase tracking-widest text-secondary/50 mb-1">Platform</p>
+          <p class="text-sm font-600 text-primary">Internal SaaS</p>
+        </div>
+        <div>
+          <p class="text-xs font-600 uppercase tracking-widest text-secondary/50 mb-1">Company</p>
+          <a href="https://www.monstrum.digital/" target="_blank" rel="noopener noreferrer" class="text-sm font-600 text-accent hover:underline inline-flex items-center gap-1">
+            monstrum.digital
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" viewBox="0 0 20 20" fill="currentColor"><path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z"/><path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Hero image -->
+  <div class="w-full bg-[#FFF1F2] flex items-center justify-center py-14 px-6">
+    <img src="img/monstrum.jpeg" alt="Monstrum" class="w-full max-w-4xl h-auto object-contain rounded-2xl shadow-[0_8px_48px_-4px_rgba(0,0,0,0.10)]" />
+  </div>
+
+
+  <!-- ─── PROJECT OVERVIEW ──────────────────────────────────────────────── -->
+  <section class="py-20 md:py-28 border-b border-border">
+    <div class="max-w-6xl mx-auto px-6 lg:px-8">
+      <div class="max-w-3xl">
+        <p class="reveal text-xs font-600 tracking-[0.25em] uppercase text-accent mb-3">Overview</p>
+        <h2 class="reveal text-3xl md:text-4xl font-700 tracking-tight mb-8">Project Overview</h2>
+        <p class="reveal text-secondary text-base leading-relaxed mb-4">
+          Monstrum is a design agency that needed an internal AI-powered tool to help their team optimize content across SEO, AEO, and GEO. The goal was to move from manual, time-consuming research to a streamlined workflow that surfaces actionable recommendations fast.
+        </p>
+        <p class="reveal text-secondary text-base leading-relaxed mb-4">
+          As Lead Product Designer, I am designing the full product experience from research to interface. This project leverages agentic AI workflows, including Claude Code and Figma MCP, to accelerate research, iteration, and design decisions.
+        </p>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ─── WHAT I'M DESIGNING ───────────────────────────────────────────── -->
+  <section class="py-20 md:py-28 bg-white border-b border-border">
+    <div class="max-w-6xl mx-auto px-6 lg:px-8">
+
+      <div class="reveal mb-10">
+        <p class="text-xs font-600 tracking-[0.25em] uppercase text-accent mb-3">Focus Areas</p>
+        <h2 class="text-3xl md:text-4xl font-700 tracking-tight">What I'm Designing</h2>
+      </div>
+
+      <div class="reveal grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+
+        <div class="p-6 rounded-2xl bg-white border border-red-100 shadow-[0_2px_12px_rgba(239,68,68,0.05)]">
+          <h3 class="text-sm font-700 text-primary mb-2">Content Research Dashboard</h3>
+          <p class="text-sm text-secondary leading-relaxed">A unified view that aggregates SEO, AEO, and GEO signals into one actionable workspace for the agency team.</p>
+        </div>
+
+        <div class="p-6 rounded-2xl bg-white border border-red-100 shadow-[0_2px_12px_rgba(239,68,68,0.05)]">
+          <h3 class="text-sm font-700 text-primary mb-2">AI Recommendation Engine UI</h3>
+          <p class="text-sm text-secondary leading-relaxed">Designing how the AI surfaces insights and recommendations in a way that is clear, trustworthy, and actionable.</p>
+        </div>
+
+        <div class="p-6 rounded-2xl bg-white border border-red-100 shadow-[0_2px_12px_rgba(239,68,68,0.05)]">
+          <h3 class="text-sm font-700 text-primary mb-2">Agentic Workflow Integration</h3>
+          <p class="text-sm text-secondary leading-relaxed">Using Claude Code and Figma MCP to accelerate the design process itself, from research synthesis to rapid prototyping.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ─── COMING SOON ───────────────────────────────────────────────────── -->
+  <section class="py-20 md:py-28 border-b border-border">
+    <div class="max-w-6xl mx-auto px-6 lg:px-8">
+      <div class="reveal max-w-3xl">
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#FFF1F2] border border-red-100 mb-8">
+          <span class="w-2 h-2 rounded-full bg-red-400 animate-pulse inline-block"></span>
+          <span class="text-xs font-700 text-red-500 uppercase tracking-widest">Work in Progress</span>
+        </div>
+        <h2 class="text-3xl md:text-4xl font-700 tracking-tight mb-6">Full Case Study Coming Soon</h2>
+        <p class="text-secondary text-base leading-relaxed mb-4">
+          This project is actively in progress. The full case study documenting the research, design decisions, and outcomes will be published here once the work is complete.
+        </p>
+        <p class="text-secondary text-base leading-relaxed mb-10">
+          In the meantime, you can verify Monstrum is a real company by visiting their website below.
+        </p>
+        <a href="https://www.monstrum.digital/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-sm font-700 text-primary bg-white border border-border px-6 py-3 rounded-xl hover:border-primary transition-colors cursor-pointer">
+          Visit monstrum.digital
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor"><path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z"/><path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ─── NEXT PROJECT ──────────────────────────────────────────────────── -->
+  <section class="py-16 border-t border-border bg-white">
+    <div class="max-w-6xl mx-auto px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-6">
+      <a href="stageup.html" class="text-sm font-600 text-secondary/50 hover:text-primary transition-colors cursor-pointer flex items-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+        </svg>
+        Previous: StageUp Mobile App
+      </a>
+      <a href="index.html#projects" class="text-sm font-600 text-primary hover:text-accent transition-colors cursor-pointer flex items-center gap-2">
+        All Projects
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+        </svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- ─── FOOTER ─────────────────────────────────────────────────────────── -->
+  <footer class="bg-primary border-t border-white/5 py-8">
+    <div class="max-w-6xl mx-auto px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4 text-surface/30 text-xs font-500">
+      <p>© 2025 Alaa El Banna. All rights reserved.</p>
+      <p>Product Designer · Toronto, Canada</p>
+    </div>
+  </footer>
+
+  <script>
+    const observer = new IntersectionObserver(
+      entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
+      { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
+    );
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    const toggle = document.getElementById('menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    toggle.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+    function closeMobileMenu() { mobileMenu.classList.add('hidden'); }
+  </script>
+
+</body>
+</html>
