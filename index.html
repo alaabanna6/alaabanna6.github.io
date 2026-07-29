@@ -465,7 +465,7 @@
     history.scrollRestoration = 'manual';
     window.scrollTo(0, 0);
 
-    // Logo letter animation — arc + spin, same direction every hover, no jump on reset
+    // Logo letter animation — arc + spin, consistent on every hover
     const logoLink = document.getElementById('logo-link');
     const lfy = document.getElementById('lfy');
     const lfx = document.getElementById('lfx');
@@ -473,7 +473,7 @@
     const llx = document.getElementById('llx');
     let swapped = false;
     let animRunning = false;
-    let rotF = 0;   // tracks accumulated rotation so spin always goes same direction
+    let rotF = 0;
     let rotL = 0;
 
     if (logoLink && lfy && lly) {
@@ -481,18 +481,15 @@
         if (animRunning) return;
         animRunning = true;
 
-        // Cancel WAAPI animations — inline styles (set at end of previous run) hold position
-        [lfy, lfx, lly, llx].forEach(el => el.getAnimations().forEach(a => a.cancel()));
-
         const dist = lly.getBoundingClientRect().left - lfy.getBoundingClientRect().left;
         const xFrom  = swapped ? dist  : 0;
         const xTo    = swapped ? 0     : dist;
         const xFromL = swapped ? -dist : 0;
         const xToL   = swapped ? 0     : -dist;
-        const newRotF = rotF + 360;   // always clockwise
-        const newRotL = rotL - 360;   // always counter-clockwise
+        const newRotF = rotF + 360;
+        const newRotL = rotL - 360;
 
-        // Rotation via CSS `rotate` (independent of transform), always same direction
+        // Rotation — always same direction. New animations override old fill-forwards automatically.
         lfx.animate(
           [{ rotate: `${rotF}deg` }, { rotate: `${newRotF}deg` }],
           { duration: 800, easing: 'cubic-bezier(0.37,0,0.63,1)', fill: 'forwards' }
@@ -502,7 +499,7 @@
           { duration: 800, easing: 'cubic-bezier(0.37,0,0.63,1)', fill: 'forwards' }
         );
 
-        // Phase 1: Y springs up/down (250ms)
+        // Phase 1: Y up/down (250ms). Old X fill-forwards holds position during this gap.
         const p1 = lfy.animate(
           [{ transform: 'translateY(0px)' }, { transform: 'translateY(-20px)' }],
           { duration: 250, easing: 'cubic-bezier(0.16,1,0.3,1)', fill: 'forwards' }
@@ -534,15 +531,6 @@
               { duration: 300, easing: 'cubic-bezier(0.37,0,0.63,1)', fill: 'forwards' }
             );
             p3.onfinish = () => {
-              // Write final positions to inline style BEFORE cancelling, so next hover
-              // starts from the correct position with no visual jump
-              lfy.style.transform = 'translateY(0px)';
-              lly.style.transform = 'translateY(0px)';
-              lfx.style.transform = `translateX(${xTo}px)`;
-              llx.style.transform = `translateX(${xToL}px)`;
-              lfx.style.rotate = `${newRotF}deg`;
-              llx.style.rotate = `${newRotL}deg`;
-              [lfy, lfx, lly, llx].forEach(el => el.getAnimations().forEach(a => a.cancel()));
               swapped = !swapped;
               rotF = newRotF;
               rotL = newRotL;
