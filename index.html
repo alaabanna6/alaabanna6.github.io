@@ -63,7 +63,7 @@
 
     /* Logo letter swap animation */
     .logo-anim { display: inline-flex; }
-    .logo-l, .logo-r { display: inline-block; transition: transform 0.65s cubic-bezier(0.76,0,0.24,1); }
+    .logo-l, .logo-r { display: inline-block; }
 
     /* Nav link underline animation */
     .nav-link {
@@ -465,19 +465,26 @@
     history.scrollRestoration = 'manual';
     window.scrollTo(0, 0);
 
-    // Logo letter swap
+    // Logo letter swap — first A arcs up-right, last A arcs down-left, stays swapped
     const logoLink = document.getElementById('logo-link');
     const logoFirst = document.getElementById('logo-first');
     const logoLast = document.getElementById('logo-last');
+    let logoSwapped = false;
     if (logoLink) {
       logoLink.addEventListener('mouseenter', () => {
+        if (logoSwapped) return;
+        logoSwapped = true;
         const dist = logoLast.getBoundingClientRect().left - logoFirst.getBoundingClientRect().left;
-        logoFirst.style.transform = `translateX(${dist}px) rotate(360deg)`;
-        logoLast.style.transform = `translateX(${-dist}px) rotate(-360deg)`;
-      });
-      logoLink.addEventListener('mouseleave', () => {
-        logoFirst.style.transform = '';
-        logoLast.style.transform = '';
+        logoFirst.animate([
+          { transform: 'translate(0,0) rotate(0deg)' },
+          { transform: `translate(0,-160%) rotate(180deg)`, offset: 0.45 },
+          { transform: `translate(${dist}px,0) rotate(360deg)` }
+        ], { duration: 680, easing: 'cubic-bezier(0.76,0,0.24,1)', fill: 'forwards' });
+        logoLast.animate([
+          { transform: 'translate(0,0) rotate(0deg)' },
+          { transform: `translate(0,160%) rotate(-180deg)`, offset: 0.45 },
+          { transform: `translate(${-dist}px,0) rotate(-360deg)` }
+        ], { duration: 680, easing: 'cubic-bezier(0.76,0,0.24,1)', fill: 'forwards' });
       });
     }
 
