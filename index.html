@@ -61,11 +61,9 @@
       transform: scale(1.04);
     }
 
-    /* Logo letter spin animation */
+    /* Logo letter swap animation */
     .logo-anim { display: inline-flex; }
-    .logo-l, .logo-r { display: inline-block; transition: transform 0.6s cubic-bezier(0.76,0,0.24,1); }
-    .logo-anim:hover .logo-l { transform: translateX(-0.6ch) rotate(-360deg); }
-    .logo-anim:hover .logo-r { transform: translateX(0.6ch) rotate(360deg); }
+    .logo-l, .logo-r { display: inline-block; transition: transform 0.65s cubic-bezier(0.76,0,0.24,1); }
 
     /* Nav link underline animation */
     .nav-link {
@@ -145,8 +143,8 @@
     <nav class="max-w-6xl mx-auto px-6 lg:px-8 h-16 flex items-center justify-between">
 
       <!-- Logo / Name -->
-      <a href="#home" class="logo-anim text-sm font-700 tracking-widest uppercase text-primary select-none">
-        <span class="logo-l">A</span><span>laa El Bann</span><span class="logo-r">a</span>
+      <a href="#home" id="logo-link" class="logo-anim text-sm font-700 tracking-widest uppercase text-primary select-none">
+        <span id="logo-first" class="logo-l">A</span><span>laa El Bann</span><span id="logo-last" class="logo-r">a</span>
       </a>
 
       <!-- Desktop links -->
@@ -466,6 +464,22 @@
     // Scroll reveal
     history.scrollRestoration = 'manual';
     window.scrollTo(0, 0);
+
+    // Logo letter swap
+    const logoLink = document.getElementById('logo-link');
+    const logoFirst = document.getElementById('logo-first');
+    const logoLast = document.getElementById('logo-last');
+    if (logoLink) {
+      logoLink.addEventListener('mouseenter', () => {
+        const dist = logoLast.getBoundingClientRect().left - logoFirst.getBoundingClientRect().left;
+        logoFirst.style.transform = `translateX(${dist}px) rotate(360deg)`;
+        logoLast.style.transform = `translateX(${-dist}px) rotate(-360deg)`;
+      });
+      logoLink.addEventListener('mouseleave', () => {
+        logoFirst.style.transform = '';
+        logoLast.style.transform = '';
+      });
+    }
 
     const observer = new IntersectionObserver(
       (entries) => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
