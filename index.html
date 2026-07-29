@@ -465,26 +465,43 @@
     history.scrollRestoration = 'manual';
     window.scrollTo(0, 0);
 
-    // Logo letter swap — first A arcs up-right, last A arcs down-left, stays swapped
+    // Logo letter swap — toggles on each hover, smooth arc path
     const logoLink = document.getElementById('logo-link');
     const logoFirst = document.getElementById('logo-first');
     const logoLast = document.getElementById('logo-last');
     let logoSwapped = false;
+    let firstAnim, lastAnim;
+    const DURATION = 950;
+    const EASING = 'cubic-bezier(0.37,0,0.63,1)';
     if (logoLink) {
       logoLink.addEventListener('mouseenter', () => {
-        if (logoSwapped) return;
-        logoSwapped = true;
+        if (firstAnim) firstAnim.cancel();
+        if (lastAnim) lastAnim.cancel();
         const dist = logoLast.getBoundingClientRect().left - logoFirst.getBoundingClientRect().left;
-        logoFirst.animate([
-          { transform: 'translate(0,0) rotate(0deg)' },
-          { transform: `translate(0,-160%) rotate(180deg)`, offset: 0.45 },
-          { transform: `translate(${dist}px,0) rotate(360deg)` }
-        ], { duration: 680, easing: 'cubic-bezier(0.76,0,0.24,1)', fill: 'forwards' });
-        logoLast.animate([
-          { transform: 'translate(0,0) rotate(0deg)' },
-          { transform: `translate(0,160%) rotate(-180deg)`, offset: 0.45 },
-          { transform: `translate(${-dist}px,0) rotate(-360deg)` }
-        ], { duration: 680, easing: 'cubic-bezier(0.76,0,0.24,1)', fill: 'forwards' });
+        if (!logoSwapped) {
+          firstAnim = logoFirst.animate([
+            { transform: 'translate(0,0) rotate(0deg)' },
+            { transform: `translate(0,-150%) rotate(180deg)`, offset: 0.42 },
+            { transform: `translate(${dist}px,0) rotate(360deg)` }
+          ], { duration: DURATION, easing: EASING, fill: 'forwards' });
+          lastAnim = logoLast.animate([
+            { transform: 'translate(0,0) rotate(0deg)' },
+            { transform: `translate(0,150%) rotate(-180deg)`, offset: 0.42 },
+            { transform: `translate(${-dist}px,0) rotate(-360deg)` }
+          ], { duration: DURATION, easing: EASING, fill: 'forwards' });
+        } else {
+          firstAnim = logoFirst.animate([
+            { transform: `translate(${dist}px,0) rotate(360deg)` },
+            { transform: `translate(${dist}px,-150%) rotate(180deg)`, offset: 0.42 },
+            { transform: 'translate(0,0) rotate(0deg)' }
+          ], { duration: DURATION, easing: EASING, fill: 'forwards' });
+          lastAnim = logoLast.animate([
+            { transform: `translate(${-dist}px,0) rotate(-360deg)` },
+            { transform: `translate(${-dist}px,150%) rotate(-180deg)`, offset: 0.42 },
+            { transform: 'translate(0,0) rotate(0deg)' }
+          ], { duration: DURATION, easing: EASING, fill: 'forwards' });
+        }
+        logoSwapped = !logoSwapped;
       });
     }
 
