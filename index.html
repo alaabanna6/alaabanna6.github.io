@@ -61,6 +61,12 @@
       transform: scale(1.04);
     }
 
+    /* Logo letter spin animation */
+    .logo-anim { display: inline-flex; }
+    .logo-l, .logo-r { display: inline-block; transition: transform 0.6s cubic-bezier(0.76,0,0.24,1); }
+    .logo-anim:hover .logo-l { transform: translateX(-0.6ch) rotate(-360deg); }
+    .logo-anim:hover .logo-r { transform: translateX(0.6ch) rotate(360deg); }
+
     /* Nav link underline animation */
     .nav-link {
       position: relative;
@@ -139,8 +145,8 @@
     <nav class="max-w-6xl mx-auto px-6 lg:px-8 h-16 flex items-center justify-between">
 
       <!-- Logo / Name -->
-      <a href="#home" class="text-sm font-700 tracking-widest uppercase text-primary select-none">
-        Alaa El Banna
+      <a href="#home" class="logo-anim text-sm font-700 tracking-widest uppercase text-primary select-none">
+        <span class="logo-l">A</span><span>laa El Bann</span><span class="logo-r">a</span>
       </a>
 
       <!-- Desktop links -->
