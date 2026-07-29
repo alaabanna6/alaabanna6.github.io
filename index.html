@@ -465,7 +465,7 @@
     history.scrollRestoration = 'manual';
     window.scrollTo(0, 0);
 
-    // Logo letter swap — exact match of robin-noguier.com arc + spin
+    // Logo letter animation — same arc + spin on every hover, resets after each run
     const logoLink = document.getElementById('logo-link');
     const lfy = document.getElementById('lfy');
     const lfx = document.getElementById('lfx');
@@ -473,7 +473,6 @@
     const lly = document.getElementById('lly');
     const llx = document.getElementById('llx');
     const llr = document.getElementById('llr');
-    let swapped = false;
     let animRunning = false;
 
     if (logoLink && lfy && lly) {
@@ -481,26 +480,18 @@
         if (animRunning) return;
         animRunning = true;
 
-        const dist = lly.getBoundingClientRect().left - lfy.getBoundingClientRect().left;
-        const xFrom     = swapped ? dist  : 0;
-        const xTo       = swapped ? 0     : dist;
-        const xFromLast = swapped ? -dist : 0;
-        const xToLast   = swapped ? 0     : -dist;
-        const rFrom     = swapped ? 360   : 0;
-        const rTo       = swapped ? 0     : 360;
-        const rFromLast = swapped ? -360  : 0;
-        const rToLast   = swapped ? 0     : -360;
-
-        // Clear any lingering fill animations
+        // Always start clean from rest position
         [lfy, lfx, lfr, lly, llx, llr].forEach(el => el.getAnimations().forEach(a => a.cancel()));
 
-        // Rotation: concurrent with whole arc (0→800ms), first A clockwise, last A counter-clockwise
+        const dist = lly.getBoundingClientRect().left - lfy.getBoundingClientRect().left;
+
+        // Rotation: 0→360° (first A clockwise, last A counter-clockwise), runs concurrently with arc
         lfr.animate(
-          [{ transform: `rotateZ(${rFrom}deg)` }, { transform: `rotateZ(${rTo}deg)` }],
+          [{ transform: 'rotateZ(0deg)' }, { transform: 'rotateZ(360deg)' }],
           { duration: 800, easing: 'cubic-bezier(0.37,0,0.63,1)', fill: 'forwards' }
         );
         llr.animate(
-          [{ transform: `rotateZ(${rFromLast}deg)` }, { transform: `rotateZ(${rToLast}deg)` }],
+          [{ transform: 'rotateZ(0deg)' }, { transform: 'rotateZ(-360deg)' }],
           { duration: 800, easing: 'cubic-bezier(0.37,0,0.63,1)', fill: 'forwards' }
         );
 
@@ -514,14 +505,14 @@
           { duration: 250, easing: 'cubic-bezier(0.16,1,0.3,1)', fill: 'forwards' }
         );
 
-        // Phase 2: X moves to swapped positions (550ms), starts after Phase 1
+        // Phase 2: X moves (550ms), starts after Phase 1
         p1.onfinish = () => {
           const p2 = lfx.animate(
-            [{ transform: `translateX(${xFrom}px)` }, { transform: `translateX(${xTo}px)` }],
+            [{ transform: 'translateX(0px)' }, { transform: `translateX(${dist}px)` }],
             { duration: 550, easing: 'cubic-bezier(0.37,0,0.63,1)', fill: 'forwards' }
           );
           llx.animate(
-            [{ transform: `translateX(${xFromLast}px)` }, { transform: `translateX(${xToLast}px)` }],
+            [{ transform: 'translateX(0px)' }, { transform: `translateX(${-dist}px)` }],
             { duration: 550, easing: 'cubic-bezier(0.37,0,0.63,1)', fill: 'forwards' }
           );
 
@@ -535,8 +526,9 @@
               [{ transform: 'translateY(20px)' }, { transform: 'translateY(0px)' }],
               { duration: 300, easing: 'cubic-bezier(0.37,0,0.63,1)', fill: 'forwards' }
             );
+            // After landing, cancel all fill-forwards so next hover starts from rest
             p3.onfinish = () => {
-              swapped = !swapped;
+              [lfy, lfx, lfr, lly, llx, llr].forEach(el => el.getAnimations().forEach(a => a.cancel()));
               animRunning = false;
             };
           };
