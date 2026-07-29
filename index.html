@@ -61,10 +61,6 @@
       transform: scale(1.04);
     }
 
-    /* Logo letter swap animation */
-    .logo-anim { display: inline-flex; }
-    #lfy, #lly, #lfx, #llx { display: inline-block; }
-
     /* Nav link underline animation */
     .nav-link {
       position: relative;
@@ -143,9 +139,7 @@
     <nav class="max-w-6xl mx-auto px-6 lg:px-8 h-16 flex items-center justify-between">
 
       <!-- Logo / Name -->
-      <a href="#home" id="logo-link" class="logo-anim text-sm font-700 tracking-widest uppercase text-primary select-none">
-        <span id="lfy"><span id="lfx">A</span></span><span>laa El Bann</span><span id="lly"><span id="llx">a</span></span>
-      </a>
+      <a href="#home" class="text-sm font-700 tracking-widest uppercase text-primary select-none">Alaa El Banna</a>
 
       <!-- Desktop links -->
       <ul class="hidden md:flex items-center gap-8 text-sm font-500 text-secondary">
@@ -464,86 +458,6 @@
     // Scroll reveal
     history.scrollRestoration = 'manual';
     window.scrollTo(0, 0);
-
-    // Logo letter animation — same arc + spin every hover; resets invisibly on mouse leave
-    const logoLink = document.getElementById('logo-link');
-    const lfy = document.getElementById('lfy');
-    const lfx = document.getElementById('lfx');
-    const lly = document.getElementById('lly');
-    const llx = document.getElementById('llx');
-    let animRunning = false;
-    let shouldReset = false;
-
-    function resetLogo() {
-      shouldReset = false;
-      [lfy, lfx, lly, llx].forEach(el => el.getAnimations().forEach(a => a.cancel()));
-    }
-
-    if (logoLink && lfy && lly) {
-      // Reset when mouse leaves — happens while user isn't watching the logo
-      logoLink.addEventListener('mouseleave', () => {
-        if (animRunning) { shouldReset = true; } else { resetLogo(); }
-      });
-
-      logoLink.addEventListener('mouseenter', () => {
-        if (animRunning) return;
-        animRunning = true;
-        shouldReset = false;
-
-        // Ensure clean start (in case reset didn't fire yet)
-        resetLogo();
-
-        const dist = lly.getBoundingClientRect().left - lfy.getBoundingClientRect().left;
-
-        // Rotation: first A clockwise, last A counter-clockwise — always same direction
-        lfx.animate(
-          [{ rotate: '0deg' }, { rotate: '360deg' }],
-          { duration: 800, easing: 'cubic-bezier(0.37,0,0.63,1)', fill: 'forwards' }
-        );
-        llx.animate(
-          [{ rotate: '0deg' }, { rotate: '-360deg' }],
-          { duration: 800, easing: 'cubic-bezier(0.37,0,0.63,1)', fill: 'forwards' }
-        );
-
-        // Phase 1: Y up/down (250ms)
-        const p1 = lfy.animate(
-          [{ transform: 'translateY(0px)' }, { transform: 'translateY(-20px)' }],
-          { duration: 250, easing: 'cubic-bezier(0.16,1,0.3,1)', fill: 'forwards' }
-        );
-        lly.animate(
-          [{ transform: 'translateY(0px)' }, { transform: 'translateY(20px)' }],
-          { duration: 250, easing: 'cubic-bezier(0.16,1,0.3,1)', fill: 'forwards' }
-        );
-
-        // Phase 2: X slides to swapped positions (550ms), after Phase 1
-        p1.onfinish = () => {
-          const p2 = lfx.animate(
-            [{ transform: 'translateX(0px)' }, { transform: `translateX(${dist}px)` }],
-            { duration: 550, easing: 'cubic-bezier(0.37,0,0.63,1)', fill: 'forwards' }
-          );
-          llx.animate(
-            [{ transform: 'translateX(0px)' }, { transform: `translateX(${-dist}px)` }],
-            { duration: 550, easing: 'cubic-bezier(0.37,0,0.63,1)', fill: 'forwards' }
-          );
-
-          // Phase 3: Y returns (300ms), after Phase 2
-          p2.onfinish = () => {
-            const p3 = lfy.animate(
-              [{ transform: 'translateY(-20px)' }, { transform: 'translateY(0px)' }],
-              { duration: 300, easing: 'cubic-bezier(0.37,0,0.63,1)', fill: 'forwards' }
-            );
-            lly.animate(
-              [{ transform: 'translateY(20px)' }, { transform: 'translateY(0px)' }],
-              { duration: 300, easing: 'cubic-bezier(0.37,0,0.63,1)', fill: 'forwards' }
-            );
-            p3.onfinish = () => {
-              animRunning = false;
-              if (shouldReset) resetLogo();
-            };
-          };
-        };
-      });
-    }
 
     const observer = new IntersectionObserver(
       (entries) => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
