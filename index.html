@@ -465,41 +465,47 @@
     history.scrollRestoration = 'manual';
     window.scrollTo(0, 0);
 
-    // Logo letter animation — arc + spin, consistent on every hover
+    // Logo letter animation — same arc + spin every hover; resets invisibly on mouse leave
     const logoLink = document.getElementById('logo-link');
     const lfy = document.getElementById('lfy');
     const lfx = document.getElementById('lfx');
     const lly = document.getElementById('lly');
     const llx = document.getElementById('llx');
-    let swapped = false;
     let animRunning = false;
-    let rotF = 0;
-    let rotL = 0;
+    let shouldReset = false;
+
+    function resetLogo() {
+      shouldReset = false;
+      [lfy, lfx, lly, llx].forEach(el => el.getAnimations().forEach(a => a.cancel()));
+    }
 
     if (logoLink && lfy && lly) {
+      // Reset when mouse leaves — happens while user isn't watching the logo
+      logoLink.addEventListener('mouseleave', () => {
+        if (animRunning) { shouldReset = true; } else { resetLogo(); }
+      });
+
       logoLink.addEventListener('mouseenter', () => {
         if (animRunning) return;
         animRunning = true;
+        shouldReset = false;
+
+        // Ensure clean start (in case reset didn't fire yet)
+        resetLogo();
 
         const dist = lly.getBoundingClientRect().left - lfy.getBoundingClientRect().left;
-        const xFrom  = swapped ? dist  : 0;
-        const xTo    = swapped ? 0     : dist;
-        const xFromL = swapped ? -dist : 0;
-        const xToL   = swapped ? 0     : -dist;
-        const newRotF = rotF + 360;
-        const newRotL = rotL - 360;
 
-        // Rotation — always same direction. New animations override old fill-forwards automatically.
+        // Rotation: first A clockwise, last A counter-clockwise — always same direction
         lfx.animate(
-          [{ rotate: `${rotF}deg` }, { rotate: `${newRotF}deg` }],
+          [{ rotate: '0deg' }, { rotate: '360deg' }],
           { duration: 800, easing: 'cubic-bezier(0.37,0,0.63,1)', fill: 'forwards' }
         );
         llx.animate(
-          [{ rotate: `${rotL}deg` }, { rotate: `${newRotL}deg` }],
+          [{ rotate: '0deg' }, { rotate: '-360deg' }],
           { duration: 800, easing: 'cubic-bezier(0.37,0,0.63,1)', fill: 'forwards' }
         );
 
-        // Phase 1: Y up/down (250ms). Old X fill-forwards holds position during this gap.
+        // Phase 1: Y up/down (250ms)
         const p1 = lfy.animate(
           [{ transform: 'translateY(0px)' }, { transform: 'translateY(-20px)' }],
           { duration: 250, easing: 'cubic-bezier(0.16,1,0.3,1)', fill: 'forwards' }
@@ -509,14 +515,14 @@
           { duration: 250, easing: 'cubic-bezier(0.16,1,0.3,1)', fill: 'forwards' }
         );
 
-        // Phase 2: X swap (550ms), after Phase 1
+        // Phase 2: X slides to swapped positions (550ms), after Phase 1
         p1.onfinish = () => {
           const p2 = lfx.animate(
-            [{ transform: `translateX(${xFrom}px)` }, { transform: `translateX(${xTo}px)` }],
+            [{ transform: 'translateX(0px)' }, { transform: `translateX(${dist}px)` }],
             { duration: 550, easing: 'cubic-bezier(0.37,0,0.63,1)', fill: 'forwards' }
           );
           llx.animate(
-            [{ transform: `translateX(${xFromL}px)` }, { transform: `translateX(${xToL}px)` }],
+            [{ transform: 'translateX(0px)' }, { transform: `translateX(${-dist}px)` }],
             { duration: 550, easing: 'cubic-bezier(0.37,0,0.63,1)', fill: 'forwards' }
           );
 
@@ -531,10 +537,8 @@
               { duration: 300, easing: 'cubic-bezier(0.37,0,0.63,1)', fill: 'forwards' }
             );
             p3.onfinish = () => {
-              swapped = !swapped;
-              rotF = newRotF;
-              rotL = newRotL;
               animRunning = false;
+              if (shouldReset) resetLogo();
             };
           };
         };
