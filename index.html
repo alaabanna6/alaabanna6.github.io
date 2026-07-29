@@ -63,7 +63,7 @@
 
     /* Logo letter swap animation */
     .logo-anim { display: inline-flex; }
-    #lfy, #lly, #lfx, #llx, #lfr, #llr { display: inline-block; }
+    #lfy, #lly, #lfx, #llx { display: inline-block; }
 
     /* Nav link underline animation */
     .nav-link {
@@ -144,7 +144,7 @@
 
       <!-- Logo / Name -->
       <a href="#home" id="logo-link" class="logo-anim text-sm font-700 tracking-widest uppercase text-primary select-none">
-        <span id="lfy"><span id="lfx"><span id="lfr">A</span></span></span><span>laa El Bann</span><span id="lly"><span id="llx"><span id="llr">a</span></span></span>
+        <span id="lfy"><span id="lfx">A</span></span><span>laa El Bann</span><span id="lly"><span id="llx">a</span></span>
       </a>
 
       <!-- Desktop links -->
@@ -469,10 +469,8 @@
     const logoLink = document.getElementById('logo-link');
     const lfy = document.getElementById('lfy');
     const lfx = document.getElementById('lfx');
-    const lfr = document.getElementById('lfr');
     const lly = document.getElementById('lly');
     const llx = document.getElementById('llx');
-    const llr = document.getElementById('llr');
     let animRunning = false;
 
     if (logoLink && lfy && lly) {
@@ -481,17 +479,18 @@
         animRunning = true;
 
         // Always start clean from rest position
-        [lfy, lfx, lfr, lly, llx, llr].forEach(el => el.getAnimations().forEach(a => a.cancel()));
+        [lfy, lfx, lly, llx].forEach(el => el.getAnimations().forEach(a => a.cancel()));
 
         const dist = lly.getBoundingClientRect().left - lfy.getBoundingClientRect().left;
 
-        // Rotation: 0→360° (first A clockwise, last A counter-clockwise), runs concurrently with arc
-        lfr.animate(
-          [{ transform: 'rotateZ(0deg)' }, { transform: 'rotateZ(360deg)' }],
+        // Rotation via CSS `rotate` property (separate from transform, no layout impact)
+        // First A spins clockwise, last A counter-clockwise, concurrent with whole arc
+        lfx.animate(
+          [{ rotate: '0deg' }, { rotate: '360deg' }],
           { duration: 800, easing: 'cubic-bezier(0.37,0,0.63,1)', fill: 'forwards' }
         );
-        llr.animate(
-          [{ transform: 'rotateZ(0deg)' }, { transform: 'rotateZ(-360deg)' }],
+        llx.animate(
+          [{ rotate: '0deg' }, { rotate: '-360deg' }],
           { duration: 800, easing: 'cubic-bezier(0.37,0,0.63,1)', fill: 'forwards' }
         );
 
@@ -528,7 +527,7 @@
             );
             // After landing, cancel all fill-forwards so next hover starts from rest
             p3.onfinish = () => {
-              [lfy, lfx, lfr, lly, llx, llr].forEach(el => el.getAnimations().forEach(a => a.cancel()));
+              [lfy, lfx, lly, llx].forEach(el => el.getAnimations().forEach(a => a.cancel()));
               animRunning = false;
             };
           };
