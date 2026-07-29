@@ -63,7 +63,7 @@
 
     /* Logo letter swap animation */
     .logo-anim { display: inline-flex; }
-    .logo-l, .logo-r { display: inline-block; }
+    #lfy, #lly, #lfx, #llx { display: inline-block; }
 
     /* Nav link underline animation */
     .nav-link {
@@ -144,7 +144,7 @@
 
       <!-- Logo / Name -->
       <a href="#home" id="logo-link" class="logo-anim text-sm font-700 tracking-widest uppercase text-primary select-none">
-        <span id="logo-first" class="logo-l">A</span><span>laa El Bann</span><span id="logo-last" class="logo-r">a</span>
+        <span id="lfy"><span id="lfx">A</span></span><span>laa El Bann</span><span id="lly"><span id="llx">a</span></span>
       </a>
 
       <!-- Desktop links -->
@@ -465,43 +465,66 @@
     history.scrollRestoration = 'manual';
     window.scrollTo(0, 0);
 
-    // Logo letter swap — toggles on each hover, smooth arc path
+    // Logo letter swap — 3-phase arc matching robin-noguier.com
     const logoLink = document.getElementById('logo-link');
-    const logoFirst = document.getElementById('logo-first');
-    const logoLast = document.getElementById('logo-last');
-    let logoSwapped = false;
-    let firstAnim, lastAnim;
-    const DURATION = 950;
-    const EASING = 'cubic-bezier(0.37,0,0.63,1)';
-    if (logoLink) {
+    const lfy = document.getElementById('lfy');
+    const lfx = document.getElementById('lfx');
+    const lly = document.getElementById('lly');
+    const llx = document.getElementById('llx');
+    let swapped = false;
+    let animRunning = false;
+
+    if (logoLink && lfy && lly) {
       logoLink.addEventListener('mouseenter', () => {
-        if (firstAnim) firstAnim.cancel();
-        if (lastAnim) lastAnim.cancel();
-        const dist = logoLast.getBoundingClientRect().left - logoFirst.getBoundingClientRect().left;
-        if (!logoSwapped) {
-          firstAnim = logoFirst.animate([
-            { transform: 'translate(0,0) rotate(0deg)' },
-            { transform: `translate(0,-150%) rotate(180deg)`, offset: 0.42 },
-            { transform: `translate(${dist}px,0) rotate(360deg)` }
-          ], { duration: DURATION, easing: EASING, fill: 'forwards' });
-          lastAnim = logoLast.animate([
-            { transform: 'translate(0,0) rotate(0deg)' },
-            { transform: `translate(0,150%) rotate(-180deg)`, offset: 0.42 },
-            { transform: `translate(${-dist}px,0) rotate(-360deg)` }
-          ], { duration: DURATION, easing: EASING, fill: 'forwards' });
-        } else {
-          firstAnim = logoFirst.animate([
-            { transform: `translate(${dist}px,0) rotate(360deg)` },
-            { transform: `translate(${dist}px,-150%) rotate(180deg)`, offset: 0.42 },
-            { transform: 'translate(0,0) rotate(0deg)' }
-          ], { duration: DURATION, easing: EASING, fill: 'forwards' });
-          lastAnim = logoLast.animate([
-            { transform: `translate(${-dist}px,0) rotate(-360deg)` },
-            { transform: `translate(${-dist}px,150%) rotate(-180deg)`, offset: 0.42 },
-            { transform: 'translate(0,0) rotate(0deg)' }
-          ], { duration: DURATION, easing: EASING, fill: 'forwards' });
-        }
-        logoSwapped = !logoSwapped;
+        if (animRunning) return;
+        animRunning = true;
+
+        const dist = lly.getBoundingClientRect().left - lfy.getBoundingClientRect().left;
+        const xFrom     = swapped ? dist  : 0;
+        const xTo       = swapped ? 0     : dist;
+        const xFromLast = swapped ? -dist : 0;
+        const xToLast   = swapped ? 0     : -dist;
+
+        // Clear any lingering fill animations
+        [lfy, lfx, lly, llx].forEach(el => el.getAnimations().forEach(a => a.cancel()));
+
+        // Phase 1: Y springs up/down (250ms)
+        const p1 = lfy.animate(
+          [{ transform: 'translateY(0px)' }, { transform: 'translateY(-20px)' }],
+          { duration: 250, easing: 'cubic-bezier(0.16,1,0.3,1)', fill: 'forwards' }
+        );
+        lly.animate(
+          [{ transform: 'translateY(0px)' }, { transform: 'translateY(20px)' }],
+          { duration: 250, easing: 'cubic-bezier(0.16,1,0.3,1)', fill: 'forwards' }
+        );
+
+        // Phase 2: X moves to swapped positions (550ms), starts after Phase 1
+        p1.onfinish = () => {
+          const p2 = lfx.animate(
+            [{ transform: `translateX(${xFrom}px)` }, { transform: `translateX(${xTo}px)` }],
+            { duration: 550, easing: 'cubic-bezier(0.37,0,0.63,1)', fill: 'forwards' }
+          );
+          llx.animate(
+            [{ transform: `translateX(${xFromLast}px)` }, { transform: `translateX(${xToLast}px)` }],
+            { duration: 550, easing: 'cubic-bezier(0.37,0,0.63,1)', fill: 'forwards' }
+          );
+
+          // Phase 3: Y springs back to 0 (300ms), starts after Phase 2
+          p2.onfinish = () => {
+            const p3 = lfy.animate(
+              [{ transform: 'translateY(-20px)' }, { transform: 'translateY(0px)' }],
+              { duration: 300, easing: 'cubic-bezier(0.37,0,0.63,1)', fill: 'forwards' }
+            );
+            lly.animate(
+              [{ transform: 'translateY(20px)' }, { transform: 'translateY(0px)' }],
+              { duration: 300, easing: 'cubic-bezier(0.37,0,0.63,1)', fill: 'forwards' }
+            );
+            p3.onfinish = () => {
+              swapped = !swapped;
+              animRunning = false;
+            };
+          };
+        };
       });
     }
 
