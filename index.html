@@ -465,32 +465,40 @@
     history.scrollRestoration = 'manual';
     window.scrollTo(0, 0);
 
-    // Logo letter animation — same arc + spin on every hover, resets after each run
+    // Logo letter animation — arc + spin, same direction every hover, no jump on reset
     const logoLink = document.getElementById('logo-link');
     const lfy = document.getElementById('lfy');
     const lfx = document.getElementById('lfx');
     const lly = document.getElementById('lly');
     const llx = document.getElementById('llx');
+    let swapped = false;
     let animRunning = false;
+    let rotF = 0;   // tracks accumulated rotation so spin always goes same direction
+    let rotL = 0;
 
     if (logoLink && lfy && lly) {
       logoLink.addEventListener('mouseenter', () => {
         if (animRunning) return;
         animRunning = true;
 
-        // Always start clean from rest position
+        // Cancel WAAPI animations — inline styles (set at end of previous run) hold position
         [lfy, lfx, lly, llx].forEach(el => el.getAnimations().forEach(a => a.cancel()));
 
         const dist = lly.getBoundingClientRect().left - lfy.getBoundingClientRect().left;
+        const xFrom  = swapped ? dist  : 0;
+        const xTo    = swapped ? 0     : dist;
+        const xFromL = swapped ? -dist : 0;
+        const xToL   = swapped ? 0     : -dist;
+        const newRotF = rotF + 360;   // always clockwise
+        const newRotL = rotL - 360;   // always counter-clockwise
 
-        // Rotation via CSS `rotate` property (separate from transform, no layout impact)
-        // First A spins clockwise, last A counter-clockwise, concurrent with whole arc
+        // Rotation via CSS `rotate` (independent of transform), always same direction
         lfx.animate(
-          [{ rotate: '0deg' }, { rotate: '360deg' }],
+          [{ rotate: `${rotF}deg` }, { rotate: `${newRotF}deg` }],
           { duration: 800, easing: 'cubic-bezier(0.37,0,0.63,1)', fill: 'forwards' }
         );
         llx.animate(
-          [{ rotate: '0deg' }, { rotate: '-360deg' }],
+          [{ rotate: `${rotL}deg` }, { rotate: `${newRotL}deg` }],
           { duration: 800, easing: 'cubic-bezier(0.37,0,0.63,1)', fill: 'forwards' }
         );
 
@@ -504,18 +512,18 @@
           { duration: 250, easing: 'cubic-bezier(0.16,1,0.3,1)', fill: 'forwards' }
         );
 
-        // Phase 2: X moves (550ms), starts after Phase 1
+        // Phase 2: X swap (550ms), after Phase 1
         p1.onfinish = () => {
           const p2 = lfx.animate(
-            [{ transform: 'translateX(0px)' }, { transform: `translateX(${dist}px)` }],
+            [{ transform: `translateX(${xFrom}px)` }, { transform: `translateX(${xTo}px)` }],
             { duration: 550, easing: 'cubic-bezier(0.37,0,0.63,1)', fill: 'forwards' }
           );
           llx.animate(
-            [{ transform: 'translateX(0px)' }, { transform: `translateX(${-dist}px)` }],
+            [{ transform: `translateX(${xFromL}px)` }, { transform: `translateX(${xToL}px)` }],
             { duration: 550, easing: 'cubic-bezier(0.37,0,0.63,1)', fill: 'forwards' }
           );
 
-          // Phase 3: Y springs back to 0 (300ms), starts after Phase 2
+          // Phase 3: Y returns (300ms), after Phase 2
           p2.onfinish = () => {
             const p3 = lfy.animate(
               [{ transform: 'translateY(-20px)' }, { transform: 'translateY(0px)' }],
@@ -525,9 +533,19 @@
               [{ transform: 'translateY(20px)' }, { transform: 'translateY(0px)' }],
               { duration: 300, easing: 'cubic-bezier(0.37,0,0.63,1)', fill: 'forwards' }
             );
-            // After landing, cancel all fill-forwards so next hover starts from rest
             p3.onfinish = () => {
+              // Write final positions to inline style BEFORE cancelling, so next hover
+              // starts from the correct position with no visual jump
+              lfy.style.transform = 'translateY(0px)';
+              lly.style.transform = 'translateY(0px)';
+              lfx.style.transform = `translateX(${xTo}px)`;
+              llx.style.transform = `translateX(${xToL}px)`;
+              lfx.style.rotate = `${newRotF}deg`;
+              llx.style.rotate = `${newRotL}deg`;
               [lfy, lfx, lly, llx].forEach(el => el.getAnimations().forEach(a => a.cancel()));
+              swapped = !swapped;
+              rotF = newRotF;
+              rotL = newRotL;
               animRunning = false;
             };
           };
