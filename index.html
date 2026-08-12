@@ -748,7 +748,7 @@
     <nav class="relative max-w-6xl mx-auto px-6 lg:px-8 h-16 flex items-center justify-between">
 
       <!-- Logo / Name — letter swap animation matching robin-noguier.com -->
-      <a href="#home" id="logo-link" class="text-sm font-700 tracking-widest uppercase text-primary select-none" style="display:inline-flex">
+      <a href="#home" id="logo-link" draggable="false" class="text-sm font-700 tracking-widest uppercase text-primary select-none" style="display:inline-flex;-webkit-user-select:none;user-select:none;cursor:pointer">
         <span id="ly1" style="display:inline-block"><span id="lx1" style="display:inline-block"><span id="ly2" style="display:inline-block"><span id="lr1" style="display:inline-block"><span id="lr2" style="display:inline-block">A</span></span></span></span></span><span>laa El Bann</span><span id="ry1" style="display:inline-block"><span id="rx1" style="display:inline-block"><span id="ry2" style="display:inline-block"><span id="rr1" style="display:inline-block"><span id="rr2" style="display:inline-block">a</span></span></span></span></span>
       </a>
 
@@ -1169,6 +1169,9 @@
         shouldReset = false;
         allSpans.forEach(el => { if(el) el.getAnimations().forEach(a => a.cancel()); });
       }
+
+      logoLink.addEventListener('selectstart', e => e.preventDefault());
+      logoLink.addEventListener('dragstart',   e => e.preventDefault());
 
       logoLink.addEventListener('mouseleave', () => {
         if (animRunning) { shouldReset = true; } else { resetLogo(); }
