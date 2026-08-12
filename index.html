@@ -1180,51 +1180,47 @@
       logoLink.addEventListener('mouseenter', () => {
         if (animRunning) return;
         animRunning = true;
+        shouldReset = false;
         resetLogo();
 
-        // Snapshot dist AFTER reset so transforms are cleared
         requestAnimationFrame(() => {
           const dist = ry1.getBoundingClientRect().left - ly1.getBoundingClientRect().left;
-          const T = 1100; // total duration ms
-          const E1 = 'cubic-bezier(0.16,1,0.3,1)'; // spring up
-          const E2 = 'cubic-bezier(0.37,0,0.63,1)'; // smooth
-          const p1 = 250/T, p2 = 800/T; // keyframe offsets
+          const E1 = 'cubic-bezier(0.16,1,0.3,1)';
+          const E2 = 'cubic-bezier(0.37,0,0.63,1)';
 
-          // Spin (0–800ms only)
-          lr2.animate([{rotate:'0deg'},{rotate:'360deg'}],  {duration:800, easing:E2, fill:'none'});
-          rr2.animate([{rotate:'0deg'},{rotate:'-360deg'}], {duration:800, easing:E2, fill:'none'});
+          // Phase 1: lift Y (250ms)
+          const p1L = ly1.animate([{transform:'translateY(0px)'},{transform:'translateY(-20px)'}], {duration:250, easing:E1, fill:'forwards'});
+          const p1R = ry1.animate([{transform:'translateY(0px)'},{transform:'translateY(20px)'}],  {duration:250, easing:E1, fill:'forwards'});
 
-          // Y axis: single animation — lift at p1, hold, land at p2
-          ly1.animate([
-            {transform:'translateY(0px)',   easing:E1,       offset:0},
-            {transform:'translateY(-20px)', easing:'linear', offset:p1},
-            {transform:'translateY(-20px)', easing:E2,       offset:p2},
-            {transform:'translateY(0px)',                    offset:1}
-          ], {duration:T, fill:'forwards'});
+          Promise.all([p1L.finished, p1R.finished]).then(() => {
+            // Commit Phase 1 position to inline style so Phase 3 has no conflict
+            ly1.style.transform = 'translateY(-20px)';
+            ry1.style.transform = 'translateY(20px)';
+            p1L.cancel(); p1R.cancel();
 
-          ry1.animate([
-            {transform:'translateY(0px)',  easing:E1,       offset:0},
-            {transform:'translateY(20px)', easing:'linear', offset:p1},
-            {transform:'translateY(20px)', easing:E2,       offset:p2},
-            {transform:'translateY(0px)',                   offset:1}
-          ], {duration:T, fill:'forwards'});
+            // Phase 2: swap X (550ms) — starts after lift
+            const p2L = lx1.animate([{transform:'translateX(0px)'},{transform:`translateX(${dist}px)`}],  {duration:550, easing:E2, fill:'forwards'});
+            const p2R = rx1.animate([{transform:'translateX(0px)'},{transform:`translateX(${-dist}px)`}], {duration:550, easing:E2, fill:'forwards'});
 
-          // X axis: single animation — hold until p1, swap by p2, stay swapped
-          lx1.animate([
-            {transform:'translateX(0px)',        easing:'linear', offset:0},
-            {transform:'translateX(0px)',        easing:E2,       offset:p1},
-            {transform:`translateX(${dist}px)`,  easing:'linear', offset:p2},
-            {transform:`translateX(${dist}px)`,                   offset:1}
-          ], {duration:T, fill:'forwards'});
+            return Promise.all([p2L.finished, p2R.finished]);
+          }).then(() => {
+            // Phase 3: land Y (300ms) — X stays swapped
+            const p3L = ly1.animate([{transform:'translateY(-20px)'},{transform:'translateY(0px)'}], {duration:300, easing:E2, fill:'forwards'});
+            const p3R = ry1.animate([{transform:'translateY(20px)'}, {transform:'translateY(0px)'}], {duration:300, easing:E2, fill:'forwards'});
 
-          rx1.animate([
-            {transform:'translateX(0px)',         easing:'linear', offset:0},
-            {transform:'translateX(0px)',         easing:E2,       offset:p1},
-            {transform:`translateX(${-dist}px)`,  easing:'linear', offset:p2},
-            {transform:`translateX(${-dist}px)`,                   offset:1}
-          ], {duration:T, fill:'forwards'});
-
-          setTimeout(() => { animRunning = false; if (shouldReset) resetLogo(); }, T + 50);
+            return Promise.all([p3L.finished, p3R.finished]);
+          }).then(() => {
+            // Clear committed inline styles; WAAPI fill holds final positions
+            ly1.style.transform = '';
+            ry1.style.transform = '';
+            animRunning = false;
+            if (shouldReset) resetLogo();
+          }).catch(() => {
+            // Animation was cancelled mid-way (resetLogo called) — clean up
+            ly1.style.transform = '';
+            ry1.style.transform = '';
+            animRunning = false;
+          });
         });
       });
     }
