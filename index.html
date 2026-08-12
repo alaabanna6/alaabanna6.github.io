@@ -1181,13 +1181,12 @@
           const dist = ry1.getBoundingClientRect().left - ly1.getBoundingClientRect().left;
           const E1 = 'cubic-bezier(0.16,1,0.3,1)';
           const E2 = 'cubic-bezier(0.37,0,0.63,1)';
-          const TOTAL = 1100; // total ms
 
-          // Spin both letters over the full duration
-          lr2.animate([{rotate:'0deg'},{rotate:'360deg'}],  {duration:800, easing:E2, fill:'forwards'});
-          rr2.animate([{rotate:'0deg'},{rotate:'-360deg'}], {duration:800, easing:E2, fill:'forwards'});
+          // Spin both letters (0–800ms), ends back at 0deg visually
+          lr2.animate([{rotate:'0deg'},{rotate:'360deg'}],  {duration:800, easing:E2, fill:'none'});
+          rr2.animate([{rotate:'0deg'},{rotate:'-360deg'}], {duration:800, easing:E2, fill:'none'});
 
-          // Phase 1: lift up (0–250ms)
+          // Phase 1: lift (0–250ms)
           ly1.animate([{transform:'translateY(0px)'},{transform:'translateY(-20px)'}], {duration:250, easing:E1, fill:'forwards'});
           ry1.animate([{transform:'translateY(0px)'},{transform:'translateY(20px)'}],  {duration:250, easing:E1, fill:'forwards'});
 
@@ -1195,15 +1194,14 @@
           lx1.animate([{transform:'translateX(0px)'},{transform:`translateX(${dist}px)`}],  {duration:550, delay:250, easing:E2, fill:'forwards'});
           rx1.animate([{transform:'translateX(0px)'},{transform:`translateX(${-dist}px)`}], {duration:550, delay:250, easing:E2, fill:'forwards'});
 
-          // Phase 3: land back down (800–1100ms)
-          ly1.animate([{transform:'translateY(-20px)'},{transform:'translateY(0px)'}], {duration:300, delay:800, easing:E2, fill:'forwards'});
-          ry1.animate([{transform:'translateY(20px)'}, {transform:'translateY(0px)'}], {duration:300, delay:800, easing:E2, fill:'forwards'});
+          // Phase 3: return Y AND X to zero (800–1200ms)
+          ly1.animate([{transform:'translateY(-20px)'},{transform:'translateY(0px)'}],         {duration:400, delay:800, easing:E2, fill:'forwards'});
+          ry1.animate([{transform:'translateY(20px)'}, {transform:'translateY(0px)'}],         {duration:400, delay:800, easing:E2, fill:'forwards'});
+          lx1.animate([{transform:`translateX(${dist}px)`},{transform:'translateX(0px)'}],    {duration:400, delay:800, easing:E2, fill:'forwards'});
+          rx1.animate([{transform:`translateX(${-dist}px)`},{transform:'translateX(0px)'}],   {duration:400, delay:800, easing:E2, fill:'forwards'});
 
-          // After animation completes, cancel all to restore original positions
-          setTimeout(() => {
-            resetLogo();
-            animRunning = false;
-          }, TOTAL);
+          // Cancel all after everything lands at 0
+          setTimeout(() => { resetLogo(); animRunning = false; }, 1250);
         });
       });
     }
