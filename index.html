@@ -1152,26 +1152,20 @@
 
     // Logo letter animation — matches robin-noguier.com exactly
     // Structure: outerY → X → innerY → outerRotZ → innerRotZ(letter)
-    // Logo letter swap animation — robust version
+    // Every hover plays identical animation; mouse-leave resets invisibly
     {
       const logoLink = document.getElementById('logo-link');
       const ly1 = document.getElementById('ly1'), lx1 = document.getElementById('lx1');
-      const lr2  = document.getElementById('lr2');
-      const ry1  = document.getElementById('ry1'), rx1 = document.getElementById('rx1');
-      const rr2  = document.getElementById('rr2');
-      const allSpans = [ly1, lx1, lr2, ry1, rx1, rr2,
-                        document.getElementById('ly2'), document.getElementById('lr1'),
-                        document.getElementById('ry2'), document.getElementById('rr1')];
-
+      const ly2 = document.getElementById('ly2'), lr1 = document.getElementById('lr1'), lr2 = document.getElementById('lr2');
+      const ry1 = document.getElementById('ry1'), rx1 = document.getElementById('rx1');
+      const ry2 = document.getElementById('ry2'), rr1 = document.getElementById('rr1'), rr2 = document.getElementById('rr2');
+      const allSpans = [ly1,lx1,ly2,lr1,lr2,ry1,rx1,ry2,rr1,rr2];
       let animRunning = false, shouldReset = false;
 
       function resetLogo() {
         shouldReset = false;
-        allSpans.forEach(el => { if(el) el.getAnimations().forEach(a => a.cancel()); });
+        allSpans.forEach(el => el.getAnimations().forEach(a => a.cancel()));
       }
-
-      logoLink.addEventListener('selectstart', e => e.preventDefault());
-      logoLink.addEventListener('dragstart',   e => e.preventDefault());
 
       logoLink.addEventListener('mouseleave', () => {
         if (animRunning) { shouldReset = true; } else { resetLogo(); }
@@ -1181,47 +1175,47 @@
         if (animRunning) return;
         animRunning = true;
         shouldReset = false;
-        resetLogo();
+        resetLogo(); // start clean every time
 
-        requestAnimationFrame(() => {
-          const dist = ry1.getBoundingClientRect().left - ly1.getBoundingClientRect().left;
-          const E1 = 'cubic-bezier(0.16,1,0.3,1)';
-          const E2 = 'cubic-bezier(0.37,0,0.63,1)';
+        // Measure horizontal distance between the two letter wrappers
+        const dist = ry1.getBoundingClientRect().left - ly1.getBoundingClientRect().left;
 
-          // Phase 1: lift Y (250ms)
-          const p1L = ly1.animate([{transform:'translateY(0px)'},{transform:'translateY(-20px)'}], {duration:250, easing:E1, fill:'forwards'});
-          const p1R = ry1.animate([{transform:'translateY(0px)'},{transform:'translateY(20px)'}],  {duration:250, easing:E1, fill:'forwards'});
+        const E1 = 'cubic-bezier(0.16,1,0.3,1)'; // spring out
+        const E2 = 'cubic-bezier(0.37,0,0.63,1)'; // smooth swap
 
-          Promise.all([p1L.finished, p1R.finished]).then(() => {
-            // Commit Phase 1 position to inline style so Phase 3 has no conflict
-            ly1.style.transform = 'translateY(-20px)';
-            ry1.style.transform = 'translateY(20px)';
-            p1L.cancel(); p1R.cancel();
+        // Inner letter spin: full 360° CW for first A, CCW for last a
+        // This is the visible rotation — starts immediately so it reads as a tilt on lift
+        lr2.animate([{rotate:'0deg'},{rotate:'360deg'}],   {duration:800, easing:E2, fill:'forwards'});
+        rr2.animate([{rotate:'0deg'},{rotate:'-360deg'}],  {duration:800, easing:E2, fill:'forwards'});
 
-            // Phase 2: swap X (550ms) — starts after lift
-            const p2L = lx1.animate([{transform:'translateX(0px)'},{transform:`translateX(${dist}px)`}],  {duration:550, easing:E2, fill:'forwards'});
-            const p2R = rx1.animate([{transform:'translateX(0px)'},{transform:`translateX(${-dist}px)`}], {duration:550, easing:E2, fill:'forwards'});
+        // Outer rotZ: subtle counter-tilt that creates the "coin-flip" feel
+        lr1.animate([{rotate:'0deg'},{rotate:'-15deg'},{rotate:'0deg'}], {duration:800, easing:'ease-in-out', fill:'forwards'});
+        rr1.animate([{rotate:'0deg'},{rotate:'15deg'}, {rotate:'0deg'}], {duration:800, easing:'ease-in-out', fill:'forwards'});
 
-            return Promise.all([p2L.finished, p2R.finished]);
-          }).then(() => {
-            // Phase 3: land Y (300ms) — X stays swapped
-            const p3L = ly1.animate([{transform:'translateY(-20px)'},{transform:'translateY(0px)'}], {duration:300, easing:E2, fill:'forwards'});
-            const p3R = ry1.animate([{transform:'translateY(20px)'}, {transform:'translateY(0px)'}], {duration:300, easing:E2, fill:'forwards'});
+        // Phase 1 (0→250ms): outer Y arc — first A lifts UP, last a pushes DOWN
+        const p1f = ly1.animate([{transform:'translateY(0px)'},{transform:'translateY(-20px)'}], {duration:250, easing:E1, fill:'forwards'});
+                    ry1.animate([{transform:'translateY(0px)'},{transform:'translateY(20px)'}],  {duration:250, easing:E1, fill:'forwards'});
 
-            return Promise.all([p3L.finished, p3R.finished]);
-          }).then(() => {
-            // Clear committed inline styles; WAAPI fill holds final positions
-            ly1.style.transform = '';
-            ry1.style.transform = '';
-            animRunning = false;
-            if (shouldReset) resetLogo();
-          }).catch(() => {
-            // Animation was cancelled mid-way (resetLogo called) — clean up
-            ly1.style.transform = '';
-            ry1.style.transform = '';
-            animRunning = false;
-          });
-        });
+        p1f.onfinish = () => {
+          // Phase 2 (250→800ms): horizontal swap
+          const p2f = lx1.animate([{transform:'translateX(0px)'},{transform:`translateX(${dist}px)`}],  {duration:550, easing:E2, fill:'forwards'});
+                      rx1.animate([{transform:'translateX(0px)'},{transform:`translateX(${-dist}px)`}], {duration:550, easing:E2, fill:'forwards'});
+
+          // Inner Y: gentle downward arc during the slide to add weight
+          ly2.animate([{transform:'translateY(0px)'},{transform:'translateY(6px)'},{transform:'translateY(0px)'}], {duration:550, easing:'ease-in-out', fill:'forwards'});
+          ry2.animate([{transform:'translateY(0px)'},{transform:'translateY(-6px)'},{transform:'translateY(0px)'}], {duration:550, easing:'ease-in-out', fill:'forwards'});
+
+          p2f.onfinish = () => {
+            // Phase 3 (800→1100ms): outer Y arc back down
+            const p3f = ly1.animate([{transform:'translateY(-20px)'},{transform:'translateY(0px)'}], {duration:300, easing:E2, fill:'forwards'});
+                        ry1.animate([{transform:'translateY(20px)'}, {transform:'translateY(0px)'}], {duration:300, easing:E2, fill:'forwards'});
+
+            p3f.onfinish = () => {
+              animRunning = false;
+              if (shouldReset) resetLogo();
+            };
+          };
+        };
       });
     }
 
