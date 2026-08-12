@@ -201,6 +201,7 @@
         line2.textContent = '';
         box.style.width = '0px';
         box.style.height = '0px';
+        box.classList.add('is-hidden-border'); // hide handles/outline at 0×0
         void box.offsetWidth;
         box.style.transition = '';
 
@@ -217,6 +218,7 @@
 
         setTimeout(function () {
           moveCursorTo(origin.x + targetW, origin.y + targetH, 0.45, 'cubic-bezier(0.4,0,0.2,1)');
+          box.classList.remove('is-hidden-border'); // reveal outline as box grows
           box.style.width = targetW + 'px';
           box.style.height = targetH + 'px';
 
