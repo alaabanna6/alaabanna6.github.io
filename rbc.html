@@ -5,6 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>RBC Mobile App — Alaa El Banna</title>
 
+  <!-- Theme: set before first paint to avoid a flash of the wrong theme -->
+  <script>
+    (function () {
+      var t = localStorage.getItem('theme');
+      if (t !== 'light' && t !== 'dark') {
+        t = 'dark'; // default for first-time visitors (no stored choice yet)
+      }
+      document.documentElement.setAttribute('data-theme', t);
+    })();
+  </script>
+  <link rel="stylesheet" href="theme.css?v=10" />
+
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -12,11 +24,14 @@
         extend: {
           fontFamily: { sans: ['Montserrat', 'sans-serif'] },
           colors: {
-            primary:   '#18181B',
-            secondary: '#3F3F46',
-            accent:    '#2563EB',
-            surface:   '#FAFAFA',
-            border:    '#E4E4E7',
+            primary:      'var(--primary)',
+            secondary:    'var(--secondary)',
+            accent:       'var(--accent)',
+            surface:      'var(--surface)',
+            'surface-alt':'var(--surface-alt)',
+            border:       'var(--border)',
+            ink:          '#18181B',
+            'on-ink':     '#FAFAFA',
           },
         },
       },
@@ -27,46 +42,61 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
 
   <style>
+    :root { --accent: #2563EB; }
+    :root[data-theme="dark"] { --accent: #60A5FA; }
+
     .reveal { opacity:0; transform:translateY(20px); transition:opacity .6s ease,transform .6s ease; }
     .reveal.visible { opacity:1; transform:translateY(0); }
     .nav-link { position:relative; }
     .nav-link::after { content:''; position:absolute; bottom:-2px; left:0; width:0; height:1px; background:#18181B; transition:width .25s ease; }
     .nav-link:hover::after { width:100%; }
   </style>
+  <script defer src="pull-switch.js?v=10"></script>
+  <script defer src="theme.js?v=4"></script>
 </head>
 
 <body class="bg-surface text-primary font-sans antialiased overflow-x-hidden">
 
   <!-- ─── NAVBAR ─────────────────────────────────────────────────────────── -->
   <header class="fixed top-0 inset-x-0 z-50 bg-surface/90 backdrop-blur-sm border-b border-border">
-    <nav class="max-w-6xl mx-auto px-6 lg:px-8 h-16 flex items-center justify-between">
+    <nav class="relative max-w-6xl mx-auto px-6 lg:px-8 h-16 flex items-center justify-between">
       <a href="index.html" class="text-sm font-700 tracking-widest uppercase text-primary">Alaa El Banna</a>
-      <ul class="hidden md:flex items-center gap-8 text-sm font-500 text-secondary">
-        <li><a href="index.html#home"     class="nav-link hover:text-primary transition-colors duration-200">Home</a></li>
-        <li><a href="index.html#projects" class="nav-link hover:text-primary transition-colors duration-200">Projects</a></li>
-        <li><a href="index.html#about"    class="nav-link hover:text-primary transition-colors duration-200">About</a></li>
-        <li><a href="index.html#contact"  class="nav-link hover:text-primary transition-colors duration-200">Contact</a></li>
+      <div class="flex items-center gap-6">
+        <ul class="hidden md:flex items-center gap-8 text-sm font-500 text-secondary">
+        <li><a href="index.html#home"     class="nav-link nav-link--home transition-colors duration-200">Home</a></li>
+        <li><a href="index.html#projects" class="nav-link nav-link--projects transition-colors duration-200">Projects</a></li>
+        <li><a href="index.html#about"    class="nav-link nav-link--about transition-colors duration-200">About</a></li>
+        <li><a href="index.html#contact"  class="nav-link nav-link--contact transition-colors duration-200">Contact</a></li>
       </ul>
-      <button id="menu-toggle" class="md:hidden flex flex-col gap-1.5 cursor-pointer p-2 -mr-2" aria-label="Toggle navigation">
+
+        <div class="pull-switch">
+          <span class="pull-switch__cord" aria-hidden="true"></span>
+          <button type="button" class="theme-toggle pull-switch__bulb" role="switch" aria-checked="false" aria-label="Toggle dark mode"></button>
+        </div>
+
+        <button id="menu-toggle" class="md:hidden flex flex-col gap-1.5 cursor-pointer p-2 -mr-2" aria-label="Toggle navigation">
         <span class="block w-6 h-0.5 bg-primary"></span>
         <span class="block w-6 h-0.5 bg-primary"></span>
         <span class="block w-4 h-0.5 bg-primary"></span>
       </button>
+      </div>
     </nav>
     <div id="mobile-menu" class="hidden md:hidden border-t border-border bg-surface/95 backdrop-blur-sm">
       <ul class="flex flex-col px-6 py-4 gap-4 text-sm font-500 text-secondary">
-        <li><a href="index.html#home"     onclick="closeMobileMenu()">Home</a></li>
-        <li><a href="index.html#projects" onclick="closeMobileMenu()">Projects</a></li>
-        <li><a href="index.html#about"    onclick="closeMobileMenu()">About</a></li>
-        <li><a href="index.html#contact"  onclick="closeMobileMenu()">Contact</a></li>
+        <li><a href="index.html#home"     class="nav-link--home transition-colors" onclick="closeMobileMenu()">Home</a></li>
+        <li><a href="index.html#projects" class="nav-link--projects transition-colors" onclick="closeMobileMenu()">Projects</a></li>
+        <li><a href="index.html#about"    class="nav-link--about transition-colors" onclick="closeMobileMenu()">About</a></li>
+        <li><a href="index.html#contact"  class="nav-link--contact transition-colors" onclick="closeMobileMenu()">Contact</a></li>
       </ul>
     </div>
   </header>
 
 
   <!-- ─── HERO ───────────────────────────────────────────────────────────── -->
-  <section class="pt-32 pb-16 md:pt-40 md:pb-24 bg-white border-b border-border">
-    <div class="max-w-6xl mx-auto px-6 lg:px-8">
+  <section class="relative pt-32 pb-16 md:pt-40 md:pb-24 bg-surface-alt border-b border-border overflow-hidden">
+    <div class="dot-patch dot-patch--xl" style="top: -8%; right: -70px;" aria-hidden="true"></div>
+    <div class="dot-patch dot-patch--sm" style="bottom: 5%; left: 5%;" aria-hidden="true"></div>
+    <div class="max-w-6xl mx-auto px-6 lg:px-8 relative z-10">
 
       <!-- Breadcrumb -->
       <div class="reveal flex items-center gap-2 text-xs text-secondary/60 font-500 mb-8">
@@ -110,8 +140,9 @@
 
 
   <!-- ─── PROJECT OVERVIEW ──────────────────────────────────────────────── -->
-  <section class="py-20 md:py-28 border-b border-border">
-    <div class="max-w-6xl mx-auto px-6 lg:px-8">
+  <section class="relative py-20 md:py-28 border-b border-border overflow-hidden">
+    <div class="dot-patch dot-patch--md" style="top: 10%; left: -55px;" aria-hidden="true"></div>
+    <div class="max-w-6xl mx-auto px-6 lg:px-8 relative z-10">
       <div class="max-w-3xl">
         <p class="reveal text-xs font-600 tracking-[0.25em] uppercase text-accent mb-3">Overview</p>
         <h2 class="reveal text-3xl md:text-4xl font-700 tracking-tight mb-8">Project Overview</h2>
@@ -130,8 +161,9 @@
 
 
   <!-- ─── EMPATHIZE ─────────────────────────────────────────────────────── -->
-  <section class="py-20 md:py-28 bg-white border-b border-border">
-    <div class="max-w-6xl mx-auto px-6 lg:px-8">
+  <section class="relative py-20 md:py-28 bg-surface-alt border-b border-border overflow-hidden">
+    <div class="dot-patch dot-patch--lg" style="top: -8%; left: -50px;" aria-hidden="true"></div>
+    <div class="max-w-6xl mx-auto px-6 lg:px-8 relative z-10">
 
       <div class="reveal mb-12">
         <p class="text-xs font-600 tracking-[0.25em] uppercase text-accent mb-3">01 — Empathize</p>
@@ -242,8 +274,9 @@
 
 
   <!-- ─── DEFINE ────────────────────────────────────────────────────────── -->
-  <section class="py-20 md:py-28 border-b border-border">
-    <div class="max-w-6xl mx-auto px-6 lg:px-8">
+  <section class="relative py-20 md:py-28 border-b border-border overflow-hidden">
+    <div class="dot-patch dot-patch--lg" style="bottom: -10%; right: -60px;" aria-hidden="true"></div>
+    <div class="max-w-6xl mx-auto px-6 lg:px-8 relative z-10">
       <div class="reveal mb-10">
         <p class="text-xs font-600 tracking-[0.25em] uppercase text-accent mb-3">02 — Define</p>
         <h2 class="text-3xl md:text-4xl font-700 tracking-tight">Defining the User Needs</h2>
@@ -258,8 +291,9 @@
 
 
   <!-- ─── IDEATE ────────────────────────────────────────────────────────── -->
-  <section class="py-20 md:py-28 bg-white border-b border-border">
-    <div class="max-w-6xl mx-auto px-6 lg:px-8">
+  <section class="relative py-20 md:py-28 bg-surface-alt border-b border-border overflow-hidden">
+    <div class="dot-patch dot-patch--sm" style="bottom: 6%; right: 4%;" aria-hidden="true"></div>
+    <div class="max-w-6xl mx-auto px-6 lg:px-8 relative z-10">
 
       <div class="reveal mb-14">
         <p class="text-xs font-600 tracking-[0.25em] uppercase text-accent mb-3">03 — Ideate</p>
@@ -316,8 +350,10 @@
 
 
   <!-- ─── TEST ──────────────────────────────────────────────────────────── -->
-  <section class="py-20 md:py-28 border-b border-border">
-    <div class="max-w-6xl mx-auto px-6 lg:px-8">
+  <section class="relative py-20 md:py-28 border-b border-border overflow-hidden">
+    <div class="dot-patch dot-patch--lg" style="top: -8%; left: -60px;" aria-hidden="true"></div>
+    <div class="dot-patch dot-patch--sm" style="bottom: 6%; right: 4%;" aria-hidden="true"></div>
+    <div class="max-w-6xl mx-auto px-6 lg:px-8 relative z-10">
 
       <div class="reveal mb-12">
         <p class="text-xs font-600 tracking-[0.25em] uppercase text-accent mb-3">04 — Test</p>
@@ -347,7 +383,7 @@
       </div>
 
       <!-- Method & Participants -->
-      <div class="reveal p-6 md:p-8 rounded-2xl border border-border bg-white mb-8">
+      <div class="reveal p-6 md:p-8 rounded-2xl border border-border bg-surface-alt mb-8">
         <h3 class="text-sm font-700 text-primary uppercase tracking-widest mb-4">Method &amp; Participants</h3>
         <p class="text-sm text-secondary leading-relaxed mb-2">The study followed a formative, moderated testing method.</p>
         <p class="text-sm text-secondary leading-relaxed mb-2">Sessions were run in a quiet space over Zoom.</p>
@@ -355,7 +391,7 @@
       </div>
 
       <!-- Tasks -->
-      <div class="reveal p-6 md:p-8 rounded-2xl border border-border bg-white mb-8">
+      <div class="reveal p-6 md:p-8 rounded-2xl border border-border bg-surface-alt mb-8">
         <h3 class="text-sm font-700 text-primary uppercase tracking-widest mb-4">Tasks</h3>
         <ol class="space-y-2 list-decimal list-inside text-sm text-secondary">
           <li>Navigate from home to Chequing account</li>
@@ -392,7 +428,7 @@
       </div>
 
       <!-- Design Tweaks After Testing -->
-      <div class="reveal p-6 md:p-8 rounded-2xl border border-border bg-white">
+      <div class="reveal p-6 md:p-8 rounded-2xl border border-border bg-surface-alt">
         <h3 class="text-sm font-700 text-primary uppercase tracking-widest mb-4">Design Tweaks After Testing</h3>
         <div class="space-y-2">
           <div class="flex items-start gap-3 text-sm text-secondary">
@@ -419,12 +455,13 @@
 
 
   <!-- ─── CONCLUSION ─────────────────────────────────────────────────────── -->
-  <section class="py-20 md:py-28 bg-primary text-surface">
-    <div class="max-w-6xl mx-auto px-6 lg:px-8">
+  <section class="relative py-20 md:py-28 bg-ink text-on-ink overflow-hidden">
+    <div class="dot-patch dot-patch--on-dark dot-patch--md" style="top: 8%; right: 6%;" aria-hidden="true"></div>
+    <div class="max-w-6xl mx-auto px-6 lg:px-8 relative z-10">
       <div class="max-w-2xl">
         <p class="reveal text-xs font-600 tracking-[0.25em] uppercase text-accent mb-3">Conclusion</p>
         <h2 class="reveal text-3xl md:text-4xl font-700 tracking-tight mb-6">Outcome</h2>
-        <p class="reveal text-surface/70 text-base leading-relaxed">
+        <p class="reveal text-on-ink/70 text-base leading-relaxed">
           This project focused on improving the clarity and usability of the Running Balance feature. The final design reduces cognitive load, improves readability.
         </p>
       </div>
@@ -433,16 +470,16 @@
 
 
   <!-- ─── NEXT PROJECT ───────────────────────────────────────────────────── -->
-  <section class="py-16 border-t border-white/10 bg-primary">
+  <section class="py-16 border-t border-white/10 bg-ink">
     <div class="max-w-6xl mx-auto px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-6">
-      <a href="index.html#projects" class="text-sm font-600 text-surface/50 hover:text-surface transition-colors cursor-pointer flex items-center gap-2">
+      <a href="stageup.html" class="text-sm font-600 text-on-ink/50 hover:text-on-ink transition-colors cursor-pointer flex items-center gap-2">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
           <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
         </svg>
-        All Projects
+        Back to StageUp
       </a>
-      <a href="stageup.html" class="text-sm font-600 text-surface hover:text-accent transition-colors cursor-pointer flex items-center gap-2">
-        Next: StageUP Mobile App
+      <a href="index.html#projects" class="text-sm font-600 text-on-ink hover:text-accent transition-colors cursor-pointer flex items-center gap-2">
+        All Projects
         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
           <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
         </svg>
@@ -451,8 +488,8 @@
   </section>
 
   <!-- ─── FOOTER ─────────────────────────────────────────────────────────── -->
-  <footer class="bg-primary border-t border-white/5 py-8">
-    <div class="max-w-6xl mx-auto px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4 text-surface/30 text-xs font-500">
+  <footer class="bg-ink border-t border-white/5 py-8">
+    <div class="max-w-6xl mx-auto px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4 text-on-ink/30 text-xs font-500">
       <p>© 2025 Alaa El Banna. All rights reserved.</p>
       <p>Product Designer · Toronto, Canada</p>
     </div>

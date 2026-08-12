@@ -5,6 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Alaa El Banna — Product Designer</title>
 
+  <!-- Theme: set before first paint to avoid a flash of the wrong theme -->
+  <script>
+    (function () {
+      var t = localStorage.getItem('theme');
+      if (t !== 'light' && t !== 'dark') {
+        t = 'dark'; // default for first-time visitors (no stored choice yet)
+      }
+      document.documentElement.setAttribute('data-theme', t);
+    })();
+  </script>
+  <link rel="stylesheet" href="theme.css?v=10" />
+
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -15,11 +27,14 @@
             sans: ['Montserrat', 'sans-serif'],
           },
           colors: {
-            primary:   '#18181B',
-            secondary: '#3F3F46',
-            accent:    '#2563EB',
-            surface:   '#FAFAFA',
-            border:    '#E4E4E7',
+            primary:      'var(--primary)',
+            secondary:    'var(--secondary)',
+            accent:       'var(--accent)',
+            surface:      'var(--surface)',
+            'surface-alt':'var(--surface-alt)',
+            border:       'var(--border)',
+            ink:          '#18181B',
+            'on-ink':     '#FAFAFA',
           },
         },
       },
@@ -35,6 +50,12 @@
   />
 
   <style>
+    :root { --accent: #2563EB; }
+    :root[data-theme="dark"] { --accent: #60A5FA; }
+
+    :root { --spotlight-dot: rgba(24, 24, 27, 0.55); }
+    :root[data-theme="dark"] { --spotlight-dot: rgba(255, 255, 255, 0.9); }
+
     /* Fade-in on scroll */
     .reveal {
       opacity: 0;
@@ -46,6 +67,307 @@
       transform: translateY(0);
     }
 
+    /* Hero canvas: dot-grid background with a cursor-tracked spotlight */
+    .hero-canvas {
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+    }
+
+    .hero-dots {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      overflow: hidden;
+      pointer-events: none;
+      -webkit-mask-image: linear-gradient(to bottom, black 0%, black 75%, transparent 100%);
+              mask-image: linear-gradient(to bottom, black 0%, black 75%, transparent 100%);
+    }
+    .hero-dots__base,
+    .hero-dots__spotlight {
+      position: absolute;
+      inset: 0;
+      background-size: 20px 20px;
+    }
+    .hero-dots__base {
+      background-image: radial-gradient(circle, var(--canvas-dot) 1px, transparent 1px);
+    }
+    .hero-dots__spotlight {
+      background-image: radial-gradient(circle, var(--spotlight-dot) 1px, transparent 1px);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      -webkit-mask-image: radial-gradient(circle 220px at var(--mx, 50%) var(--my, 50%), black 0%, black 25%, transparent 70%);
+              mask-image: radial-gradient(circle 220px at var(--mx, 50%) var(--my, 50%), black 0%, black 25%, transparent 70%);
+    }
+    .hero-canvas.is-hovering .hero-dots__spotlight {
+      opacity: 1;
+    }
+
+    /* Intro: cursor draws a box, types the name */
+    .intro-stage {
+      position: relative;
+      display: inline-block;
+      min-height: clamp(122px, 26.6vw, 334px);
+    }
+    .intro-cursor {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 22px;
+      height: 22px;
+      color: var(--primary);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 200;
+      will-change: transform;
+    }
+    .intro-cursor-icon {
+      display: block;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.15s ease;
+      filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.25));
+    }
+    .intro-cursor-icon.is-pressing { transform: scale(0.8); }
+    .intro-cursor-icon svg { width: 100%; height: 100%; display: block; }
+
+    /* Live cursor: a separate, user-recolorable cursor that tracks the
+       real mouse after the intro finishes (see cursor-color.js). The
+       intro's scripted cursor above is never touched by this. */
+    html.live-cursor-active,
+    html.live-cursor-active * {
+      cursor: none !important;
+    }
+    .live-cursor {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 20px;
+      height: 20px;
+      color: var(--live-cursor-color, var(--accent));
+      opacity: 0;
+      pointer-events: none;
+      z-index: 300;
+      will-change: transform;
+      filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.35));
+      transition: opacity 0.25s ease;
+    }
+    .live-cursor.is-active { opacity: 1; }
+    .live-cursor svg { width: 100%; height: 100%; display: block; fill: currentColor; }
+
+    /* Cursor follow: trails the live cursor with a slight lag, shown only
+       while hovering a project card, labelled with that project's name. */
+    .live-cursor-follow {
+      position: fixed;
+      top: 0;
+      left: 0;
+      transform: translate(-9999px, -9999px);
+      background: var(--live-cursor-color, var(--accent));
+      color: var(--live-cursor-text, #fff);
+      font-size: 0.8125rem;
+      font-weight: 600;
+      white-space: nowrap;
+      padding: 7px 14px;
+      border-radius: 999px;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 299;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+      transition: opacity 0.2s ease, transform 0.12s ease-out;
+    }
+    .live-cursor-follow.is-active { opacity: 1; }
+
+    /* Elements the cursor "creates" by clicking */
+    .spawn-target {
+      opacity: 0;
+      transform: scale(0.96);
+      transition: opacity 0.35s ease, transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .spawn-target.is-visible { opacity: 1; transform: scale(1); }
+
+    /* Buttons: a soft glowing light sweeps left-to-right across the shape once */
+    .spawn-target--box { position: relative; overflow: hidden; }
+    .spawn-target--box::after {
+      content: '';
+      position: absolute;
+      top: -25%;
+      left: -75%;
+      width: 55%;
+      height: 150%;
+      background: linear-gradient(100deg, transparent, color-mix(in oklab, var(--accent) 70%, white) 45%, color-mix(in oklab, var(--accent) 70%, white) 55%, transparent);
+      filter: blur(5px);
+      transform: skewX(-18deg);
+      opacity: 0;
+      pointer-events: none;
+    }
+    .spawn-target--box.is-sweeping {
+      animation: spawn-box-glow 0.95s ease-in-out forwards;
+    }
+    .spawn-target--box.is-sweeping::after {
+      animation: spawn-sweep 0.95s ease-in-out forwards;
+    }
+    @keyframes spawn-sweep {
+      0% { left: -75%; opacity: 0; }
+      40% { opacity: 0.8; }
+      100% { left: 140%; opacity: 0; }
+    }
+    @keyframes spawn-box-glow {
+      0% { box-shadow: 0 0 0 0 transparent; }
+      40% { box-shadow: 0 0 20px 2px color-mix(in oklab, var(--accent) 45%, transparent); }
+      100% { box-shadow: 0 0 0 0 transparent; }
+    }
+
+    /* Navbar: slide down + a soft glowing pulse along its bottom edge */
+    .spawn-target--nav {
+      transform: translateY(-8px);
+      transition: opacity 0.35s ease, transform 0.4s cubic-bezier(0.34,1.56,0.64,1), border-color 0.8s ease, box-shadow 0.8s ease;
+    }
+    .spawn-target--nav.is-visible { transform: translateY(0); }
+    .spawn-target--nav.is-glowing {
+      border-bottom-color: var(--accent);
+      box-shadow: 0 6px 22px -6px var(--accent);
+      transition: opacity 0.35s ease, transform 0.4s cubic-bezier(0.34,1.56,0.64,1), border-color 0.3s ease-out, box-shadow 0.3s ease-out;
+    }
+    .spawn-target--nav.is-glowing { border-bottom-color: var(--accent); }
+
+    /* The pull-switch lamp is invisible until intro.js's cursor "clicks" it
+       into being (its own reveal step, right after the color-picker box) —
+       otherwise it just sits there next to the nav from the first frame,
+       out of step with everything else on this page getting clicked into
+       existence. Only index.html has this intro sequence, so this stays
+       page-scoped here rather than in theme.css (shared by every page) —
+       elsewhere .pull-switch has no opacity rule and is visible by default. */
+    .pull-switch {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .pull-switch.is-revealed {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    @keyframes pull-switch-glow-in {
+      0% { box-shadow: 0 0 0 0 rgba(250, 204, 21, 0); }
+      45% { box-shadow: 0 0 28px 14px rgba(250, 204, 21, 0.7); }
+      100% { box-shadow: 0 0 16px 6px rgba(250, 204, 21, 0.45); }
+    }
+    @keyframes pull-switch-glow-in-dark {
+      0% { box-shadow: 0 0 0 0 rgba(31, 41, 55, 0); }
+      45% { box-shadow: 0 0 26px 12px rgba(31, 41, 55, 0.9); }
+      100% { box-shadow: 0 0 16px 5px rgba(31, 41, 55, 0.6); }
+    }
+    .pull-switch.is-revealed .pull-switch__bulb { animation: pull-switch-glow-in 0.6s ease-out; }
+    :root[data-theme="dark"] .pull-switch.is-revealed .pull-switch__bulb { animation-name: pull-switch-glow-in-dark; }
+
+    .intro-box {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 0;
+      height: 0;
+      outline: 1.5px dashed var(--accent);
+      outline-offset: 0px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-start;
+      overflow: visible;
+      transition: width 0.6s cubic-bezier(0.4,0,0.2,1), height 0.6s cubic-bezier(0.4,0,0.2,1), outline-color 0.5s ease;
+    }
+    .intro-box.is-hidden-border { outline-color: transparent; }
+    .intro-box__handle {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background: var(--surface-alt);
+      border: 1.5px solid var(--accent);
+      opacity: 1;
+      transition: opacity 0.4s ease, border-color 0.5s ease;
+    }
+    .intro-box.is-hidden-border .intro-box__handle { opacity: 0; }
+    .intro-box__handle--tl { top: -4.5px; left: -4.5px; }
+    .intro-box__handle--tr { top: -4.5px; right: -4.5px; }
+    .intro-box__handle--bl { bottom: -4.5px; left: -4.5px; }
+    .intro-box__handle--br { bottom: -4.5px; right: -4.5px; }
+    .intro-name {
+      color: var(--primary);
+      display: inline-block;
+      white-space: nowrap;
+    }
+
+    /* Color picker: replaces the old tools marquee in the same spot. The
+       cursor draws the box exactly as it did before; once drawn, this
+       panel of swatches fades in. Picking a swatch recolors the live
+       cursor (cursor-color.js) — the intro cursor itself is untouched. */
+    .color-picker {
+      position: absolute;
+      top: 13px;
+      right: 0;
+      width: 54px;
+      height: 0;
+      pointer-events: none;
+    }
+    .intro-box--overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 3;
+      opacity: 0;
+    }
+    .intro-box--overlay.is-drawing { opacity: 1; }
+    .color-picker__panel {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 16px 0;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s ease;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.1);
+      -webkit-backdrop-filter: blur(14px) saturate(1.5);
+              backdrop-filter: blur(14px) saturate(1.5);
+      border: 1px solid rgba(0, 0, 0, 0.16);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    }
+    :root[data-theme="dark"] .color-picker__panel {
+      background: rgba(255, 255, 255, 0.02);
+      border-color: rgba(255, 255, 255, 0.14);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    }
+    .color-picker.is-active .color-picker__panel {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .color-picker__grid {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 9px;
+    }
+    .color-picker__swatch {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(128,128,128,0.45);
+      cursor: pointer;
+      padding: 0;
+      position: relative;
+      transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .color-picker__swatch:hover { transform: scale(1.12); }
+    /* Replaces the old separate White/Black swatches — one option that's
+       always whichever of the two actually contrasts with the current
+       theme, instead of two that can each vanish against a matching
+       background. --primary already tracks exactly that. */
+    .color-picker__swatch--neutral { background: var(--primary); }
+    .color-picker__swatch.is-selected {
+      transform: scale(1.12);
+      box-shadow: 0 0 0 2px var(--surface-alt), 0 0 0 3.5px var(--primary);
+    }
     /* Project card hover overlay */
     .project-card .overlay {
       opacity: 0;
@@ -78,7 +400,7 @@
     .nav-link:hover::after {
       width: 100%;
     }
-    .active-filter { background:#18181B !important; color:#FAFAFA !important; border-color:#18181B !important; }
+    .active-filter { background:var(--primary) !important; color:var(--surface) !important; border-color:var(--primary) !important; }
     .filter-btn:not(.active-filter) { background:transparent; }
 
     /* Floating hero cards — liquid glass */
@@ -129,75 +451,401 @@
       35%      { transform:translate(18px,-26px) rotate(-1deg); }
       70%      { transform:translate(-6px,-40px) rotate(0.5deg); }
     }
+
+    /* ── Canvas cards: click the node, watch it connect, project reveals ── */
+    .canvas-pair {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 90px;
+      padding: 20px 0;
+    }
+    .canvas-card {
+      position: relative;
+      z-index: 2;
+      flex: 1;
+      min-width: 0;
+      aspect-ratio: 1 / 1;
+      border-radius: 16px;
+      border: 1.5px solid var(--border);
+      opacity: 0.55;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1), 0 3px 10px rgba(0, 0, 0, 0.06);
+      transition: opacity 0.4s ease, box-shadow 0.4s ease;
+    }
+    :root[data-theme="dark"] .canvas-card {
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55), 0 4px 14px rgba(0, 0, 0, 0.35);
+    }
+    .canvas-card--source:hover {
+      opacity: 0.85;
+      box-shadow: 0 18px 44px rgba(0, 0, 0, 0.14), 0 4px 14px rgba(0, 0, 0, 0.08);
+    }
+    :root[data-theme="dark"] .canvas-card--source:hover {
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65), 0 6px 18px rgba(0, 0, 0, 0.4);
+    }
+    .canvas-pair.is-connected .canvas-card--source { opacity: 1; }
+    .canvas-pair.is-connected .canvas-card--target { opacity: 1; }
+
+    /* Matches the tinted border + colored shadow each project page already
+       uses on its own content cards (e.g. border-green-100 + a green-tinted
+       shadow on StageUp's cards) — once connected, both cards here pick up
+       that same per-project accent instead of a flat neutral shadow. */
+    .canvas-pair.is-connected .canvas-card {
+      border-color: color-mix(in oklab, var(--project-color, var(--border)) 35%, var(--border));
+      box-shadow:
+        0 12px 32px rgba(0, 0, 0, 0.1),
+        0 3px 10px rgba(0, 0, 0, 0.06),
+        0 14px 34px color-mix(in oklab, var(--project-color, transparent) 22%, transparent);
+    }
+    :root[data-theme="dark"] .canvas-pair.is-connected .canvas-card {
+      box-shadow:
+        0 16px 40px rgba(0, 0, 0, 0.55),
+        0 4px 14px rgba(0, 0, 0, 0.35),
+        0 16px 40px color-mix(in oklab, var(--project-color, transparent) 30%, transparent);
+    }
+
+    /* Target card: a short rectangle for the info, not a full square — sits
+       at the bottom of the row (the connector arcs down into it from the
+       node higher up on the source card) instead of matching its height. */
+    .canvas-card--target {
+      aspect-ratio: 2.3 / 1;
+      align-self: flex-end;
+    }
+
+    /* Background/content clipping lives on this inner layer, not on
+       .canvas-card itself — the corner handles and connect node are
+       positioned to straddle the card's own border and must NOT be
+       clipped by an overflow:hidden on their parent. */
+    /* Shadow lives on this outer wrapper — it must NOT have overflow:hidden,
+       or the filter's bleed gets clipped by the same box it's rounding
+       (same conflict the connect-node/handles hit earlier). The image
+       itself + its rounded-corner clip live on the inner .canvas-card__bg. */
+    .canvas-card__bg-wrap {
+      position: absolute;
+      inset: 0;
+    }
+    .canvas-card--source .canvas-card__bg-wrap {
+      filter: drop-shadow(-10px 14px 22px rgba(0, 0, 0, 0.45));
+    }
+    .canvas-card__bg {
+      position: absolute;
+      inset: 0;
+      border-radius: 14.5px;
+      overflow: hidden;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+    /* Target cards (no image yet) still need a visible fill, so only the
+       source cards' letterbox area goes transparent — that's what lets the
+       drop-shadow above trace just the image's own silhouette instead of
+       the whole square (an opaque box would shadow its own outline, which
+       just duplicates .canvas-card's existing box-shadow and never reads
+       as a shadow ON the picture). */
+    .canvas-card--target .canvas-card__bg {
+      background-color: var(--surface-alt);
+    }
+
+    .canvas-card__handle {
+      display: none;
+    }
+
+    /* Neutral at rest (matches the site's black/white default) with a strong
+       shadow so it's the one thing that visibly pops — it's the only way to
+       reach a project, so it needs to read as "press me" on its own, without
+       borrowing a project's color before the user has even clicked. On
+       connect it briefly flashes the target project's own color (via
+       --project-color, set per-pair below) before fading out, so the color
+       reveal starts right at the node the user just pressed. */
+    .canvas-node {
+      position: absolute;
+      top: 50%;
+      right: -18px;
+      transform: translateY(-50%);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: var(--surface);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      cursor: pointer;
+      z-index: 3;
+      padding: 0;
+      box-shadow: 0 8px 22px rgba(0,0,0,0.28), 0 3px 10px rgba(0,0,0,0.16);
+      animation: canvas-node-pop 2.4s ease-in-out infinite;
+      transition: transform 0.28s cubic-bezier(0.34,1.56,0.64,1), width 0.28s ease,
+        height 0.28s ease, right 0.28s ease, background-color 0.15s ease, border-color 0.2s ease,
+        box-shadow 0.2s ease;
+    }
+    :root[data-theme="dark"] .canvas-node {
+      box-shadow: 0 8px 24px rgba(0,0,0,0.55), 0 3px 12px rgba(0,0,0,0.35);
+    }
+    @keyframes canvas-node-pop {
+      0%, 100% { box-shadow: 0 8px 22px rgba(0,0,0,0.28), 0 3px 10px rgba(0,0,0,0.16); }
+      50% { box-shadow: 0 11px 30px rgba(0,0,0,0.38), 0 4px 14px rgba(0,0,0,0.22); }
+    }
+    :root[data-theme="dark"] .canvas-node {
+      animation-name: canvas-node-pop-dark;
+    }
+    @keyframes canvas-node-pop-dark {
+      0%, 100% { box-shadow: 0 8px 24px rgba(0,0,0,0.55), 0 3px 12px rgba(0,0,0,0.35); }
+      50% { box-shadow: 0 11px 32px rgba(0,0,0,0.7), 0 4px 16px rgba(0,0,0,0.45); }
+    }
+    .canvas-node:hover { transform: translateY(-50%) scale(1.12); }
+    .canvas-node svg { width: 16px; height: 16px; transition: opacity 0.15s ease; }
+    /* Once connected, the "+" doesn't vanish — it shrinks in place into a
+       small anchor dot sitting right on the card's edge (same neutral fill
+       it always had, now ringed in the project's own color) so the line has
+       a clean, permanent point of origin instead of empty space. The width/
+       height/right values are matched (36px + right:-18px vs. 12px +
+       right:-6px) so the dot's center lands on the exact same edge point the
+       full-size "+" was centered on — see canvas-cards.js for why that
+       point matters (it's what the connector line is drawn from). */
+    .canvas-pair.is-connected .canvas-node {
+      width: 12px;
+      height: 12px;
+      right: -6px;
+      background: var(--primary);
+      border: 2px solid var(--project-color, var(--primary));
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      pointer-events: none;
+      animation: none;
+    }
+    .canvas-pair.is-connected .canvas-node svg { opacity: 0; }
+
+    .canvas-connector {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+      overflow: visible;
+    }
+    .canvas-connector path {
+      fill: none;
+      stroke: var(--project-color, var(--accent));
+      stroke-width: 2;
+      stroke-linecap: round;
+    }
+
+    .canvas-card__content {
+      position: absolute;
+      inset: 0;
+      border-radius: 14.5px;
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: color-mix(in oklab, var(--surface-alt) 94%, transparent);
+      opacity: 0;
+      transform: scale(0.96);
+      transition: opacity 0.45s ease, transform 0.45s cubic-bezier(0.34,1.56,0.64,1);
+      pointer-events: none;
+    }
+    .canvas-pair.is-connected .canvas-card__content {
+      opacity: 1;
+      transform: scale(1);
+      pointer-events: auto;
+    }
+    .canvas-card__eyebrow {
+      font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 6px;
+      transition: color 0.3s ease;
+    }
+    .canvas-pair.is-connected .canvas-card__eyebrow { color: var(--project-color, var(--accent)); }
+    .canvas-card__title {
+      font-size: 1.25rem; font-weight: 700; color: var(--primary); margin-bottom: 6px;
+      transition: color 0.3s ease;
+    }
+    .canvas-pair.is-connected .canvas-card__title { color: var(--project-color, var(--primary)); }
+
+    /* Each project's own accent, matched to its case-study page — scoped to
+       the pair so the connector/node/title only pick it up once connected,
+       keeping the site's default black/white/blue everywhere else. */
+    #canvas-monstrum { --project-color: #DC2626; }
+    #canvas-stageup { --project-color: #16A34A; }
+    #canvas-rbc { --project-color: #2563EB; }
+    :root[data-theme="dark"] #canvas-monstrum { --project-color: #F87171; }
+    :root[data-theme="dark"] #canvas-stageup { --project-color: #4ADE80; }
+    :root[data-theme="dark"] #canvas-rbc { --project-color: #60A5FA; }
+    .canvas-card__desc {
+      font-size: 0.8125rem; color: var(--secondary); line-height: 1.5;
+      display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+    }
+
+    .canvas-play {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      width: 42px;
+      height: 42px;
+      border-radius: 13px;
+      background: var(--surface-alt);
+      border: 1.5px solid var(--border);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transform: scale(0.7);
+      transition: opacity 0.4s ease 0.15s, transform 0.4s cubic-bezier(0.34,1.56,0.64,1) 0.15s, background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+      z-index: 4;
+      cursor: pointer;
+    }
+    .canvas-pair.is-connected .canvas-play { opacity: 1; transform: scale(1); }
+    .canvas-play:hover {
+      border-color: color-mix(in oklab, var(--project-color, var(--primary)) 65%, var(--border));
+      box-shadow: 0 6px 18px color-mix(in oklab, var(--project-color, var(--primary)) 35%, transparent);
+    }
+    .canvas-play svg { width: 17px; height: 17px; margin-left: 1.5px; }
+
+    @media (max-width: 640px) {
+      .canvas-pair { flex-direction: column; gap: 56px; }
+      /* flex:1 + aspect-ratio inside a column flex container resolves
+         width ambiguously (collapses toward 0) — pin width explicitly so
+         aspect-ratio has something reliable to compute height from. */
+      .canvas-card { flex: none; width: 100%; }
+      .canvas-node {
+        top: auto; bottom: -18px; right: 50%;
+        transform: translateX(50%);
+        transition: transform 0.28s cubic-bezier(0.34,1.56,0.64,1), width 0.28s ease,
+          height 0.28s ease, bottom 0.28s ease, background-color 0.15s ease, border-color 0.2s ease,
+          box-shadow 0.2s ease;
+      }
+      .canvas-node:hover { transform: translateX(50%) scale(1.12); }
+      .canvas-pair.is-connected .canvas-node { bottom: -6px; transform: translateX(50%); }
+    }
   </style>
+  <script defer src="pull-switch.js?v=10"></script>
+  <script defer src="theme.js?v=4"></script>
+  <script defer src="shimmer.js?v=2"></script>
+  <script defer src="intro.js?v=16"></script>
+  <script defer src="cursor-color.js?v=3"></script>
+  <script defer src="canvas-cards.js?v=3"></script>
 </head>
 
 <body class="bg-surface text-primary font-sans antialiased overflow-x-hidden">
 
+  <!-- Intro cursor: fixed to viewport, draws/clicks the page into existence -->
+  <span class="intro-cursor" id="intro-cursor" aria-hidden="true">
+    <span class="intro-cursor-icon" id="intro-cursor-icon">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M5.5 3.21V20.8a.5.5 0 0 0 .82.38l4.6-3.83 2.4 5.4a.5.5 0 0 0 .66.26l2.7-1.2a.5.5 0 0 0 .25-.66l-2.4-5.4 5.9-1.02a.5.5 0 0 0 .2-.9L6.03 2.8a.5.5 0 0 0-.53.41z"/></svg>
+    </span>
+  </span>
+
+  <!-- Live cursor: replaces the OS pointer after the intro finishes, color set by the picker below -->
+  <span class="live-cursor" id="live-cursor" aria-hidden="true">
+    <svg viewBox="0 0 40 40"><path d="M1.8 4.4 7 36.2c.3 1.8 2.6 2.3 3.6.8l3.9-5.7c1.7-2.5 4.5-4.1 7.5-4.3l6.9-.5c1.8-.1 2.5-2.4 1.1-3.5L5 2.5c-1.4-1.1-3.5 0-3.3 1.9Z"/></svg>
+  </span>
+  <!-- Cursor follow: small label that trails the live cursor, shown while hovering a project card -->
+  <span class="live-cursor-follow" id="live-cursor-follow" aria-hidden="true"></span>
+
   <!-- ─── NAVBAR ─────────────────────────────────────────────────────────── -->
-  <header id="home" class="fixed top-0 inset-x-0 z-50 bg-surface/90 backdrop-blur-sm border-b border-border">
-    <nav class="max-w-6xl mx-auto px-6 lg:px-8 h-16 flex items-center justify-between">
+  <header id="home" class="spawn-target spawn-target--nav fixed top-0 inset-x-0 z-50 bg-surface/90 backdrop-blur-sm border-b border-border">
+    <nav class="relative max-w-6xl mx-auto px-6 lg:px-8 h-16 flex items-center justify-between">
 
       <!-- Logo / Name — letter swap animation matching robin-noguier.com -->
       <a href="#home" id="logo-link" class="text-sm font-700 tracking-widest uppercase text-primary select-none" style="display:inline-flex">
         <span id="ly1" style="display:inline-block"><span id="lx1" style="display:inline-block"><span id="ly2" style="display:inline-block"><span id="lr1" style="display:inline-block"><span id="lr2" style="display:inline-block">A</span></span></span></span></span><span>laa El Bann</span><span id="ry1" style="display:inline-block"><span id="rx1" style="display:inline-block"><span id="ry2" style="display:inline-block"><span id="rr1" style="display:inline-block"><span id="rr2" style="display:inline-block">a</span></span></span></span></span>
       </a>
 
-      <!-- Desktop links -->
-      <ul class="hidden md:flex items-center gap-8 text-sm font-500 text-secondary">
-        <li><a href="#"     class="nav-link hover:text-primary transition-colors duration-200">Home</a></li>
-        <li><a href="#projects" class="nav-link hover:text-primary transition-colors duration-200">Projects</a></li>
-        <li><a href="#about"    class="nav-link hover:text-primary transition-colors duration-200">About</a></li>
-        <li><a href="#contact"  class="nav-link hover:text-primary transition-colors duration-200">Contact</a></li>
-      </ul>
+      <!-- Right-side group: nav links, theme toggle, mobile hamburger -->
+      <div class="flex items-center gap-6">
+        <ul class="hidden md:flex items-center gap-8 text-sm font-500 text-secondary">
+          <li><a href="#"     class="nav-link nav-link--home transition-colors duration-200">Home</a></li>
+          <li><a href="#projects" class="nav-link nav-link--projects transition-colors duration-200">Projects</a></li>
+          <li><a href="#about"    class="nav-link nav-link--about transition-colors duration-200">About</a></li>
+          <li><a href="#contact"  class="nav-link nav-link--contact transition-colors duration-200">Contact</a></li>
+        </ul>
 
-      <!-- Mobile hamburger -->
-      <button
-        id="menu-toggle"
-        class="md:hidden flex flex-col gap-1.5 cursor-pointer p-2 -mr-2"
-        aria-label="Toggle navigation"
-      >
-        <span class="block w-6 h-0.5 bg-primary transition-all duration-200" id="bar1"></span>
-        <span class="block w-6 h-0.5 bg-primary transition-all duration-200" id="bar2"></span>
-        <span class="block w-4 h-0.5 bg-primary transition-all duration-200" id="bar3"></span>
-      </button>
+        <div class="pull-switch">
+          <span class="pull-switch__cord" aria-hidden="true"></span>
+          <button type="button" class="theme-toggle pull-switch__bulb" role="switch" aria-checked="false" aria-label="Toggle dark mode"></button>
+        </div>
+
+        <!-- Mobile hamburger -->
+        <button
+          id="menu-toggle"
+          class="md:hidden flex flex-col gap-1.5 cursor-pointer p-2 -mr-2"
+          aria-label="Toggle navigation"
+        >
+          <span class="block w-6 h-0.5 bg-primary transition-all duration-200" id="bar1"></span>
+          <span class="block w-6 h-0.5 bg-primary transition-all duration-200" id="bar2"></span>
+          <span class="block w-4 h-0.5 bg-primary transition-all duration-200" id="bar3"></span>
+        </button>
+      </div>
     </nav>
 
     <!-- Mobile menu -->
     <div id="mobile-menu" class="hidden md:hidden border-t border-border bg-surface/95 backdrop-blur-sm">
       <ul class="flex flex-col px-6 py-4 gap-4 text-sm font-500 text-secondary">
-        <li><a href="#"     class="hover:text-primary transition-colors" onclick="closeMobileMenu()">Home</a></li>
-        <li><a href="#projects" class="hover:text-primary transition-colors" onclick="closeMobileMenu()">Projects</a></li>
-        <li><a href="#about"    class="hover:text-primary transition-colors" onclick="closeMobileMenu()">About</a></li>
-        <li><a href="#contact"  class="hover:text-primary transition-colors" onclick="closeMobileMenu()">Contact</a></li>
+        <li><a href="#"     class="nav-link--home transition-colors" onclick="closeMobileMenu()">Home</a></li>
+        <li><a href="#projects" class="nav-link--projects transition-colors" onclick="closeMobileMenu()">Projects</a></li>
+        <li><a href="#about"    class="nav-link--about transition-colors" onclick="closeMobileMenu()">About</a></li>
+        <li><a href="#contact"  class="nav-link--contact transition-colors" onclick="closeMobileMenu()">Contact</a></li>
       </ul>
     </div>
   </header>
 
 
   <!-- ─── HERO ───────────────────────────────────────────────────────────── -->
-  <section class="pt-32 pb-20 md:pt-44 md:pb-28 bg-white">
-    <div class="max-w-6xl mx-auto px-6 lg:px-8 w-full">
+  <section class="pt-32 pb-20 md:pt-44 md:pb-28 bg-surface-alt hero-canvas" id="hero-canvas">
+    <div class="hero-dots" aria-hidden="true">
+      <div class="hero-dots__base"></div>
+      <div class="hero-dots__spotlight"></div>
+    </div>
+    <div class="max-w-6xl mx-auto px-6 lg:px-8 w-full relative z-10">
 
-      <!-- Headline -->
-      <h1 class="reveal font-900 leading-[0.95] tracking-tighter text-primary" style="font-size: clamp(4rem, 14vw, 11rem); transition-delay: 0.1s">
-        Alaa<br />El Banna
-      </h1>
+      <!-- Color picker: fills the empty space beside the name; the cursor
+           draws this box the same way it drew the name/buttons, then the
+           swatch panel fades in. Picking a color recolors the live cursor. -->
+      <div class="color-picker hidden lg:block" id="color-picker" aria-hidden="true">
+        <div class="color-picker__panel" id="color-picker-panel">
+          <div class="color-picker__grid" id="color-picker-grid" title="Click to change your cursor color">
+            <button type="button" class="color-picker__swatch color-picker__swatch--neutral" data-color="neutral" aria-label="Black or white, matching the current theme"></button>
+            <button type="button" class="color-picker__swatch" style="background:#EF4444" data-color="#EF4444" aria-label="Red"></button>
+            <button type="button" class="color-picker__swatch" style="background:#F97316" data-color="#F97316" aria-label="Orange"></button>
+            <button type="button" class="color-picker__swatch" style="background:#F59E0B" data-color="#F59E0B" aria-label="Amber"></button>
+            <button type="button" class="color-picker__swatch" style="background:#22C55E" data-color="#22C55E" aria-label="Green"></button>
+            <button type="button" class="color-picker__swatch" style="background:#06B6D4" data-color="#06B6D4" aria-label="Cyan"></button>
+            <button type="button" class="color-picker__swatch" style="background:#3B82F6" data-color="#3B82F6" aria-label="Blue"></button>
+            <button type="button" class="color-picker__swatch" style="background:#8B5CF6" data-color="#8B5CF6" aria-label="Violet"></button>
+            <button type="button" class="color-picker__swatch" style="background:#EC4899" data-color="#EC4899" aria-label="Pink"></button>
+          </div>
+        </div>
+        <div class="intro-box intro-box--overlay" id="marquee-box">
+          <span class="intro-box__handle intro-box__handle--tl"></span>
+          <span class="intro-box__handle intro-box__handle--tr"></span>
+          <span class="intro-box__handle intro-box__handle--bl"></span>
+          <span class="intro-box__handle intro-box__handle--br"></span>
+        </div>
+      </div>
 
-      <!-- Divider -->
-      <div class="reveal w-full h-px bg-border mt-10 mb-10" style="transition-delay: 0.15s"></div>
+      <!-- Headline: cursor draws a box, types the name -->
+      <div class="intro-stage" id="intro-stage">
+        <div class="intro-box" id="intro-box">
+          <span class="intro-box__handle intro-box__handle--tl"></span>
+          <span class="intro-box__handle intro-box__handle--tr"></span>
+          <span class="intro-box__handle intro-box__handle--bl"></span>
+          <span class="intro-box__handle intro-box__handle--br"></span>
+          <h1 class="intro-name font-900 leading-[0.95] tracking-tighter" id="intro-name" style="font-size: clamp(4rem, 14vw, 11rem);"><span id="intro-line1"></span><br><span id="intro-line2"></span></h1>
+        </div>
+      </div>
 
       <!-- Tagline + CTA row -->
-      <div class="reveal flex flex-col sm:flex-row sm:items-end justify-between gap-8" style="transition-delay: 0.2s">
-        <p class="text-lg md:text-xl font-400 text-secondary max-w-xl leading-relaxed">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-8 mt-20">
+        <p class="spawn-target text-lg md:text-xl font-400 text-secondary max-w-xl leading-relaxed" id="hero-tagline-text">
           Blending UX/UI, AI, and creative technology to build user-centered digital experiences.
         </p>
         <div class="flex flex-wrap gap-3 shrink-0">
-          <a href="#projects" class="inline-flex items-center gap-2 bg-primary text-surface text-sm font-600 px-6 py-3 rounded-full hover:bg-secondary transition-colors duration-200 cursor-pointer">
+          <a href="#projects" id="btn-view-work" class="spawn-target spawn-target--box inline-flex items-center gap-2 bg-primary text-surface text-sm font-600 px-6 py-3 rounded-full hover:bg-secondary transition-colors duration-200 cursor-pointer">
             View Work
             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
           </a>
-          <a href="#contact" class="inline-flex items-center gap-2 border border-border text-primary text-sm font-600 px-6 py-3 rounded-full hover:border-secondary hover:bg-border/40 transition-colors duration-200 cursor-pointer">
+          <a href="#contact" id="btn-get-in-touch" class="spawn-target spawn-target--box inline-flex items-center gap-2 border border-border text-primary text-sm font-600 px-6 py-3 rounded-full hover:border-secondary hover:bg-border/40 transition-colors duration-200 cursor-pointer">
             Get in Touch
           </a>
         </div>
@@ -208,8 +856,12 @@
 
 
   <!-- ─── PROJECTS ───────────────────────────────────────────────────────── -->
-  <section id="projects" class="py-24 md:py-32 bg-white border-t border-border">
-    <div class="max-w-6xl mx-auto px-6 lg:px-8">
+  <section id="projects" class="relative py-24 md:py-32 bg-surface-alt overflow-hidden">
+    <div class="dot-patch dot-patch--xl" style="top: 0%; left: -80px;" aria-hidden="true"></div>
+    <div class="dot-patch dot-patch--sm" style="bottom: 8%; right: 2%;" aria-hidden="true"></div>
+    <div class="dot-patch dot-patch--lg" style="top: 38%; right: -70px;" aria-hidden="true"></div>
+    <div class="dot-patch dot-patch--md" style="top: 66%; left: -50px;" aria-hidden="true"></div>
+    <div class="max-w-6xl mx-auto px-6 lg:px-8 relative z-10">
 
       <!-- Section header -->
       <div class="reveal mb-10">
@@ -218,77 +870,110 @@
       </div>
 
 
-      <!-- Grid -->
-      <div class="flex flex-col gap-6">
+      <!-- Grid: click the "+" node on each card to connect it and reveal the project -->
+      <div class="flex flex-col gap-16">
 
-        <!-- Card 1 — Monstrum (Coming Soon) -->
-        <a href="monstrum.html" data-category="product-design" class="project-card flex flex-col sm:flex-row rounded-2xl overflow-hidden border border-border bg-surface hover:shadow-xl hover:shadow-black/5 transition-all duration-300">
-          <div class="relative bg-[#FFF1F2] sm:w-2/5 h-64 sm:h-auto flex items-center justify-center p-6 overflow-hidden shrink-0">
-            <img src="img/monstrum.jpeg" alt="Monstrum" class="max-h-full max-w-full object-contain rounded-2xl drop-shadow-lg" />
-            <div class="overlay absolute inset-0 bg-primary/70 flex items-end p-6">
-              <span class="text-surface text-sm font-500">View Project →</span>
+        <!-- Pair 1 — Monstrum -->
+        <div class="canvas-pair" id="canvas-monstrum">
+          <div class="canvas-card canvas-card--source" data-cursor-label="Monstrum / Web">
+            <div class="canvas-card__bg-wrap">
+              <div class="canvas-card__bg" style="background-image:url('img/monstrum-bk.png'); background-position: top right;"></div>
             </div>
-            <div class="absolute top-4 left-4">
-              <span class="inline-flex items-center gap-1.5 text-xs font-700 px-3 py-1.5 rounded-full bg-primary text-surface tracking-widest uppercase">
-                <span class="w-1.5 h-1.5 rounded-full bg-accent animate-pulse inline-block"></span>
-                Coming Soon
-              </span>
-            </div>
+            <span class="canvas-card__handle canvas-card__handle--tl"></span>
+            <span class="canvas-card__handle canvas-card__handle--tr"></span>
+            <span class="canvas-card__handle canvas-card__handle--bl"></span>
+            <span class="canvas-card__handle canvas-card__handle--br"></span>
+            <button type="button" class="canvas-node" data-cursor-label="Click to connect" aria-label="Connect to reveal Monstrum">
+              <svg viewBox="0 0 20 20" fill="none"><path d="M10 4v12M4 10h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            </button>
           </div>
-          <div class="p-8 flex flex-col justify-center">
-            <p class="text-xs font-600 tracking-widest uppercase text-red-500 mb-2">AI-Powered Content Growth Engine · SaaS</p>
-            <h3 class="text-2xl font-700 text-primary mb-3">Monstrum</h3>
-            <p class="text-sm font-400 text-secondary leading-relaxed">Building an AI-powered content growth engine for Monstrum — designing the end-client experience and internal dashboard for a 12-agent pipeline that automates content creation, optimization, and publishing across SEO, AEO, and GEO.</p>
-            <div class="mt-4 flex flex-wrap gap-2">
-              <span class="text-xs font-500 px-3 py-1 rounded-full bg-[#FFF1F2] text-red-500 border border-red-100">AI Design</span>
-              <span class="text-xs font-500 px-3 py-1 rounded-full bg-[#FFF1F2] text-red-500 border border-red-100">Product Design</span>
-              <span class="text-xs font-500 px-3 py-1 rounded-full bg-[#FFF1F2] text-red-500 border border-red-100">SaaS</span>
+          <svg class="canvas-connector">
+            <path />
+          </svg>
+          <div class="canvas-card canvas-card--target">
+            <span class="canvas-card__handle canvas-card__handle--tl"></span>
+            <span class="canvas-card__handle canvas-card__handle--tr"></span>
+            <span class="canvas-card__handle canvas-card__handle--bl"></span>
+            <span class="canvas-card__handle canvas-card__handle--br"></span>
+            <div class="canvas-card__content">
+              <p class="canvas-card__eyebrow">UX / UI · Product Design</p>
+              <h3 class="canvas-card__title">Monstrum</h3>
+              <p class="canvas-card__desc">Building an AI-powered content growth engine for Monstrum — designing the end-client experience and internal dashboard for a 12-agent pipeline that automates content creation, optimization, and publishing across SEO, AEO, and GEO.</p>
             </div>
+            <a href="monstrum.html" data-cursor-label="View Project" class="canvas-play">
+              <svg viewBox="0 0 20 20" fill="currentColor" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"><path d="M7 5v10l7.5-5-7.5-5z"/></svg>
+            </a>
           </div>
-        </a>
+        </div>
 
-        <!-- Card 2 — StageUP -->
-        <a href="stageup.html" data-category="product-design" class="project-card flex flex-col sm:flex-row rounded-2xl overflow-hidden border border-border bg-surface hover:shadow-xl hover:shadow-black/5 transition-all duration-300">
-          <div class="relative bg-[#F0FDF4] sm:w-2/5 h-64 sm:h-auto flex items-center justify-center p-6 overflow-hidden shrink-0">
-            <img src="img/stageup.jpeg" alt="StageUp Mobile App" class="max-h-full max-w-full object-contain rounded-2xl drop-shadow-lg" />
-            <div class="overlay absolute inset-0 bg-primary/70 flex items-end p-6">
-              <span class="text-surface text-sm font-500">View Project →</span>
+        <!-- Pair 2 — StageUp -->
+        <div class="canvas-pair" id="canvas-stageup">
+          <div class="canvas-card canvas-card--source" data-cursor-label="StageUp / Mobile">
+            <div class="canvas-card__bg-wrap">
+              <div class="canvas-card__bg" style="background-image:url('img/stage-bk.png'); background-position: top right;"></div>
             </div>
+            <span class="canvas-card__handle canvas-card__handle--tl"></span>
+            <span class="canvas-card__handle canvas-card__handle--tr"></span>
+            <span class="canvas-card__handle canvas-card__handle--bl"></span>
+            <span class="canvas-card__handle canvas-card__handle--br"></span>
+            <button type="button" class="canvas-node" data-cursor-label="Click to connect" aria-label="Connect to reveal StageUp">
+              <svg viewBox="0 0 20 20" fill="none"><path d="M10 4v12M4 10h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            </button>
           </div>
-          <div class="p-8 flex flex-col justify-center">
-            <p class="text-xs font-600 tracking-widest uppercase text-green-600 mb-2">Product Design</p>
-            <h3 class="text-2xl font-700 text-primary mb-3">StageUp Mobile App</h3>
-            <p class="text-sm font-400 text-secondary leading-relaxed">A product that unifies fragmented learning across platforms into one clear career growth experience.</p>
-            <div class="mt-4 flex flex-wrap gap-2">
-              <span class="text-xs font-500 px-3 py-1 rounded-full bg-[#F0FDF4] text-green-600 border border-green-100">UX Research</span>
-              <span class="text-xs font-500 px-3 py-1 rounded-full bg-[#F0FDF4] text-green-600 border border-green-100">Product Design</span>
-              <span class="text-xs font-500 px-3 py-1 rounded-full bg-[#F0FDF4] text-green-600 border border-green-100">Mobile</span>
+          <svg class="canvas-connector">
+            <path />
+          </svg>
+          <div class="canvas-card canvas-card--target">
+            <span class="canvas-card__handle canvas-card__handle--tl"></span>
+            <span class="canvas-card__handle canvas-card__handle--tr"></span>
+            <span class="canvas-card__handle canvas-card__handle--bl"></span>
+            <span class="canvas-card__handle canvas-card__handle--br"></span>
+            <div class="canvas-card__content">
+              <p class="canvas-card__eyebrow">UX / UI · Product Design</p>
+              <h3 class="canvas-card__title">StageUp Mobile App</h3>
+              <p class="canvas-card__desc">A product that unifies fragmented learning across platforms into one clear career growth experience.</p>
             </div>
+            <a href="stageup.html" data-cursor-label="View Project" class="canvas-play">
+              <svg viewBox="0 0 20 20" fill="currentColor" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"><path d="M7 5v10l7.5-5-7.5-5z"/></svg>
+            </a>
           </div>
-        </a>
+        </div>
 
-        <!-- Card 3 — RBC Mobile App -->
-        <a href="rbc.html" data-category="product-design" class="project-card flex flex-col sm:flex-row rounded-2xl overflow-hidden border border-border bg-surface hover:shadow-xl hover:shadow-black/5 transition-all duration-300">
-          <div class="relative bg-[#EFF6FF] sm:w-2/5 h-64 sm:h-auto flex items-center justify-center p-6 overflow-hidden shrink-0">
-            <img src="img/rbc1.jpeg" alt="RBC Mobile App" class="max-h-full max-w-full object-contain rounded-2xl drop-shadow-lg" />
-            <div class="overlay absolute inset-0 bg-primary/70 flex items-end p-6">
-              <span class="text-surface text-sm font-500">View Project →</span>
+        <!-- Pair 3 — RBC -->
+        <div class="canvas-pair" id="canvas-rbc">
+          <div class="canvas-card canvas-card--source" data-cursor-label="RBC / Mobile">
+            <div class="canvas-card__bg-wrap">
+              <div class="canvas-card__bg" style="background-image:url('img/rbc-page-tight.png'); background-position: top right;"></div>
             </div>
+            <span class="canvas-card__handle canvas-card__handle--tl"></span>
+            <span class="canvas-card__handle canvas-card__handle--tr"></span>
+            <span class="canvas-card__handle canvas-card__handle--bl"></span>
+            <span class="canvas-card__handle canvas-card__handle--br"></span>
+            <button type="button" class="canvas-node" data-cursor-label="Click to connect" aria-label="Connect to reveal RBC Mobile App">
+              <svg viewBox="0 0 20 20" fill="none"><path d="M10 4v12M4 10h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            </button>
           </div>
-          <div class="p-8 flex flex-col justify-center">
-            <p class="text-xs font-600 tracking-widest uppercase text-accent mb-2">Product Design</p>
-            <h3 class="text-2xl font-700 text-primary mb-3">RBC Mobile App</h3>
-            <p class="text-sm font-400 text-secondary leading-relaxed">Redesigning mobile banking for one of Canada's largest financial institutions.</p>
-            <div class="mt-4 flex flex-wrap gap-2">
-              <span class="text-xs font-500 px-3 py-1 rounded-full bg-[#EFF6FF] text-blue-600 border border-blue-100">UX Research</span>
-              <span class="text-xs font-500 px-3 py-1 rounded-full bg-[#EFF6FF] text-blue-600 border border-blue-100">Product Design</span>
-              <span class="text-xs font-500 px-3 py-1 rounded-full bg-[#EFF6FF] text-blue-600 border border-blue-100">Mobile</span>
+          <svg class="canvas-connector">
+            <path />
+          </svg>
+          <div class="canvas-card canvas-card--target">
+            <span class="canvas-card__handle canvas-card__handle--tl"></span>
+            <span class="canvas-card__handle canvas-card__handle--tr"></span>
+            <span class="canvas-card__handle canvas-card__handle--bl"></span>
+            <span class="canvas-card__handle canvas-card__handle--br"></span>
+            <div class="canvas-card__content">
+              <p class="canvas-card__eyebrow">UX / UI · Product Design</p>
+              <h3 class="canvas-card__title">RBC Mobile App</h3>
+              <p class="canvas-card__desc">Redesigning mobile banking for one of Canada's largest financial institutions.</p>
             </div>
+            <a href="rbc.html" data-cursor-label="View Project" class="canvas-play">
+              <svg viewBox="0 0 20 20" fill="currentColor" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"><path d="M7 5v10l7.5-5-7.5-5z"/></svg>
+            </a>
           </div>
-        </a>
+        </div>
 
         <!-- Card 4 — Alexa "i" -->
-        <a href="alexa-i.html" data-category="ai-creative" class="project-card flex flex-col sm:flex-row rounded-2xl overflow-hidden border border-border bg-surface hover:shadow-xl hover:shadow-black/5 transition-all duration-300 hidden">
+        <a href="alexa-i.html" data-category="ai-creative" data-cursor-label="Alexa &quot;i&quot; / Web" class="project-card flex flex-col sm:flex-row rounded-2xl overflow-hidden border border-border bg-surface hover:shadow-xl hover:shadow-black/5 transition-all duration-300 hidden">
           <div class="relative bg-[#F4F4F5] sm:w-2/5 h-64 sm:h-auto flex items-center justify-center p-6 overflow-hidden shrink-0">
             <img src="img/alexa.jpeg" alt="Alexa i" class="max-h-full max-w-full object-contain rounded-2xl drop-shadow-lg" />
             <div class="overlay absolute inset-0 bg-primary/70 flex items-end p-6">
@@ -303,7 +988,7 @@
         </a>
 
         <!-- Card 5 — Red Team Project -->
-        <a href="red-team.html" data-category="ai-creative" class="project-card flex flex-col sm:flex-row rounded-2xl overflow-hidden border border-border bg-surface hover:shadow-xl hover:shadow-black/5 transition-all duration-300 hidden">
+        <a href="red-team.html" data-category="ai-creative" data-cursor-label="Red Team / Web" class="project-card flex flex-col sm:flex-row rounded-2xl overflow-hidden border border-border bg-surface hover:shadow-xl hover:shadow-black/5 transition-all duration-300 hidden">
           <div class="relative bg-[#FFF1F2] sm:w-2/5 h-64 sm:h-auto flex items-center justify-center p-6 overflow-hidden shrink-0">
             <img src="img/redteam.jpeg" alt="Red Team Project" class="max-h-full max-w-full object-contain rounded-2xl drop-shadow-lg" />
             <div class="overlay absolute inset-0 bg-primary/70 flex items-end p-6">
@@ -323,8 +1008,10 @@
 
 
   <!-- ─── ABOUT ──────────────────────────────────────────────────────────── -->
-  <section id="about" class="py-24 md:py-32 border-t border-border bg-white">
-    <div class="max-w-6xl mx-auto px-6 lg:px-8">
+  <section id="about" class="relative py-24 md:py-32 border-t border-border bg-surface-alt overflow-hidden">
+    <div class="dot-patch dot-patch--lg" style="top: -10%; right: -60px;" aria-hidden="true"></div>
+    <div class="dot-patch dot-patch--sm" style="bottom: 6%; left: 6%;" aria-hidden="true"></div>
+    <div class="max-w-6xl mx-auto px-6 lg:px-8 relative z-10">
 
       <div class="max-w-3xl">
 
@@ -371,8 +1058,10 @@
 
 
   <!-- ─── CONTACT ────────────────────────────────────────────────────────── -->
-  <section id="contact" class="py-24 md:py-32 border-t border-border bg-primary text-surface">
-    <div class="max-w-6xl mx-auto px-6 lg:px-8">
+  <section id="contact" class="relative py-24 md:py-32 border-t border-border bg-ink text-on-ink overflow-hidden">
+    <div class="dot-patch dot-patch--on-dark dot-patch--lg" style="top: -8%; right: -40px;" aria-hidden="true"></div>
+    <div class="dot-patch dot-patch--on-dark dot-patch--sm" style="bottom: 10%; left: -30px;" aria-hidden="true"></div>
+    <div class="max-w-6xl mx-auto px-6 lg:px-8 relative z-10">
 
       <div class="max-w-2xl">
         <p class="reveal text-xs font-600 tracking-[0.25em] uppercase text-accent mb-3">Get in Touch</p>
@@ -387,16 +1076,16 @@
             class="group flex items-center gap-4 p-5 border border-white/10 rounded-xl hover:border-white/30 hover:bg-white/5 transition-all duration-200 cursor-pointer"
           >
             <div class="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center shrink-0">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-surface/70" viewBox="0 0 20 20" fill="currentColor">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-on-ink/70" viewBox="0 0 20 20" fill="currentColor">
                 <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
                 <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
               </svg>
             </div>
             <div>
-              <p class="text-xs text-surface/40 font-500 uppercase tracking-widest mb-0.5">Email</p>
-              <p class="text-sm font-600 text-surface group-hover:text-accent transition-colors duration-200">alaabanna6@gmail.com</p>
+              <p class="text-xs text-on-ink/40 font-500 uppercase tracking-widest mb-0.5">Email</p>
+              <p class="text-sm font-600 text-on-ink group-hover:text-accent transition-colors duration-200">alaabanna6@gmail.com</p>
             </div>
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 ml-auto text-surface/30 group-hover:text-surface/60 transition-colors duration-200" viewBox="0 0 20 20" fill="currentColor">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 ml-auto text-on-ink/30 group-hover:text-on-ink/60 transition-colors duration-200" viewBox="0 0 20 20" fill="currentColor">
               <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
             </svg>
           </a>
@@ -409,15 +1098,15 @@
             class="group flex items-center gap-4 p-5 border border-white/10 rounded-xl hover:border-white/30 hover:bg-white/5 transition-all duration-200 cursor-pointer"
           >
             <div class="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center shrink-0">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-surface/70" viewBox="0 0 24 24" fill="currentColor">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-on-ink/70" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
               </svg>
             </div>
             <div>
-              <p class="text-xs text-surface/40 font-500 uppercase tracking-widest mb-0.5">LinkedIn</p>
-              <p class="text-sm font-600 text-surface group-hover:text-accent transition-colors duration-200">linkedin.com/in/alaa-banna</p>
+              <p class="text-xs text-on-ink/40 font-500 uppercase tracking-widest mb-0.5">LinkedIn</p>
+              <p class="text-sm font-600 text-on-ink group-hover:text-accent transition-colors duration-200">linkedin.com/in/alaa-banna</p>
             </div>
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 ml-auto text-surface/30 group-hover:text-surface/60 transition-colors duration-200" viewBox="0 0 20 20" fill="currentColor">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 ml-auto text-on-ink/30 group-hover:text-on-ink/60 transition-colors duration-200" viewBox="0 0 20 20" fill="currentColor">
               <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
             </svg>
           </a>
@@ -425,18 +1114,18 @@
           <!-- Resume -->
           <div class="group flex items-center gap-4 p-5 border border-white/10 rounded-xl hover:border-white/30 hover:bg-white/5 transition-all duration-200">
             <div class="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center shrink-0">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-surface/70" viewBox="0 0 20 20" fill="currentColor">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-on-ink/70" viewBox="0 0 20 20" fill="currentColor">
                 <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd" />
               </svg>
             </div>
             <div class="flex-1">
-              <p class="text-xs text-surface/40 font-500 uppercase tracking-widest mb-0.5">Resume</p>
-              <p class="text-sm font-600 text-surface">Alaa El Banna — Resume</p>
+              <p class="text-xs text-on-ink/40 font-500 uppercase tracking-widest mb-0.5">Resume</p>
+              <p class="text-sm font-600 text-on-ink">Alaa El Banna — Resume</p>
             </div>
             <div class="flex items-center gap-3 ml-auto">
-              <a href="Alaa El Banna Resume.pdf" target="_blank" rel="noopener noreferrer" class="text-xs font-600 text-surface/50 hover:text-accent transition-colors duration-200 cursor-pointer">View</a>
-              <span class="text-surface/20">|</span>
-              <a href="Alaa El Banna Resume.pdf" download="Alaa El Banna Resume.pdf" class="text-xs font-600 text-surface/50 hover:text-accent transition-colors duration-200 cursor-pointer">Download</a>
+              <a href="Alaa El Banna Resume.pdf" target="_blank" rel="noopener noreferrer" class="text-xs font-600 text-on-ink/50 hover:text-accent transition-colors duration-200 cursor-pointer">View</a>
+              <span class="text-on-ink/20">|</span>
+              <a href="Alaa El Banna Resume.pdf" download="Alaa El Banna Resume.pdf" class="text-xs font-600 text-on-ink/50 hover:text-accent transition-colors duration-200 cursor-pointer">Download</a>
             </div>
           </div>
 
@@ -447,8 +1136,8 @@
 
 
   <!-- ─── FOOTER ─────────────────────────────────────────────────────────── -->
-  <footer class="bg-primary border-t border-white/5 py-8">
-    <div class="max-w-6xl mx-auto px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4 text-surface/30 text-xs font-500">
+  <footer class="bg-ink border-t border-white/5 py-8">
+    <div class="max-w-6xl mx-auto px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4 text-on-ink/30 text-xs font-500">
       <p>© 2024 Alaa El Banna. All rights reserved.</p>
       <p>Product Designer · Toronto, Canada</p>
     </div>
@@ -636,6 +1325,46 @@
         }
       });
     }
+  </script>
+
+  <!-- Hero dot-grid spotlight: brightens dots near the cursor -->
+  <script>
+    (function () {
+      const canvas = document.getElementById('hero-canvas');
+      if (!canvas) return;
+
+      let pending = false;
+      let lastClientX = 0, lastClientY = 0;
+
+      // Measure fresh every frame instead of caching the rect on
+      // mouseenter/resize — scrolling with the mouse stationary moves the
+      // canvas under the cursor without firing either of those events, so a
+      // cached rect goes stale and the spotlight drifts away from the
+      // actual cursor position.
+      function apply() {
+        pending = false;
+        const rect = canvas.getBoundingClientRect();
+        canvas.style.setProperty('--mx', (lastClientX - rect.left) + 'px');
+        canvas.style.setProperty('--my', (lastClientY - rect.top) + 'px');
+      }
+
+      canvas.addEventListener('mouseenter', () => {
+        canvas.classList.add('is-hovering');
+      });
+
+      canvas.addEventListener('mousemove', (e) => {
+        lastClientX = e.clientX;
+        lastClientY = e.clientY;
+        if (!pending) {
+          pending = true;
+          requestAnimationFrame(apply);
+        }
+      });
+
+      canvas.addEventListener('mouseleave', () => {
+        canvas.classList.remove('is-hovering');
+      });
+    })();
   </script>
 
 </body>

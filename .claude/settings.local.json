@@ -1,13 +1,21 @@
 {
   "permissions": {
     "allow": [
-      "WebFetch(domain:alaabanna.com)",
-      "mcp__Claude_in_Chrome__tabs_context_mcp",
-      "Bash(python3 ~/.claude/skills/ui-ux-pro-max/scripts/search.py \"modern professional elegant\" --domain typography)",
-      "Bash(python3 ~/.claude/skills/ui-ux-pro-max/scripts/search.py \"portfolio designer\" --domain color)",
-      "Bash(python3 ~/.claude/skills/ui-ux-pro-max/scripts/search.py \"portfolio storytelling hero\" --domain landing)",
-      "Bash(python3 ~/.claude/skills/ui-ux-pro-max/scripts/search.py \"animation scroll\" --domain ux)",
-      "Bash(python3 ~/.claude/skills/ui-ux-pro-max/scripts/search.py \"layout responsive\" --stack html-tailwind)"
+      "Bash(python3 \"/private/tmp/claude-501/-Users-alaabanna-Desktop-Draft-Alaa/08e19ad3-5aad-47bd-93e5-58e960b0ed51/scratchpad/reposition_toggle.py\")",
+      "Bash(python3 -)",
+      "Bash(grep -n 'HERO\\\\|bg-surface-alt\\\\\">$\\\\|Headline\\\\|Divider\\\\|Tagline\\\\|reveal w-full\\\\|reveal flex flex-col' \"/Users/alaabanna/Desktop/Draft Alaa/index.html\")",
+      "Bash(awk 'NR==673,NR==855{if\\($0 ~ /<\\\\/script>/\\) print NR\": \"$0}' \"/Users/alaabanna/Desktop/Alaa NEW Port/index.html\")",
+      "Bash(nohup python3 -m http.server 8743)",
+      "Bash(curl -sI http://localhost:8743/index.html)",
+      "Bash(pkill -f \"http.server 8743\")",
+      "Bash(curl -s http://localhost:8743/theme.css)",
+      "Bash(sips -g hasAlpha -g format \"Stage-one.jpg\")",
+      "Bash(sips -g hasAlpha -g format -g pixelWidth -g pixelHeight \"stage-bk.png\")",
+      "Bash(sips -g hasAlpha -g format -g pixelWidth -g pixelHeight \"monstrum-bk.png\")",
+      "Bash(lsof -nP -iTCP:8743 -sTCP:LISTEN)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git push *)"
     ]
   }
 }

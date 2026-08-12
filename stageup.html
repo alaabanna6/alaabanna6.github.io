@@ -5,6 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>StageUp Mobile App — Alaa El Banna</title>
 
+  <!-- Theme: set before first paint to avoid a flash of the wrong theme -->
+  <script>
+    (function () {
+      var t = localStorage.getItem('theme');
+      if (t !== 'light' && t !== 'dark') {
+        t = 'dark'; // default for first-time visitors (no stored choice yet)
+      }
+      document.documentElement.setAttribute('data-theme', t);
+    })();
+  </script>
+  <link rel="stylesheet" href="theme.css?v=10" />
+
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -12,11 +24,14 @@
         extend: {
           fontFamily: { sans: ['Montserrat', 'sans-serif'] },
           colors: {
-            primary:   '#18181B',
-            secondary: '#3F3F46',
-            accent:    '#16A34A',
-            surface:   '#FAFAFA',
-            border:    '#E4E4E7',
+            primary:      'var(--primary)',
+            secondary:    'var(--secondary)',
+            accent:       'var(--accent)',
+            surface:      'var(--surface)',
+            'surface-alt':'var(--surface-alt)',
+            border:       'var(--border)',
+            ink:          '#18181B',
+            'on-ink':     '#FAFAFA',
           },
         },
       },
@@ -27,6 +42,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
 
   <style>
+    :root { --accent: #16A34A; }
+    :root[data-theme="dark"] { --accent: #4ADE80; }
+
     .reveal { opacity:0; transform:translateY(20px); transition:opacity .6s ease,transform .6s ease; }
     .reveal.visible { opacity:1; transform:translateY(0); }
     .nav-link { position:relative; }
@@ -35,40 +53,52 @@
     .read-more-extra { display:none; }
     .read-more-extra.open { display:block; }
   </style>
+  <script defer src="pull-switch.js?v=10"></script>
+  <script defer src="theme.js?v=4"></script>
 </head>
 
 <body class="bg-surface text-primary font-sans antialiased overflow-x-hidden">
 
   <!-- ─── NAVBAR ─────────────────────────────────────────────────────────── -->
   <header class="fixed top-0 inset-x-0 z-50 bg-surface/90 backdrop-blur-sm border-b border-border">
-    <nav class="max-w-6xl mx-auto px-6 lg:px-8 h-16 flex items-center justify-between">
+    <nav class="relative max-w-6xl mx-auto px-6 lg:px-8 h-16 flex items-center justify-between">
       <a href="index.html" class="text-sm font-700 tracking-widest uppercase text-primary">Alaa El Banna</a>
-      <ul class="hidden md:flex items-center gap-8 text-sm font-500 text-secondary">
-        <li><a href="index.html#home"     class="nav-link hover:text-primary transition-colors duration-200">Home</a></li>
-        <li><a href="index.html#projects" class="nav-link hover:text-primary transition-colors duration-200">Projects</a></li>
-        <li><a href="index.html#about"    class="nav-link hover:text-primary transition-colors duration-200">About</a></li>
-        <li><a href="index.html#contact"  class="nav-link hover:text-primary transition-colors duration-200">Contact</a></li>
+      <div class="flex items-center gap-6">
+        <ul class="hidden md:flex items-center gap-8 text-sm font-500 text-secondary">
+        <li><a href="index.html#home"     class="nav-link nav-link--home transition-colors duration-200">Home</a></li>
+        <li><a href="index.html#projects" class="nav-link nav-link--projects transition-colors duration-200">Projects</a></li>
+        <li><a href="index.html#about"    class="nav-link nav-link--about transition-colors duration-200">About</a></li>
+        <li><a href="index.html#contact"  class="nav-link nav-link--contact transition-colors duration-200">Contact</a></li>
       </ul>
-      <button id="menu-toggle" class="md:hidden flex flex-col gap-1.5 cursor-pointer p-2 -mr-2" aria-label="Toggle navigation">
+
+        <div class="pull-switch">
+          <span class="pull-switch__cord" aria-hidden="true"></span>
+          <button type="button" class="theme-toggle pull-switch__bulb" role="switch" aria-checked="false" aria-label="Toggle dark mode"></button>
+        </div>
+
+        <button id="menu-toggle" class="md:hidden flex flex-col gap-1.5 cursor-pointer p-2 -mr-2" aria-label="Toggle navigation">
         <span class="block w-6 h-0.5 bg-primary"></span>
         <span class="block w-6 h-0.5 bg-primary"></span>
         <span class="block w-4 h-0.5 bg-primary"></span>
       </button>
+      </div>
     </nav>
     <div id="mobile-menu" class="hidden md:hidden border-t border-border bg-surface/95 backdrop-blur-sm">
       <ul class="flex flex-col px-6 py-4 gap-4 text-sm font-500 text-secondary">
-        <li><a href="index.html#home"     onclick="closeMobileMenu()">Home</a></li>
-        <li><a href="index.html#projects" onclick="closeMobileMenu()">Projects</a></li>
-        <li><a href="index.html#about"    onclick="closeMobileMenu()">About</a></li>
-        <li><a href="index.html#contact"  onclick="closeMobileMenu()">Contact</a></li>
+        <li><a href="index.html#home"     class="nav-link--home transition-colors" onclick="closeMobileMenu()">Home</a></li>
+        <li><a href="index.html#projects" class="nav-link--projects transition-colors" onclick="closeMobileMenu()">Projects</a></li>
+        <li><a href="index.html#about"    class="nav-link--about transition-colors" onclick="closeMobileMenu()">About</a></li>
+        <li><a href="index.html#contact"  class="nav-link--contact transition-colors" onclick="closeMobileMenu()">Contact</a></li>
       </ul>
     </div>
   </header>
 
 
   <!-- ─── HERO ───────────────────────────────────────────────────────────── -->
-  <section class="pt-32 pb-16 md:pt-40 md:pb-24 bg-white border-b border-border">
-    <div class="max-w-6xl mx-auto px-6 lg:px-8">
+  <section class="relative pt-32 pb-16 md:pt-40 md:pb-24 bg-surface-alt border-b border-border overflow-hidden">
+    <div class="dot-patch dot-patch--md" style="top: -4%; left: -40px;" aria-hidden="true"></div>
+    <div class="dot-patch dot-patch--sm" style="bottom: 6%; right: 3%;" aria-hidden="true"></div>
+    <div class="max-w-6xl mx-auto px-6 lg:px-8 relative z-10">
 
       <div class="reveal flex items-center gap-2 text-xs text-secondary/60 font-500 mb-8">
         <a href="index.html#projects" class="hover:text-accent transition-colors cursor-pointer">Projects</a>
@@ -131,8 +161,9 @@
 
 
   <!-- ─── PROBLEM STATEMENT ─────────────────────────────────────────────── -->
-  <section class="py-20 md:py-28 bg-white border-b border-border">
-    <div class="max-w-6xl mx-auto px-6 lg:px-8">
+  <section class="relative py-20 md:py-28 bg-surface-alt border-b border-border overflow-hidden">
+    <div class="dot-patch dot-patch--lg" style="top: -10%; left: -50px;" aria-hidden="true"></div>
+    <div class="max-w-6xl mx-auto px-6 lg:px-8 relative z-10">
 
       <div class="reveal grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-12">
         <div>
@@ -147,35 +178,35 @@
 
       <div class="reveal grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
 
-        <div class="p-6 rounded-2xl bg-white border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
+        <div class="p-6 rounded-2xl bg-surface-alt border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
           <h3 class="text-sm font-700 text-primary mb-2">Fragmented Progress Tracking</h3>
           <p class="text-sm text-secondary leading-relaxed">Learning progress is scattered across platforms with no unified view.</p>
           <p class="read-more-extra text-sm text-secondary leading-relaxed mt-2">Learners using multiple platforms must manually check each one separately, a process that is time-consuming and often abandoned.</p>
           <button class="read-more-btn text-xs font-600 text-accent hover:underline cursor-pointer mt-3 block" onclick="toggleReadMore(this)">Read more</button>
         </div>
 
-        <div class="p-6 rounded-2xl bg-white border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
+        <div class="p-6 rounded-2xl bg-surface-alt border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
           <h3 class="text-sm font-700 text-primary mb-2">Inconsistent Progress Metrics</h3>
           <p class="text-sm text-secondary leading-relaxed">Each platform measures progress in a completely different way.</p>
           <p class="read-more-extra text-sm text-secondary leading-relaxed mt-2">Some platforms use certificates, others use percentage watched, hours logged, or no tracking at all. This inconsistency makes it impossible to get a true picture of overall development.</p>
           <button class="read-more-btn text-xs font-600 text-accent hover:underline cursor-pointer mt-3 block" onclick="toggleReadMore(this)">Read more</button>
         </div>
 
-        <div class="p-6 rounded-2xl bg-white border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
+        <div class="p-6 rounded-2xl bg-surface-alt border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
           <h3 class="text-sm font-700 text-primary mb-2">Weak Connection to Career Goals</h3>
           <p class="text-sm text-secondary leading-relaxed">Finishing a course does not tell you how close you are to your career goal.</p>
           <p class="read-more-extra text-sm text-secondary leading-relaxed mt-2">Most platforms focus on course completion rather than long-term skill development. Users are left to make the connection between their learning and their career ambitions entirely on their own.</p>
           <button class="read-more-btn text-xs font-600 text-accent hover:underline cursor-pointer mt-3 block" onclick="toggleReadMore(this)">Read more</button>
         </div>
 
-        <div class="p-6 rounded-2xl bg-white border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
+        <div class="p-6 rounded-2xl bg-surface-alt border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
           <h3 class="text-sm font-700 text-primary mb-2">Low Motivation Over Time</h3>
           <p class="text-sm text-secondary leading-relaxed">Without visible progress, learners lose momentum and stop.</p>
           <p class="read-more-extra text-sm text-secondary leading-relaxed mt-2">When growth feels invisible, it is easy to believe you are not making progress even when you are. Motivation drops and learning frequency decreases over time without a feedback loop that shows real growth.</p>
           <button class="read-more-btn text-xs font-600 text-accent hover:underline cursor-pointer mt-3 block" onclick="toggleReadMore(this)">Read more</button>
         </div>
 
-        <div class="p-6 rounded-2xl bg-white border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)] sm:col-span-2 lg:col-span-1">
+        <div class="p-6 rounded-2xl bg-surface-alt border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)] sm:col-span-2 lg:col-span-1">
           <h3 class="text-sm font-700 text-primary mb-2">Difficulty Demonstrating Skills</h3>
           <p class="text-sm text-secondary leading-relaxed">Learners struggle to prove their skills when applying for jobs.</p>
           <p class="read-more-extra text-sm text-secondary leading-relaxed mt-2">With progress spread across five different platforms, there is no single profile that shows what a learner actually knows. This creates real barriers when communicating skill level to potential employers.</p>
@@ -188,8 +219,9 @@
 
 
   <!-- ─── SOLUTION ──────────────────────────────────────────────────────── -->
-  <section class="py-20 md:py-28 border-b border-border">
-    <div class="max-w-6xl mx-auto px-6 lg:px-8">
+  <section class="relative py-20 md:py-28 border-b border-border overflow-hidden">
+    <div class="dot-patch dot-patch--lg" style="top: -8%; left: -60px;" aria-hidden="true"></div>
+    <div class="max-w-6xl mx-auto px-6 lg:px-8 relative z-10">
 
       <div class="reveal mb-10">
         <p class="text-xs font-600 tracking-[0.25em] uppercase text-accent mb-3">Solution</p>
@@ -205,32 +237,32 @@
 
       <div class="reveal grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
 
-        <div class="p-6 rounded-2xl bg-white border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
+        <div class="p-6 rounded-2xl bg-surface-alt border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
           <h3 class="text-sm font-700 text-primary mb-2">Learning Sync</h3>
           <p class="text-sm text-secondary leading-relaxed">Connects to multiple platforms and pulls in learning activity automatically.</p>
         </div>
 
-        <div class="p-6 rounded-2xl bg-white border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
+        <div class="p-6 rounded-2xl bg-surface-alt border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
           <h3 class="text-sm font-700 text-primary mb-2">Skill Mapping</h3>
           <p class="text-sm text-secondary leading-relaxed">Translates completed courses into skill tags such as UX Design, Data Analysis, and Product Strategy.</p>
         </div>
 
-        <div class="p-6 rounded-2xl bg-white border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
+        <div class="p-6 rounded-2xl bg-surface-alt border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
           <h3 class="text-sm font-700 text-primary mb-2">Skill Growth Visualization</h3>
           <p class="text-sm text-secondary leading-relaxed">Shows how skills are developing over time through charts and progress indicators.</p>
         </div>
 
-        <div class="p-6 rounded-2xl bg-white border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
+        <div class="p-6 rounded-2xl bg-surface-alt border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
           <h3 class="text-sm font-700 text-primary mb-2">Skill Gap Identification</h3>
           <p class="text-sm text-secondary leading-relaxed">Compares current skills against a chosen career goal and highlights what is missing.</p>
         </div>
 
-        <div class="p-6 rounded-2xl bg-white border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
+        <div class="p-6 rounded-2xl bg-surface-alt border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
           <h3 class="text-sm font-700 text-primary mb-2">Personalized Recommendations</h3>
           <p class="text-sm text-secondary leading-relaxed">Suggests the next course or learning path based on where the user is and where they want to go.</p>
         </div>
 
-        <div class="p-6 rounded-2xl bg-white border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
+        <div class="p-6 rounded-2xl bg-surface-alt border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
           <h3 class="text-sm font-700 text-primary mb-2">Shareable Skill Profile</h3>
           <p class="text-sm text-secondary leading-relaxed">Consolidates all earned skills into a single profile users can share with employers, turning fragmented learning into visible, provable growth.</p>
         </div>
@@ -241,8 +273,9 @@
 
 
   <!-- ─── PERSONA ───────────────────────────────────────────────────────── -->
-  <section class="py-20 md:py-28 bg-white border-b border-border">
-    <div class="max-w-6xl mx-auto px-6 lg:px-8">
+  <section class="relative py-20 md:py-28 bg-surface-alt border-b border-border overflow-hidden">
+    <div class="dot-patch dot-patch--sm" style="bottom: 8%; right: 5%;" aria-hidden="true"></div>
+    <div class="max-w-6xl mx-auto px-6 lg:px-8 relative z-10">
 
       <div class="reveal mb-4">
         <p class="text-xs font-600 tracking-[0.25em] uppercase text-accent mb-3">Persona</p>
@@ -255,7 +288,7 @@
       <div class="reveal grid grid-cols-1 lg:grid-cols-3 gap-8 mt-10">
 
         <!-- About -->
-        <div class="lg:col-span-1 p-6 rounded-2xl bg-white border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
+        <div class="lg:col-span-1 p-6 rounded-2xl bg-surface-alt border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
           <div class="flex items-center gap-4 mb-6">
             <div class="w-14 h-14 rounded-full bg-gradient-to-br from-[#14532D] to-[#16A34A] flex items-center justify-center text-white font-700 text-xl shrink-0">S</div>
             <div>
@@ -272,7 +305,7 @@
         <!-- Goals, Frustrations, Behaviours -->
         <div class="lg:col-span-2 grid grid-cols-1 sm:grid-cols-3 gap-4">
 
-          <div class="p-6 rounded-2xl bg-white border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
+          <div class="p-6 rounded-2xl bg-surface-alt border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
             <h3 class="text-xs font-700 text-accent uppercase tracking-widest mb-4">Goals</h3>
             <ul class="space-y-2.5 text-sm text-secondary">
               <li class="flex items-start gap-2"><span class="text-accent shrink-0 mt-0.5">–</span>Track all learning in one place</li>
@@ -281,7 +314,7 @@
             </ul>
           </div>
 
-          <div class="p-6 rounded-2xl bg-white border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
+          <div class="p-6 rounded-2xl bg-surface-alt border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
             <h3 class="text-xs font-700 text-red-400 uppercase tracking-widest mb-4">Frustrations</h3>
             <ul class="space-y-2.5 text-sm text-secondary">
               <li class="flex items-start gap-2"><span class="text-red-400 shrink-0 mt-0.5">–</span>Checks three platforms just to understand progress</li>
@@ -290,7 +323,7 @@
             </ul>
           </div>
 
-          <div class="p-6 rounded-2xl bg-white border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
+          <div class="p-6 rounded-2xl bg-surface-alt border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
             <h3 class="text-xs font-700 text-secondary uppercase tracking-widest mb-4">Behaviours</h3>
             <ul class="space-y-2.5 text-sm text-secondary">
               <li class="flex items-start gap-2"><span class="text-accent shrink-0 mt-0.5">–</span>Learns in short mobile sessions during commutes</li>
@@ -325,28 +358,28 @@
 
       <div class="reveal grid grid-cols-1 sm:grid-cols-2 gap-4">
 
-        <div class="p-6 rounded-2xl bg-white border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
+        <div class="p-6 rounded-2xl bg-surface-alt border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
           <h3 class="text-sm font-700 text-primary mb-2">Guided Onboarding Improves Engagement</h3>
           <p class="text-sm text-secondary leading-relaxed">Learners understand the product faster when onboarding is structured and goal-oriented.</p>
           <p class="read-more-extra text-sm text-secondary leading-relaxed mt-2">Platforms that drop users directly into a course library see significantly higher drop-off rates. A guided first experience that communicates the product's value leads to stronger retention and more active long-term usage.</p>
           <button class="read-more-btn text-xs font-600 text-accent hover:underline cursor-pointer mt-3 block" onclick="toggleReadMore(this)">Read more</button>
         </div>
 
-        <div class="p-6 rounded-2xl bg-white border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
+        <div class="p-6 rounded-2xl bg-surface-alt border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
           <h3 class="text-sm font-700 text-primary mb-2">Goal-Driven Personalization Increases Retention</h3>
           <p class="text-sm text-secondary leading-relaxed">Connecting learning to a real career goal keeps users engaged longer than generic recommendations.</p>
           <p class="read-more-extra text-sm text-secondary leading-relaxed mt-2">Users are more likely to return and continue when every recommendation feels relevant to where they want to go. Generic course suggestions do not create the same sense of purpose as a personalized path tied to a specific career outcome.</p>
           <button class="read-more-btn text-xs font-600 text-accent hover:underline cursor-pointer mt-3 block" onclick="toggleReadMore(this)">Read more</button>
         </div>
 
-        <div class="p-6 rounded-2xl bg-white border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
+        <div class="p-6 rounded-2xl bg-surface-alt border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
           <h3 class="text-sm font-700 text-primary mb-2">Visual Progress Motivates Learners</h3>
           <p class="text-sm text-secondary leading-relaxed">Seeing growth visually makes progress feel real and worth continuing.</p>
           <p class="read-more-extra text-sm text-secondary leading-relaxed mt-2">Charts, milestones, and skill indicators sustain motivation far better than text-based summaries alone. Platforms that use visual progress tracking consistently see higher completion rates and stronger daily engagement.</p>
           <button class="read-more-btn text-xs font-600 text-accent hover:underline cursor-pointer mt-3 block" onclick="toggleReadMore(this)">Read more</button>
         </div>
 
-        <div class="p-6 rounded-2xl bg-white border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
+        <div class="p-6 rounded-2xl bg-surface-alt border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
           <h3 class="text-sm font-700 text-primary mb-2">Mobile Users Need Simplified Dashboards</h3>
           <p class="text-sm text-secondary leading-relaxed">Mobile users need information that is scannable and immediately meaningful.</p>
           <p class="read-more-extra text-sm text-secondary leading-relaxed mt-2">Most learners check their progress quickly during short breaks or commutes. Complex, data-heavy screens with buried menus cause frustration on mobile. The first screen a user sees needs to answer one question instantly: how am I doing?</p>
@@ -359,8 +392,9 @@
 
 
   <!-- ─── CORE DESIGN CHALLENGE ─────────────────────────────────────────── -->
-  <section class="py-20 md:py-28 bg-white border-b border-border">
-    <div class="max-w-6xl mx-auto px-6 lg:px-8">
+  <section class="relative py-20 md:py-28 bg-surface-alt border-b border-border overflow-hidden">
+    <div class="dot-patch dot-patch--md" style="bottom: -8%; right: -50px;" aria-hidden="true"></div>
+    <div class="max-w-6xl mx-auto px-6 lg:px-8 relative z-10">
 
       <div class="reveal grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-12">
         <div>
@@ -376,28 +410,28 @@
 
       <div class="reveal grid grid-cols-2 sm:grid-cols-4 gap-4 mb-12">
 
-        <div class="p-5 rounded-2xl bg-white border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)] text-center">
+        <div class="p-5 rounded-2xl bg-surface-alt border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)] text-center">
           <p class="text-sm font-700 text-primary mb-1">
             <a href="https://www.coursera.org" target="_blank" rel="noopener noreferrer" class="hover:text-accent transition-colors">Coursera</a>
           </p>
           <p class="text-xs text-secondary leading-relaxed">tracks progress through certificates and course completion.</p>
         </div>
 
-        <div class="p-5 rounded-2xl bg-white border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)] text-center">
+        <div class="p-5 rounded-2xl bg-surface-alt border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)] text-center">
           <p class="text-sm font-700 text-primary mb-1">
             <a href="https://www.udemy.com" target="_blank" rel="noopener noreferrer" class="hover:text-accent transition-colors">Udemy</a>
           </p>
           <p class="text-xs text-secondary leading-relaxed">tracks progress through percentage of video content watched.</p>
         </div>
 
-        <div class="p-5 rounded-2xl bg-white border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)] text-center">
+        <div class="p-5 rounded-2xl bg-surface-alt border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)] text-center">
           <p class="text-sm font-700 text-primary mb-1">
             <a href="https://www.linkedin.com/learning" target="_blank" rel="noopener noreferrer" class="hover:text-accent transition-colors">LinkedIn Learning</a>
           </p>
           <p class="text-xs text-secondary leading-relaxed">tracks progress through hours spent learning.</p>
         </div>
 
-        <div class="p-5 rounded-2xl bg-white border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)] text-center">
+        <div class="p-5 rounded-2xl bg-surface-alt border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)] text-center">
           <p class="text-sm font-700 text-primary mb-1">
             <a href="https://www.youtube.com" target="_blank" rel="noopener noreferrer" class="hover:text-accent transition-colors">YouTube</a>
           </p>
@@ -410,7 +444,7 @@
         The challenge was: how do you take four completely different data formats and turn them into one meaningful skill profile?
       </p>
 
-      <div class="reveal p-6 md:p-8 rounded-2xl bg-white border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)] max-w-3xl">
+      <div class="reveal p-6 md:p-8 rounded-2xl bg-surface-alt border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)] max-w-3xl">
         <h3 class="text-sm font-700 text-primary uppercase tracking-widest mb-4">The Solution to the Challenge</h3>
         <p class="text-sm text-secondary leading-relaxed mb-4">
           StageUp solves this by converting all learning activity into skill tags weighted by engagement depth. Completing a full course sends a strong signal. Watching part of a video sends a lighter signal. Courses that include hands-on projects carry a higher weight than passive video content.
@@ -468,8 +502,10 @@
 
 
   <!-- ─── DESIGN PROCESS ────────────────────────────────────────────────── -->
-  <section class="py-20 md:py-28 bg-white border-b border-border">
-    <div class="max-w-6xl mx-auto px-6 lg:px-8">
+  <section class="relative py-20 md:py-28 bg-surface-alt border-b border-border overflow-hidden">
+    <div class="dot-patch dot-patch--lg" style="top: -6%; right: -60px;" aria-hidden="true"></div>
+    <div class="dot-patch dot-patch--sm" style="bottom: 5%; left: 4%;" aria-hidden="true"></div>
+    <div class="max-w-6xl mx-auto px-6 lg:px-8 relative z-10">
 
       <div class="reveal mb-12">
         <p class="text-xs font-600 tracking-[0.25em] uppercase text-accent mb-3">Design Process</p>
@@ -501,7 +537,7 @@
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-3xl mb-8">
 
-          <div class="p-5 rounded-2xl bg-white border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
+          <div class="p-5 rounded-2xl bg-surface-alt border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
             <div class="w-7 h-7 rounded-full bg-red-100 flex items-center justify-center mb-3">
               <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-red-400" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
             </div>
@@ -510,7 +546,7 @@
             <p class="text-xs font-600 text-accent">Fix → Split into two separate screens: "Get Started" for new users and "Log In" for returning users, each with its own dedicated flow.</p>
           </div>
 
-          <div class="p-5 rounded-2xl bg-white border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
+          <div class="p-5 rounded-2xl bg-surface-alt border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
             <div class="w-7 h-7 rounded-full bg-red-100 flex items-center justify-center mb-3">
               <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-red-400" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
             </div>
@@ -527,14 +563,14 @@
 
         <!-- UMUX images -->
         <div class="mb-4">
-          <div class="rounded-2xl bg-white border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)] overflow-hidden mb-4">
+          <div class="rounded-2xl bg-surface-alt border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)] overflow-hidden mb-4">
             <img src="img/score.jpeg" alt="UMUX Participant Scores" onclick="openLightbox('img/score.jpeg','UMUX Participant Scores')" class="w-full cursor-zoom-in" />
           </div>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8 items-start">
-            <div class="rounded-2xl bg-white border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)] overflow-hidden">
+            <div class="rounded-2xl bg-surface-alt border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)] overflow-hidden">
               <img src="img/UMUXover.jpeg" alt="UMUX Score Overview" onclick="openLightbox('img/UMUXover.jpeg','UMUX Score Overview')" class="w-full cursor-zoom-in" />
             </div>
-            <div class="rounded-2xl bg-white border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)] overflow-hidden">
+            <div class="rounded-2xl bg-surface-alt border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)] overflow-hidden">
               <img src="img/UMUXchart.jpeg" alt="UMUX Testing Chart" onclick="openLightbox('img/UMUXchart.jpeg','UMUX Testing Chart')" class="w-full cursor-zoom-in" />
             </div>
           </div>
@@ -564,7 +600,7 @@
         <div class="flex flex-col sm:flex-row items-start gap-3 max-w-sm mb-10">
           <div class="flex-1 rounded-2xl overflow-hidden border border-red-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
             <div class="h-14" style="background:#00DB4F;"></div>
-            <div class="p-4 bg-white">
+            <div class="p-4 bg-surface-alt">
               <p class="text-sm font-700 text-primary font-mono mb-1">#00DB4F</p>
               <p class="text-xs text-secondary mb-2">Contrast ratio: 1.86:1</p>
               <span class="inline-flex text-xs bg-red-50 text-red-500 px-2 py-0.5 rounded-full font-600 border border-red-100">Fails WCAG AA</span>
@@ -573,7 +609,7 @@
           <div class="flex items-center justify-center self-center text-secondary/30 text-lg font-300 px-1">→</div>
           <div class="flex-1 rounded-2xl overflow-hidden border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
             <div class="h-14" style="background:#15803D;"></div>
-            <div class="p-4 bg-white">
+            <div class="p-4 bg-surface-alt">
               <p class="text-sm font-700 text-primary font-mono mb-1">#15803D</p>
               <p class="text-xs text-secondary mb-2">Contrast ratio: 5.01:1</p>
               <span class="inline-flex text-xs bg-[#F0FDF4] text-accent px-2 py-0.5 rounded-full font-600 border border-green-100">Passes WCAG AA</span>
@@ -583,7 +619,7 @@
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-3xl mb-8">
 
-          <div class="p-5 rounded-2xl bg-white border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
+          <div class="p-5 rounded-2xl bg-surface-alt border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
             <div class="w-7 h-7 rounded-full bg-accent/10 flex items-center justify-center mb-3">
               <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-accent" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
             </div>
@@ -591,7 +627,7 @@
             <p class="text-xs text-secondary leading-relaxed">The split between "Get Started" and "Log In" removed the confusion from mid-fi. Users immediately understood whether the app was treating them as new or returning.</p>
           </div>
 
-          <div class="p-5 rounded-2xl bg-white border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
+          <div class="p-5 rounded-2xl bg-surface-alt border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
             <div class="w-7 h-7 rounded-full bg-accent/10 flex items-center justify-center mb-3">
               <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-accent" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
             </div>
@@ -599,7 +635,7 @@
             <p class="text-xs text-secondary leading-relaxed">Users described the interface as clean, motivating, and easy to use. The colour system addressed the flatness flagged in mid-fi testing.</p>
           </div>
 
-          <div class="p-5 rounded-2xl bg-white border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
+          <div class="p-5 rounded-2xl bg-surface-alt border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
             <div class="w-7 h-7 rounded-full bg-accent/10 flex items-center justify-center mb-3">
               <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-accent" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
             </div>
@@ -607,7 +643,7 @@
             <p class="text-xs text-secondary leading-relaxed">Users found the 8-week skill growth chart compelling and said it made them want to keep learning.</p>
           </div>
 
-          <div class="p-5 rounded-2xl bg-white border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
+          <div class="p-5 rounded-2xl bg-surface-alt border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
             <div class="w-7 h-7 rounded-full bg-accent/10 flex items-center justify-center mb-3">
               <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-accent" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
             </div>
@@ -642,7 +678,7 @@
 
       <div class="reveal grid grid-cols-1 sm:grid-cols-2 gap-6">
 
-        <div class="rounded-2xl bg-white border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)] overflow-hidden flex flex-col">
+        <div class="rounded-2xl bg-surface-alt border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)] overflow-hidden flex flex-col">
           <div class="bg-[#F0FDF4] overflow-hidden">
             <img src="img/skillgrowth.jpeg" alt="Skill Growth Visualization" onclick="openLightbox('img/skillgrowth.jpeg','Skill Growth Visualization')" class="w-full h-auto cursor-zoom-in" />
           </div>
@@ -657,7 +693,7 @@
           </div>
         </div>
 
-        <div class="rounded-2xl bg-white border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)] overflow-hidden flex flex-col">
+        <div class="rounded-2xl bg-surface-alt border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)] overflow-hidden flex flex-col">
           <div class="bg-[#F0FDF4] overflow-hidden">
             <img src="img/careergoal.jpeg" alt="Career Goal Tracking" onclick="openLightbox('img/careergoal.jpeg','Career Goal Tracking')" class="w-full h-auto cursor-zoom-in" />
           </div>
@@ -672,7 +708,7 @@
           </div>
         </div>
 
-        <div class="rounded-2xl bg-white border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)] overflow-hidden flex flex-col">
+        <div class="rounded-2xl bg-surface-alt border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)] overflow-hidden flex flex-col">
           <div class="bg-[#F0FDF4] overflow-hidden">
             <img src="img/aflow.jpeg" alt="Split Authentication Flow" onclick="openLightbox('img/aflow.jpeg','Split Authentication Flow')" class="w-full h-auto cursor-zoom-in" />
           </div>
@@ -687,7 +723,7 @@
           </div>
         </div>
 
-        <div class="rounded-2xl bg-white border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)] overflow-hidden flex flex-col">
+        <div class="rounded-2xl bg-surface-alt border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)] overflow-hidden flex flex-col">
           <div class="bg-[#F0FDF4] overflow-hidden">
             <img src="img/keymetrics.jpeg" alt="All Key Metrics at a Glance" onclick="openLightbox('img/keymetrics.jpeg','All Key Metrics at a Glance')" class="w-full h-auto cursor-zoom-in" />
           </div>
@@ -708,23 +744,25 @@
 
 
   <!-- ─── REFLECTION ────────────────────────────────────────────────────── -->
-  <section class="py-20 md:py-28 bg-primary text-surface">
-    <div class="max-w-6xl mx-auto px-6 lg:px-8">
+  <section class="relative py-20 md:py-28 bg-ink text-on-ink overflow-hidden">
+    <div class="dot-patch dot-patch--on-dark dot-patch--xl" style="top: -14%; right: -60px;" aria-hidden="true"></div>
+    <div class="dot-patch dot-patch--on-dark dot-patch--sm" style="bottom: 6%; left: 6%;" aria-hidden="true"></div>
+    <div class="max-w-6xl mx-auto px-6 lg:px-8 relative z-10">
 
       <div class="reveal mb-10">
         <p class="text-xs font-600 tracking-[0.25em] uppercase text-accent mb-3">Reflection</p>
         <h2 class="text-3xl md:text-4xl font-700 tracking-tight mb-6">Reflection</h2>
       </div>
 
-      <p class="reveal text-surface/70 text-base leading-relaxed max-w-3xl mb-4">
+      <p class="reveal text-on-ink/70 text-base leading-relaxed max-w-3xl mb-4">
         StageUp taught me that the hardest design challenges are structural, not visual. The biggest problem was not how the product looked. It was how to create a meaningful system from learning data that was never designed to work together.
       </p>
       <div class="reveal max-w-3xl mb-12">
         <div class="read-more-extra">
-          <p class="text-surface/70 text-base leading-relaxed mb-4">
+          <p class="text-on-ink/70 text-base leading-relaxed mb-4">
             Reframing the problem was the most important decision I made. Users do not want to simply sync their learning platforms. They want to become UX designers, get promoted, or transition into new careers. By focusing on career goals rather than course completion, StageUp transforms fragmented learning activity into a clear path for growth.
           </p>
-          <p class="text-surface/70 text-base leading-relaxed">
+          <p class="text-on-ink/70 text-base leading-relaxed">
             Designing a long term feedback loop where the product becomes more useful the more it is used was the most valuable lesson from this project.
           </p>
         </div>
@@ -732,22 +770,22 @@
       </div>
 
       <div class="reveal">
-        <h3 class="text-sm font-700 text-surface uppercase tracking-widest mb-6">What I Would Build Next</h3>
+        <h3 class="text-sm font-700 text-on-ink uppercase tracking-widest mb-6">What I Would Build Next</h3>
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
 
           <div class="p-6 rounded-2xl border border-white/10 bg-white/5">
-            <h4 class="text-sm font-700 text-surface mb-2">AI Powered Skill Recommendations</h4>
-            <p class="text-sm text-surface/60 leading-relaxed">A smarter recommendation engine that learns from user behavior over time and suggests the most impactful next step toward their career goal.</p>
+            <h4 class="text-sm font-700 text-on-ink mb-2">AI Powered Skill Recommendations</h4>
+            <p class="text-sm text-on-ink/60 leading-relaxed">A smarter recommendation engine that learns from user behavior over time and suggests the most impactful next step toward their career goal.</p>
           </div>
 
           <div class="p-6 rounded-2xl border border-white/10 bg-white/5">
-            <h4 class="text-sm font-700 text-surface mb-2">Employer Integration</h4>
-            <p class="text-sm text-surface/60 leading-relaxed">Connecting skill profiles to real job requirements so users can see exactly how their learning maps to roles they are applying for.</p>
+            <h4 class="text-sm font-700 text-on-ink mb-2">Employer Integration</h4>
+            <p class="text-sm text-on-ink/60 leading-relaxed">Connecting skill profiles to real job requirements so users can see exactly how their learning maps to roles they are applying for.</p>
           </div>
 
           <div class="p-6 rounded-2xl border border-white/10 bg-white/5">
-            <h4 class="text-sm font-700 text-surface mb-2">Progress Sharing</h4>
-            <p class="text-sm text-surface/60 leading-relaxed">Allowing users to share their skill profile publicly, giving them a way to demonstrate real growth to employers beyond a traditional resume.</p>
+            <h4 class="text-sm font-700 text-on-ink mb-2">Progress Sharing</h4>
+            <p class="text-sm text-on-ink/60 leading-relaxed">Allowing users to share their skill profile publicly, giving them a way to demonstrate real growth to employers beyond a traditional resume.</p>
           </div>
 
         </div>
@@ -758,16 +796,16 @@
 
 
   <!-- ─── NEXT PROJECT ───────────────────────────────────────────────────── -->
-  <section class="py-16 border-t border-white/10 bg-primary">
+  <section class="py-16 border-t border-white/10 bg-ink">
     <div class="max-w-6xl mx-auto px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-6">
-      <a href="rbc.html" class="text-sm font-600 text-surface/50 hover:text-surface transition-colors cursor-pointer flex items-center gap-2">
+      <a href="monstrum.html" class="text-sm font-600 text-on-ink/50 hover:text-on-ink transition-colors cursor-pointer flex items-center gap-2">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
           <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
         </svg>
-        Previous: RBC Mobile App
+        Back to Monstrum
       </a>
-      <a href="index.html#projects" class="text-sm font-600 text-surface hover:text-accent transition-colors cursor-pointer flex items-center gap-2">
-        All Projects
+      <a href="rbc.html" class="text-sm font-600 text-on-ink hover:text-accent transition-colors cursor-pointer flex items-center gap-2">
+        Next: RBC Mobile App
         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
           <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
         </svg>
@@ -776,8 +814,8 @@
   </section>
 
   <!-- ─── FOOTER ─────────────────────────────────────────────────────────── -->
-  <footer class="bg-primary border-t border-white/5 py-8">
-    <div class="max-w-6xl mx-auto px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4 text-surface/30 text-xs font-500">
+  <footer class="bg-ink border-t border-white/5 py-8">
+    <div class="max-w-6xl mx-auto px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4 text-on-ink/30 text-xs font-500">
       <p>© 2025 Alaa El Banna. All rights reserved.</p>
       <p>Product Designer · Toronto, Canada</p>
     </div>
