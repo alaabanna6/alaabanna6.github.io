@@ -1163,13 +1163,16 @@
                         document.getElementById('ly2'), document.getElementById('lr1'),
                         document.getElementById('ry2'), document.getElementById('rr1')];
 
-      let animRunning = false;
+      let animRunning = false, shouldReset = false;
 
       function resetLogo() {
+        shouldReset = false;
         allSpans.forEach(el => { if(el) el.getAnimations().forEach(a => a.cancel()); });
       }
 
-      logoLink.addEventListener('mouseleave', resetLogo);
+      logoLink.addEventListener('mouseleave', () => {
+        if (animRunning) { shouldReset = true; } else { resetLogo(); }
+      });
 
       logoLink.addEventListener('mouseenter', () => {
         if (animRunning) return;
@@ -1198,8 +1201,8 @@
           ly1.animate([{transform:'translateY(-20px)'},{transform:'translateY(0px)'}], {duration:300, delay:800, easing:E2, fill:'forwards'});
           ry1.animate([{transform:'translateY(20px)'}, {transform:'translateY(0px)'}], {duration:300, delay:800, easing:E2, fill:'forwards'});
 
-          // Release lock — letters stay swapped at X until mouseleave fires resetLogo()
-          setTimeout(() => { animRunning = false; }, 1150);
+          // Animation complete — reset if mouse already left
+          setTimeout(() => { animRunning = false; if (shouldReset) resetLogo(); }, 1150);
         });
       });
     }
