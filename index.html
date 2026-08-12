@@ -1199,8 +1199,11 @@
           ly1.animate([{transform:'translateY(-20px)'},{transform:'translateY(0px)'}], {duration:300, delay:800, easing:E2, fill:'forwards'});
           ry1.animate([{transform:'translateY(20px)'}, {transform:'translateY(0px)'}], {duration:300, delay:800, easing:E2, fill:'forwards'});
 
-          // Release lock after full animation completes
-          setTimeout(() => { animRunning = false; }, TOTAL);
+          // After animation completes, cancel all to restore original positions
+          setTimeout(() => {
+            resetLogo();
+            animRunning = false;
+          }, TOTAL);
         });
       });
     }
