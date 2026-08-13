@@ -722,12 +722,20 @@
       #intro-name {
         font-size: clamp(3rem, 15vw, 4rem) !important;
       }
-      /* iOS Safari clips CSS outline with overflow:hidden (WebKit bug).
-         Making the hero section overflow:visible lets the box outline show
-         on all four sides. The hero-dots div has its own overflow:hidden
-         so the dot background stays contained. */
       .hero-canvas {
         overflow: visible !important;
+      }
+      /* CSS outline draws outside the element's border-box, making it
+         vulnerable to viewport-edge clipping and Safari's overflow:hidden
+         bug. A negative outline-offset pulls the line inside the box so
+         it is guaranteed visible on all four sides regardless of position. */
+      .intro-box {
+        outline-offset: -1.5px !important;
+      }
+      /* Handles sit at −4.5px outside the box corners — same clipping risk.
+         Hide them on mobile; the dashed rectangle reads cleanly without them. */
+      .intro-box__handle {
+        display: none !important;
       }
     }
 
