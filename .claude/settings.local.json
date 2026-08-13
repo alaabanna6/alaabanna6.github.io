@@ -15,7 +15,15 @@
       "Bash(lsof -nP -iTCP:8743 -sTCP:LISTEN)",
       "Bash(git add *)",
       "Bash(git commit -m ' *)",
-      "Bash(git push *)"
+      "Bash(git push *)",
+      "Bash(git commit -m 'Fix logo animation: use delay-based timing instead of nested onfinish callbacks *)",
+      "Bash(git commit -m 'Return all logo transforms to zero in Phase 3 \\(Y and X both reset\\) *)",
+      "Bash(git commit -m 'Fix logo: Phase 3 only returns Y, X stays swapped until mouseleave *)",
+      "Bash(git commit -m 'Let logo animation finish before resetting on mouse leave *)",
+      "Bash(git commit -m 'Prevent text selection and drag from interrupting logo animation *)",
+      "Bash(git commit -m 'Rewrite logo animation as single offset-keyframe animation per element *)",
+      "Bash(node -e ' *)",
+      "Bash(git commit -m 'Rewrite logo animation using Promise.finished chain to avoid phase conflicts *)"
     ]
   }
 }

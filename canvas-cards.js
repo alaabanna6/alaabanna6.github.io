@@ -1,5 +1,17 @@
 (function () {
-  function initPair(pair) {
+  var STORAGE_KEY = 'connectedPairs';
+
+  function getConnected() {
+    try { return JSON.parse(sessionStorage.getItem(STORAGE_KEY) || '{}'); } catch (e) { return {}; }
+  }
+
+  function saveConnected(index) {
+    var c = getConnected();
+    c[index] = true;
+    try { sessionStorage.setItem(STORAGE_KEY, JSON.stringify(c)); } catch (e) {}
+  }
+
+  function initPair(pair, index) {
     var node = pair.querySelector('.canvas-node');
     var source = pair.querySelector('.canvas-card--source');
     var target = pair.querySelector('.canvas-card--target');
@@ -63,6 +75,12 @@
     drawPath();
     window.addEventListener('resize', drawPath);
 
+    // Restore connected state from this session without replaying the animation.
+    if (getConnected()[index]) {
+      pair.classList.add('is-connected');
+      path.style.strokeDashoffset = '0';
+    }
+
     function connect() {
       if (pair.classList.contains('is-connected')) return;
       var length = drawPath();
@@ -72,12 +90,15 @@
       path.style.transition = 'stroke-dashoffset 0.55s cubic-bezier(0.4,0,0.2,1)';
       path.style.strokeDashoffset = '0';
       pair.classList.add('is-connected');
+      saveConnected(index);
     }
 
     node.addEventListener('click', connect);
   }
 
   document.addEventListener('DOMContentLoaded', function () {
-    document.querySelectorAll('.canvas-pair').forEach(initPair);
+    document.querySelectorAll('.canvas-pair').forEach(function (pair, index) {
+      initPair(pair, index);
+    });
   });
 })();

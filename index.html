@@ -5,9 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Alaa El Banna — Product Designer</title>
 
-  <!-- Theme: always start in dark mode on every page load -->
+  <!-- Theme: always dark. Hide native cursor immediately on fine-pointer devices
+       so the custom cursor is active from the very first frame on every page. -->
   <script>
     document.documentElement.setAttribute('data-theme', 'dark');
+    if (window.matchMedia && window.matchMedia('(hover:hover) and (pointer:fine)').matches) {
+      document.documentElement.classList.add('live-cursor-active');
+    }
   </script>
   <link rel="stylesheet" href="theme.css?v=10" />
 
@@ -716,9 +720,9 @@
   <script defer src="pull-switch.js?v=10"></script>
   <script defer src="theme.js?v=5"></script>
   <script defer src="shimmer.js?v=2"></script>
-  <script defer src="intro.js?v=17"></script>
+  <script defer src="intro.js?v=18"></script>
   <script defer src="cursor-color.js?v=5"></script>
-  <script defer src="canvas-cards.js?v=3"></script>
+  <script defer src="canvas-cards.js?v=4"></script>
 </head>
 
 <body class="bg-surface text-primary font-sans antialiased overflow-x-hidden">

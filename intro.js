@@ -42,13 +42,19 @@
     var alreadyPlayed = false;
     try {
       var navEntries = window.performance && performance.getEntriesByType ? performance.getEntriesByType('navigation') : [];
-      var isReload = navEntries.length > 0 && navEntries[0].type === 'reload';
+      var legacyNavType = window.performance && performance.navigation ? performance.navigation.type : -1;
+      var isReload = (navEntries.length > 0 && navEntries[0].type === 'reload') || legacyNavType === 1;
       if (isReload) sessionStorage.removeItem(INTRO_SESSION_KEY);
       alreadyPlayed = sessionStorage.getItem(INTRO_SESSION_KEY) === '1';
       sessionStorage.setItem(INTRO_SESSION_KEY, '1');
     } catch (e) {}
 
-    var skipAnimation = reduced || alreadyPlayed;
+    // Belt-and-suspenders: also skip if navigating back from a project page,
+    // in case the sessionStorage check above fails for any reason.
+    var projectPages = ['monstrum.html', 'stageup.html', 'rbc.html', 'alexa-i.html', 'red-team.html'];
+    var cameFromProject = projectPages.some(function (p) { return document.referrer.indexOf(p) !== -1; });
+
+    var skipAnimation = reduced || alreadyPlayed || cameFromProject;
 
     function showInstantly(el) {
       if (el) el.classList.add('is-visible');
