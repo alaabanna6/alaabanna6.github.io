@@ -730,6 +730,26 @@
         overflow: visible !important;
       }
     }
+
+    /* ── Mobile-only: canvas connect node at bottom-center of source card ── */
+    @media (max-width: 640px) {
+      .canvas-node {
+        top: auto !important;
+        right: auto !important;
+        bottom: -18px !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+      }
+      .canvas-node:hover {
+        transform: translateX(-50%) scale(1.12) !important;
+      }
+      .canvas-pair.is-connected .canvas-node {
+        right: auto !important;
+        bottom: -6px !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+      }
+    }
   </style>
   <script defer src="pull-switch.js?v=10"></script>
   <script defer src="theme.js?v=5"></script>
