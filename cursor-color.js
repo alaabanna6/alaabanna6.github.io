@@ -5,7 +5,7 @@
 
   function getStoredColor() {
     try {
-      return localStorage.getItem(STORAGE_KEY) || DEFAULT_COLOR;
+      return sessionStorage.getItem(STORAGE_KEY) || DEFAULT_COLOR;
     } catch (e) {
       return DEFAULT_COLOR;
     }
@@ -61,7 +61,7 @@
   function setColor(token) {
     applyColor(token);
     try {
-      localStorage.setItem(STORAGE_KEY, token);
+      sessionStorage.setItem(STORAGE_KEY, token);
     } catch (e) {}
   }
 
