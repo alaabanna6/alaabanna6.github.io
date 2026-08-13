@@ -717,10 +717,10 @@
       .canvas-pair.is-connected .canvas-node { bottom: -6px; transform: translateX(50%); }
     }
 
-    /* ── Mobile-only: shrink the intro name so the box fits within the screen ── */
+    /* ── Mobile-only: scale intro name to viewport so the box never overflows ── */
     @media (max-width: 767px) {
       #intro-name {
-        font-size: 3rem !important;
+        font-size: clamp(3rem, 15vw, 4rem) !important;
       }
     }
   </style>
