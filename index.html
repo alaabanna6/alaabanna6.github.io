@@ -716,6 +716,13 @@
       .canvas-node:hover { transform: translateX(50%) scale(1.12); }
       .canvas-pair.is-connected .canvas-node { bottom: -6px; transform: translateX(50%); }
     }
+
+    /* ── Mobile-only: shrink the intro name so the box fits within the screen ── */
+    @media (max-width: 767px) {
+      #intro-name {
+        font-size: 3rem !important;
+      }
+    }
   </style>
   <script defer src="pull-switch.js?v=10"></script>
   <script defer src="theme.js?v=5"></script>
