@@ -197,6 +197,12 @@
         var targetH = rect.height + BUFFER_PX;
         var origin = { x: rect.left, y: rect.top };
 
+        // Mobile: clamp width so the box + outline never touch the viewport edge
+        if (window.innerWidth < 768) {
+          var safeMaxW = window.innerWidth - origin.x - 4;
+          if (targetW > safeMaxW) targetW = safeMaxW;
+        }
+
         // Reserve the final layout space immediately — the box (now absolutely
         // positioned) animates purely visually from here on, so the page never
         // reflows/pushes content down while it grows.

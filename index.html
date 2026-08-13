@@ -717,17 +717,24 @@
       .canvas-pair.is-connected .canvas-node { bottom: -6px; transform: translateX(50%); }
     }
 
-    /* ── Mobile-only: scale intro name to viewport so the box never overflows ── */
+    /* ── Mobile-only fixes ── */
     @media (max-width: 767px) {
       #intro-name {
         font-size: clamp(3rem, 15vw, 4rem) !important;
+      }
+      /* iOS Safari clips CSS outline with overflow:hidden (WebKit bug).
+         Making the hero section overflow:visible lets the box outline show
+         on all four sides. The hero-dots div has its own overflow:hidden
+         so the dot background stays contained. */
+      .hero-canvas {
+        overflow: visible !important;
       }
     }
   </style>
   <script defer src="pull-switch.js?v=10"></script>
   <script defer src="theme.js?v=5"></script>
   <script defer src="shimmer.js?v=2"></script>
-  <script defer src="intro.js?v=18"></script>
+  <script defer src="intro.js?v=19"></script>
   <script defer src="cursor-color.js?v=5"></script>
   <script defer src="canvas-cards.js?v=4"></script>
 </head>
