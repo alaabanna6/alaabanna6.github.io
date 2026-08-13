@@ -4,7 +4,11 @@
   var canFinePointer = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
   function getStoredColor() {
-    return DEFAULT_COLOR;
+    try {
+      return localStorage.getItem(STORAGE_KEY) || DEFAULT_COLOR;
+    } catch (e) {
+      return DEFAULT_COLOR;
+    }
   }
 
   function hexToRgb(hex) {
