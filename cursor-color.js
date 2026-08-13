@@ -1,14 +1,10 @@
 (function () {
   var STORAGE_KEY = 'cursorColor';
-  var DEFAULT_COLOR = '#3B82F6';
+  var DEFAULT_COLOR = 'neutral';
   var canFinePointer = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
   function getStoredColor() {
-    try {
-      return localStorage.getItem(STORAGE_KEY) || DEFAULT_COLOR;
-    } catch (e) {
-      return DEFAULT_COLOR;
-    }
+    return DEFAULT_COLOR;
   }
 
   function hexToRgb(hex) {

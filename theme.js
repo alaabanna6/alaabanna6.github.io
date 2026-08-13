@@ -1,8 +1,6 @@
 (function () {
   function getPreferredTheme() {
-    var stored = localStorage.getItem('theme');
-    if (stored === 'light' || stored === 'dark') return stored;
-    return 'dark'; // default for first-time visitors (no stored choice yet)
+    return 'dark';
   }
 
   function spawnParticles(knob) {

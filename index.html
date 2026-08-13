@@ -5,15 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Alaa El Banna — Product Designer</title>
 
-  <!-- Theme: set before first paint to avoid a flash of the wrong theme -->
+  <!-- Theme: always start in dark mode on every page load -->
   <script>
-    (function () {
-      var t = localStorage.getItem('theme');
-      if (t !== 'light' && t !== 'dark') {
-        t = 'dark'; // default for first-time visitors (no stored choice yet)
-      }
-      document.documentElement.setAttribute('data-theme', t);
-    })();
+    document.documentElement.setAttribute('data-theme', 'dark');
   </script>
   <link rel="stylesheet" href="theme.css?v=10" />
 
