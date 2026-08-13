@@ -204,6 +204,12 @@
         void box.offsetWidth;
         box.style.transition = '';
 
+        // Hide outline and handles while cursor travels so the box doesn't
+        // appear as a tiny dot at 0×0 during the 400ms arrival delay.
+        var handles = box.querySelectorAll('.intro-box__handle');
+        box.style.outlineColor = 'transparent';
+        handles.forEach(function(h) { h.style.opacity = '0'; });
+
         // Cursor arrives from off-frame toward the box's top-left corner.
         cursor.style.transition = 'none';
         cursor.style.transform = 'translate(' + (origin.x - 40) + 'px, ' + (origin.y - 40) + 'px)';
@@ -216,6 +222,15 @@
         });
 
         setTimeout(function () {
+          // Snap outline and handles in at the exact moment growth begins —
+          // no fade-in, they appear simultaneously with the box expanding.
+          box.style.transition = 'none';
+          box.style.outlineColor = '';
+          handles.forEach(function(h) { h.style.transition = 'none'; h.style.opacity = ''; });
+          void box.offsetWidth;
+          box.style.transition = 'width 0.6s cubic-bezier(0.4,0,0.2,1), height 0.6s cubic-bezier(0.4,0,0.2,1), outline-color 0.5s ease';
+          handles.forEach(function(h) { h.style.transition = ''; });
+
           moveCursorTo(origin.x + targetW, origin.y + targetH, 0.45, 'cubic-bezier(0.4,0,0.2,1)');
           box.style.width = targetW + 'px';
           box.style.height = targetH + 'px';
