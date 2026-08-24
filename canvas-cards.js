@@ -94,6 +94,18 @@
     }
 
     node.addEventListener('click', connect);
+
+    // Auto-connect when the pair scrolls into view (40% visible).
+    // Already-connected pairs (restored from sessionStorage) skip the observer.
+    if (!getConnected()[index] && 'IntersectionObserver' in window) {
+      var observer = new IntersectionObserver(function (entries) {
+        if (entries[0].isIntersecting) {
+          observer.unobserve(pair);
+          setTimeout(connect, 300);
+        }
+      }, { threshold: 0.4 });
+      observer.observe(pair);
+    }
   }
 
   document.addEventListener('DOMContentLoaded', function () {
