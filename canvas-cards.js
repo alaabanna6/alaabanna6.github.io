@@ -75,12 +75,6 @@
     drawPath();
     window.addEventListener('resize', drawPath);
 
-    // Restore connected state from this session without replaying the animation.
-    if (getConnected()[index]) {
-      pair.classList.add('is-connected');
-      path.style.strokeDashoffset = '0';
-    }
-
     function connect() {
       if (pair.classList.contains('is-connected')) return;
       var length = drawPath();
@@ -90,14 +84,12 @@
       path.style.transition = 'stroke-dashoffset 0.55s cubic-bezier(0.4,0,0.2,1)';
       path.style.strokeDashoffset = '0';
       pair.classList.add('is-connected');
-      saveConnected(index);
     }
 
     node.addEventListener('click', connect);
 
-    // Auto-connect when the pair scrolls into view (40% visible).
-    // Already-connected pairs (restored from sessionStorage) skip the observer.
-    if (!getConnected()[index] && 'IntersectionObserver' in window) {
+    // Animate the connection when the pair scrolls into view.
+    if ('IntersectionObserver' in window) {
       var observer = new IntersectionObserver(function (entries) {
         if (entries[0].isIntersecting) {
           observer.unobserve(pair);
