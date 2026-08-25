@@ -80,8 +80,25 @@
     .h-scroll > * { scroll-snap-align: start; }
 
     /* Screen card in h-scroll */
-    .screen-card { flex: none; width: 280px; }
+    .screen-card { flex: none; width: 280px; display: flex; flex-direction: column; }
     @media (min-width: 640px) { .screen-card { width: 340px; } }
+    .screen-card .card-text { min-height: 5rem; margin-bottom: 1rem; }
+
+    /* Scroll wrap + arrow buttons */
+    .scroll-wrap { position: relative; }
+    .scroll-btn {
+      position: absolute; top: 50%; transform: translateY(-50%); z-index: 10;
+      width: 36px; height: 36px; border-radius: 50%;
+      background: var(--surface); border: 1px solid var(--border); color: var(--primary);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; box-shadow: 0 2px 12px rgba(0,0,0,0.35);
+      transition: background .2s, border-color .2s;
+    }
+    .scroll-btn:hover { background: var(--surface-alt); border-color: var(--accent); color: var(--accent); }
+    .scroll-btn--prev { left: -18px; }
+    .scroll-btn--next { right: -18px; }
+    .h-scroll { cursor: grab; user-select: none; }
+    .h-scroll.is-dragging { cursor: grabbing; scroll-snap-type: none; }
   </style>
   <script defer src="pull-switch.js?v=10"></script>
   <script defer src="theme.js?v=5"></script>
@@ -154,11 +171,11 @@
       </div>
 
       <h1 class="reveal text-5xl sm:text-6xl md:text-7xl font-800 leading-tight tracking-tight text-primary max-w-4xl" style="transition-delay:.1s">
-        Monstrum<br class="hidden sm:block" /><span class="text-accent"> — AI Growth Engine</span>
+        Monstrum<br class="hidden sm:block" /><span class="text-accent"> AI Growth Engine</span>
       </h1>
 
       <p class="reveal text-base text-secondary/70 font-500 mt-5 max-w-xl leading-relaxed" style="transition-delay:.15s">
-        In progress — high-fidelity design in development
+        AI-powered growth engine that helps businesses become visible in AI search results like ChatGPT, Perplexity, and Google AI Overviews.
       </p>
 
       <div class="reveal grid grid-cols-2 sm:grid-cols-4 gap-6 mt-12 pt-10 border-t border-border" style="transition-delay:.2s">
@@ -167,12 +184,12 @@
           <p class="text-sm font-600 text-primary">Product Designer<br><span class="text-secondary font-500">Sole designer</span></p>
         </div>
         <div class="min-w-0">
-          <p class="text-xs font-600 uppercase tracking-widest text-secondary/50 mb-1">Screens</p>
-          <p class="text-sm font-600 text-primary">11 total<br><span class="text-secondary font-500">3 onboarding · 8 dashboard</span></p>
+          <p class="text-xs font-600 uppercase tracking-widest text-secondary/50 mb-1">Tools</p>
+          <p class="text-sm font-600 text-primary">Figma · Claude<br><span class="text-secondary font-500">Notion</span></p>
         </div>
         <div class="min-w-0">
-          <p class="text-xs font-600 uppercase tracking-widest text-secondary/50 mb-1">Timeline</p>
-          <p class="text-sm font-600 text-primary">March 2026<br><span class="text-secondary font-500">Ongoing</span></p>
+          <p class="text-xs font-600 uppercase tracking-widest text-secondary/50 mb-1">Platform</p>
+          <p class="text-sm font-600 text-primary">Web</p>
         </div>
         <div>
           <p class="text-xs font-600 uppercase tracking-widest text-secondary/50 mb-1">Company</p>
@@ -255,7 +272,11 @@
         </p>
       </div>
 
-      <div class="reveal h-scroll">
+      <div class="scroll-wrap reveal">
+        <button class="scroll-btn scroll-btn--prev" aria-label="Previous">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+        </button>
+        <div class="h-scroll">
 
         <!-- Profound -->
         <div class="competitor-card">
@@ -292,6 +313,10 @@
             </p>
           </div>
         </div>
+        </div>
+        <button class="scroll-btn scroll-btn--next" aria-label="Next">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/></svg>
+        </button>
       </div>
 
       <!-- Gap / differentiator callout -->
@@ -326,13 +351,21 @@
         </a>
       </div>
 
-      <div class="reveal h-scroll">
-        <div style="flex:none;width:clamp(280px,60vw,640px)">
-          <img src="img/flow-chart1.jpg" alt="UX Flow — Main Dashboard and Content Review and Approval" class="w-full h-auto rounded-2xl shadow-[0_4px_32px_rgba(0,0,0,0.18)]" />
+      <div class="scroll-wrap reveal">
+        <button class="scroll-btn scroll-btn--prev" aria-label="Previous">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+        </button>
+        <div class="h-scroll">
+          <div style="flex:none;width:clamp(280px,60vw,640px)">
+            <img src="img/flow-chart1.jpg" alt="UX Flow — Main Dashboard and Content Review and Approval" class="w-full h-auto rounded-2xl shadow-[0_4px_32px_rgba(0,0,0,0.18)]" />
+          </div>
+          <div style="flex:none;width:clamp(280px,60vw,640px)">
+            <img src="img/flow-chart2.jpg" alt="UX Flow — Content Calendar View and Performance Drill-Down" class="w-full h-auto rounded-2xl shadow-[0_4px_32px_rgba(0,0,0,0.18)]" />
+          </div>
         </div>
-        <div style="flex:none;width:clamp(280px,60vw,640px)">
-          <img src="img/flow-chart2.jpg" alt="UX Flow — Content Calendar View and Performance Drill-Down" class="w-full h-auto rounded-2xl shadow-[0_4px_32px_rgba(0,0,0,0.18)]" />
-        </div>
+        <button class="scroll-btn scroll-btn--next" aria-label="Next">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/></svg>
+        </button>
       </div>
 
     </div>
@@ -405,63 +438,71 @@
         <p class="text-secondary text-base leading-relaxed max-w-2xl">High-fidelity design in progress — screens below show the interaction model and content hierarchy.</p>
       </div>
 
-      <div class="reveal h-scroll">
+      <div class="scroll-wrap reveal">
+        <button class="scroll-btn scroll-btn--prev" aria-label="Previous">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+        </button>
+        <div class="h-scroll">
 
-        <!-- Onboarding -->
-        <div class="screen-card">
-          <div class="mb-4">
-            <h3 class="text-base font-700 text-primary mb-1">Onboarding</h3>
-            <p class="text-secondary text-sm leading-relaxed">
-              Asks for one thing: a URL. The crawler runs automatically, extracts brand information, and presents findings as editable pill tags for the client to confirm or adjust. Three screens total.
-            </p>
+          <!-- Onboarding -->
+          <div class="screen-card">
+            <div class="card-text">
+              <h3 class="text-base font-700 text-primary mb-1">Onboarding</h3>
+              <p class="text-secondary text-sm leading-relaxed">
+                Asks for one thing: a URL. The crawler runs automatically, extracts brand information, and presents findings as editable pill tags for the client to confirm or adjust. Three screens total.
+              </p>
+            </div>
+            <img src="img/Crawler.jpg" alt="Onboarding — 3-screen flow" class="w-full h-auto rounded-xl shadow-[0_4px_32px_rgba(0,0,0,0.18)]" />
           </div>
-          <img src="img/Crawler.jpg" alt="Onboarding — 3-screen flow" class="w-full h-auto rounded-xl shadow-[0_4px_32px_rgba(0,0,0,0.18)]" />
-        </div>
 
-        <!-- Dashboard -->
-        <div class="screen-card">
-          <div class="mb-4">
-            <h3 class="text-base font-700 text-primary mb-1">Dashboard</h3>
-            <p class="text-secondary text-sm leading-relaxed">
-              Answers three questions in under 10 seconds: Am I showing up? What changed? What do I do next?
-            </p>
+          <!-- Dashboard -->
+          <div class="screen-card">
+            <div class="card-text">
+              <h3 class="text-base font-700 text-primary mb-1">Dashboard</h3>
+              <p class="text-secondary text-sm leading-relaxed">
+                Answers three questions in under 10 seconds: Am I showing up? What changed? What do I do next?
+              </p>
+            </div>
+            <img src="img/Dashboard.jpg" alt="Dashboard" class="w-full h-auto rounded-xl shadow-[0_4px_32px_rgba(0,0,0,0.18)]" />
           </div>
-          <img src="img/Dashboard.jpg" alt="Dashboard — returning and new user states" class="w-full h-auto rounded-xl shadow-[0_4px_32px_rgba(0,0,0,0.18)]" />
-        </div>
 
-        <!-- Agents -->
-        <div class="screen-card">
-          <div class="mb-4">
-            <h3 class="text-base font-700 text-primary mb-1">Agents</h3>
-            <p class="text-secondary text-sm leading-relaxed">
-              Shows the full 9-step pipeline with step status, scores, and recent activity for each agent.
-            </p>
+          <!-- Agents -->
+          <div class="screen-card">
+            <div class="card-text">
+              <h3 class="text-base font-700 text-primary mb-1">Agents</h3>
+              <p class="text-secondary text-sm leading-relaxed">
+                Shows the full 9-step pipeline with step status, scores, and recent activity for each agent.
+              </p>
+            </div>
+            <img src="img/Agents.jpg" alt="Agents — 9-step pipeline view" class="w-full h-auto rounded-xl shadow-[0_4px_32px_rgba(0,0,0,0.18)]" />
           </div>
-          <img src="img/Agents.jpg" alt="Agents — 9-step pipeline view" class="w-full h-auto rounded-xl shadow-[0_4px_32px_rgba(0,0,0,0.18)]" />
-        </div>
 
-        <!-- Content -->
-        <div class="screen-card">
-          <div class="mb-4">
-            <h3 class="text-base font-700 text-primary mb-1">Content</h3>
-            <p class="text-secondary text-sm leading-relaxed">
-              Shows all published and in-progress pieces with tab filters, status badges, SEO scores per row, and Review and Edit actions.
-            </p>
+          <!-- Content -->
+          <div class="screen-card">
+            <div class="card-text">
+              <h3 class="text-base font-700 text-primary mb-1">Content</h3>
+              <p class="text-secondary text-sm leading-relaxed">
+                Shows all published and in-progress pieces with tab filters, status badges, SEO scores per row, and Review and Edit actions.
+              </p>
+            </div>
+            <img src="img/Content.jpg" alt="Content — content management surface" class="w-full h-auto rounded-xl shadow-[0_4px_32px_rgba(0,0,0,0.18)]" />
           </div>
-          <img src="img/Content.jpg" alt="Content — content management surface" class="w-full h-auto rounded-xl shadow-[0_4px_32px_rgba(0,0,0,0.18)]" />
-        </div>
 
-        <!-- Brand Memory -->
-        <div class="screen-card">
-          <div class="mb-4">
-            <h3 class="text-base font-700 text-primary mb-1">Brand Memory</h3>
-            <p class="text-secondary text-sm leading-relaxed">
-              Two states: a read-only view showing everything the system knows about the brand, and an edit mode where every field becomes interactive.
-            </p>
+          <!-- Brand Memory -->
+          <div class="screen-card">
+            <div class="card-text">
+              <h3 class="text-base font-700 text-primary mb-1">Brand Memory</h3>
+              <p class="text-secondary text-sm leading-relaxed">
+                Two states: a read-only view showing everything the system knows about the brand, and an edit mode where every field becomes interactive.
+              </p>
+            </div>
+            <img src="img/Brand.jpg" alt="Brand Memory — read and edit states" class="w-full h-auto rounded-xl shadow-[0_4px_32px_rgba(0,0,0,0.18)]" />
           </div>
-          <img src="img/Brand.jpg" alt="Brand Memory — read and edit states" class="w-full h-auto rounded-xl shadow-[0_4px_32px_rgba(0,0,0,0.18)]" />
-        </div>
 
+        </div>
+        <button class="scroll-btn scroll-btn--next" aria-label="Next">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/></svg>
+        </button>
       </div>
     </div>
   </section>
@@ -530,6 +571,48 @@
   </footer>
 
   <script>
+    // Drag-to-scroll + arrow navigation for all .scroll-wrap containers
+    document.querySelectorAll('.scroll-wrap').forEach(function(wrap) {
+      var track = wrap.querySelector('.h-scroll');
+      var btnPrev = wrap.querySelector('.scroll-btn--prev');
+      var btnNext = wrap.querySelector('.scroll-btn--next');
+      if (!track) return;
+
+      function cardWidth() {
+        var first = track.children[0];
+        if (!first) return 320;
+        var gap = parseInt(getComputedStyle(track).gap) || 24;
+        return first.offsetWidth + gap;
+      }
+
+      if (btnPrev) btnPrev.addEventListener('click', function() {
+        track.scrollBy({ left: -cardWidth(), behavior: 'smooth' });
+      });
+      if (btnNext) btnNext.addEventListener('click', function() {
+        track.scrollBy({ left: cardWidth(), behavior: 'smooth' });
+      });
+
+      var isDown = false, startX, scrollLeft;
+      track.addEventListener('mousedown', function(e) {
+        isDown = true;
+        track.classList.add('is-dragging');
+        startX = e.pageX - track.getBoundingClientRect().left;
+        scrollLeft = track.scrollLeft;
+        e.preventDefault();
+      });
+      document.addEventListener('mouseup', function() {
+        if (!isDown) return;
+        isDown = false;
+        track.classList.remove('is-dragging');
+      });
+      track.addEventListener('mousemove', function(e) {
+        if (!isDown) return;
+        e.preventDefault();
+        var x = e.pageX - track.getBoundingClientRect().left;
+        track.scrollLeft = scrollLeft - (x - startX);
+      });
+    });
+
     const observer = new IntersectionObserver(
       entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
       { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
