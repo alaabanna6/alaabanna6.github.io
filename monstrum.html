@@ -339,6 +339,61 @@
   </section>
 
 
+  <!-- ─── FEEDBACK APPLIED ─────────────────────────────────────────────────── -->
+  <section class="relative py-20 md:py-28 border-b border-border overflow-hidden">
+    <div class="dot-patch dot-patch--md" style="bottom: 8%; right: -40px;" aria-hidden="true"></div>
+    <div class="max-w-6xl mx-auto px-6 lg:px-8 relative z-10">
+
+      <div class="reveal mb-12">
+        <p class="text-xs font-600 tracking-[0.25em] uppercase text-accent mb-3">Iteration</p>
+        <h2 class="text-3xl md:text-4xl font-700 tracking-tight mb-4">Feedback Applied</h2>
+        <p class="text-secondary text-base leading-relaxed max-w-2xl">
+          The wireframe went through a significant review process with the founder. The feedback was detailed, specific, and required multiple rounds of iteration.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+        <div class="reveal feedback-item">
+          <h3 class="text-base font-700 text-primary mb-2">Crawler items were too specific</h3>
+          <p class="text-secondary text-base leading-relaxed">
+            The original onboarding screen listed items like Copy tone, Team info, and Testimonials. The feedback flagged that these labels would not apply to every type of business using the product. A law firm does not have testimonials the same way a SaaS company does. I rewrote every crawler item to be generic and action-based: Scanning your pages, Analysing your content, Mapping your structure, Finding social proof, Identifying competitors. The experience now feels relevant regardless of what industry the client is in.
+          </p>
+        </div>
+
+        <div class="reveal feedback-item">
+          <h3 class="text-base font-700 text-primary mb-2">The Findings screen lacked structure and editability</h3>
+          <p class="text-secondary text-base leading-relaxed">
+            The original design showed detected brand information as a flat list with no clear way to edit individual sections. The feedback asked for a modal container with a proper header, and a dedicated edit icon on each section so the client could target exactly what they wanted to change. I rebuilt the screen with a modal header reading "What we found," individual edit icons per section, and a clear separation between the confirmation action and the editing action.
+          </p>
+        </div>
+
+        <div class="reveal feedback-item">
+          <h3 class="text-base font-700 text-primary mb-2">Agent numbers meant nothing to clients</h3>
+          <p class="text-secondary text-base leading-relaxed">
+            The Content Pipeline table originally showed which agent was responsible for each piece of content: Agent 8, Agent 7, Agent 5. The feedback was direct: a marketing manager has no context for what those numbers mean and they create confusion rather than clarity. I removed every agent reference from the client-facing UI and replaced them with plain language descriptions of what is actually happening: Writing, Awaiting your review, Optimising for search, Goes live Mon. The column header changed from Agent to Activity.
+          </p>
+        </div>
+
+        <div class="reveal feedback-item">
+          <h3 class="text-base font-700 text-primary mb-2">The pipeline section on the Dashboard was in the wrong place</h3>
+          <p class="text-secondary text-base leading-relaxed">
+            The original design had a horizontal row of pipeline steps at the bottom of the Dashboard. The feedback identified two problems: the horizontal layout could not show enough information per step, and placing it at the bottom made it feel like an afterthought rather than the central mechanism of the product. I moved the pipeline to the right column, changed it to a vertical layout, and added a step description, status badge, and activity label to each step. The pipeline now reads as a primary feature rather than a secondary status indicator.
+          </p>
+        </div>
+
+        <div class="reveal feedback-item">
+          <h3 class="text-base font-700 text-primary mb-2">The new user Dashboard lacked a clear starting point</h3>
+          <p class="text-secondary text-base leading-relaxed">
+            The first version showed zero values across all metric cards but gave the client no direction on what to do next. Someone landing on the product for the first time had no idea where to begin. The feedback pushed for a stronger empty state that removes any ambiguity. I redesigned the content pipeline area to show a focused empty state with the message "your content will appear here once your pipeline is running," paired with a single CTA button pointing to the first action. The pipeline section on the right was updated so Step 1 is the only active and highlighted item with a Start now button, while every other step is visibly locked and grayed out. The page now has one clear message: start here.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
   <!-- ─── KEY SCREENS ──────────────────────────────────────────────────────── -->
   <section class="relative py-20 md:py-28 bg-surface-alt border-b border-border overflow-hidden">
     <div class="dot-patch dot-patch--xl" style="top: -10%; right: -60px;" aria-hidden="true"></div>
@@ -405,61 +460,6 @@
             </p>
           </div>
           <img src="img/Brand.jpg" alt="Brand Memory — read and edit states" class="w-full h-auto rounded-xl shadow-[0_4px_32px_rgba(0,0,0,0.18)]" />
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-
-  <!-- ─── FEEDBACK APPLIED ─────────────────────────────────────────────────── -->
-  <section class="relative py-20 md:py-28 border-b border-border overflow-hidden">
-    <div class="dot-patch dot-patch--md" style="bottom: 8%; right: -40px;" aria-hidden="true"></div>
-    <div class="max-w-6xl mx-auto px-6 lg:px-8 relative z-10">
-
-      <div class="reveal mb-12">
-        <p class="text-xs font-600 tracking-[0.25em] uppercase text-accent mb-3">Iteration</p>
-        <h2 class="text-3xl md:text-4xl font-700 tracking-tight mb-4">Feedback Applied</h2>
-        <p class="text-secondary text-base leading-relaxed max-w-2xl">
-          The wireframe went through a significant review process with the founder. The feedback was detailed, specific, and required multiple rounds of iteration.
-        </p>
-      </div>
-
-      <div class="space-y-10 max-w-3xl">
-
-        <div class="reveal feedback-item">
-          <h3 class="text-base font-700 text-primary mb-2">Crawler items were too specific</h3>
-          <p class="text-secondary text-base leading-relaxed">
-            The original onboarding screen listed items like Copy tone, Team info, and Testimonials. The feedback flagged that these labels would not apply to every type of business using the product. A law firm does not have testimonials the same way a SaaS company does. I rewrote every crawler item to be generic and action-based: Scanning your pages, Analysing your content, Mapping your structure, Finding social proof, Identifying competitors. The experience now feels relevant regardless of what industry the client is in.
-          </p>
-        </div>
-
-        <div class="reveal feedback-item">
-          <h3 class="text-base font-700 text-primary mb-2">The Findings screen lacked structure and editability</h3>
-          <p class="text-secondary text-base leading-relaxed">
-            The original design showed detected brand information as a flat list with no clear way to edit individual sections. The feedback asked for a modal container with a proper header, and a dedicated edit icon on each section so the client could target exactly what they wanted to change. I rebuilt the screen with a modal header reading "What we found," individual edit icons per section, and a clear separation between the confirmation action and the editing action.
-          </p>
-        </div>
-
-        <div class="reveal feedback-item">
-          <h3 class="text-base font-700 text-primary mb-2">Agent numbers meant nothing to clients</h3>
-          <p class="text-secondary text-base leading-relaxed">
-            The Content Pipeline table originally showed which agent was responsible for each piece of content: Agent 8, Agent 7, Agent 5. The feedback was direct: a marketing manager has no context for what those numbers mean and they create confusion rather than clarity. I removed every agent reference from the client-facing UI and replaced them with plain language descriptions of what is actually happening: Writing, Awaiting your review, Optimising for search, Goes live Mon. The column header changed from Agent to Activity.
-          </p>
-        </div>
-
-        <div class="reveal feedback-item">
-          <h3 class="text-base font-700 text-primary mb-2">The pipeline section on the Dashboard was in the wrong place</h3>
-          <p class="text-secondary text-base leading-relaxed">
-            The original design had a horizontal row of pipeline steps at the bottom of the Dashboard. The feedback identified two problems: the horizontal layout could not show enough information per step, and placing it at the bottom made it feel like an afterthought rather than the central mechanism of the product. I moved the pipeline to the right column, changed it to a vertical layout, and added a step description, status badge, and activity label to each step. The pipeline now reads as a primary feature rather than a secondary status indicator.
-          </p>
-        </div>
-
-        <div class="reveal feedback-item">
-          <h3 class="text-base font-700 text-primary mb-2">The new user Dashboard lacked a clear starting point</h3>
-          <p class="text-secondary text-base leading-relaxed">
-            The first version showed zero values across all metric cards but gave the client no direction on what to do next. Someone landing on the product for the first time had no idea where to begin. The feedback pushed for a stronger empty state that removes any ambiguity. I redesigned the content pipeline area to show a focused empty state with the message "your content will appear here once your pipeline is running," paired with a single CTA button pointing to the first action. The pipeline section on the right was updated so Step 1 is the only active and highlighted item with a Start now button, while every other step is visibly locked and grayed out. The page now has one clear message: start here.
-          </p>
         </div>
 
       </div>
