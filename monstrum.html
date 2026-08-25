@@ -67,8 +67,13 @@
     }
     .img-placeholder svg { opacity: 0.3; }
 
-    /* Feedback item */
-    .feedback-item { border-left: 2px solid var(--accent); padding-left: 1.25rem; }
+    /* Feedback item — card style with red border */
+    .feedback-item {
+      background: var(--surface-alt);
+      border: 1px solid color-mix(in oklab, var(--accent) 45%, transparent);
+      border-radius: 16px;
+      padding: 1.5rem 1.75rem;
+    }
 
     /* Competitor card */
     .competitor-card { border: 1px solid var(--border); border-radius: 16px; overflow: hidden; flex: none; width: 320px; }
@@ -82,7 +87,12 @@
     /* Screen card in h-scroll */
     .screen-card { flex: none; width: 280px; display: flex; flex-direction: column; }
     @media (min-width: 640px) { .screen-card { width: 340px; } }
-    .screen-card .card-text { min-height: 5rem; margin-bottom: 1rem; }
+    .screen-card .card-text { height: 7.5rem; overflow: hidden; margin-bottom: 1rem; }
+
+    /* Lightbox */
+    #img-lightbox { display:none; position:fixed; inset:0; z-index:9999; background:rgba(0,0,0,0.92); align-items:center; justify-content:center; cursor:zoom-out; }
+    #img-lightbox img { max-width:90vw; max-height:90vh; object-fit:contain; border-radius:12px; box-shadow:0 8px 64px rgba(0,0,0,0.6); }
+    .zoomable { cursor:zoom-in !important; }
 
     /* Scroll wrap + arrow buttons */
     .scroll-wrap { position: relative; }
@@ -112,6 +122,11 @@
 </head>
 
 <body class="bg-surface text-primary font-sans antialiased overflow-x-hidden">
+  <!-- Lightbox -->
+  <div id="img-lightbox" role="dialog" aria-modal="true">
+    <img id="img-lightbox-img" alt="" />
+  </div>
+
   <span class="live-cursor" id="live-cursor" aria-hidden="true">
     <svg viewBox="0 0 40 40"><path d="M1.8 4.4 7 36.2c.3 1.8 2.6 2.3 3.6.8l3.9-5.7c1.7-2.5 4.5-4.1 7.5-4.3l6.9-.5c1.8-.1 2.5-2.4 1.1-3.5L5 2.5c-1.4-1.1-3.5 0-3.3 1.9Z"/></svg>
   </span>
@@ -185,7 +200,7 @@
         </div>
         <div class="min-w-0">
           <p class="text-xs font-600 uppercase tracking-widest text-secondary/50 mb-1">Tools</p>
-          <p class="text-sm font-600 text-primary">Figma · Claude<br><span class="text-secondary font-500">Notion</span></p>
+          <p class="text-sm font-500 text-secondary">Figma · Claude · Notion</p>
         </div>
         <div class="min-w-0">
           <p class="text-xs font-600 uppercase tracking-widest text-secondary/50 mb-1">Platform</p>
@@ -280,7 +295,7 @@
 
         <!-- Profound -->
         <div class="competitor-card">
-          <img src="img/profound-analysis.jpg" alt="Profound competitor analysis" class="w-full h-auto object-cover" />
+          <img src="img/profound-analysis.jpg" alt="Profound competitor analysis" class="zoomable w-full h-auto object-cover" />
           <div class="p-6">
             <h3 class="text-lg font-700 text-primary mb-1">Profound</h3>
             <p class="text-xs font-600 tracking-widest uppercase text-accent mb-4">G2 Winter 2026 AEO Category Leader</p>
@@ -292,7 +307,7 @@
 
         <!-- Peec -->
         <div class="competitor-card">
-          <img src="img/peek-analysis.jpg" alt="Peec competitor analysis" class="w-full h-auto object-cover" />
+          <img src="img/peek-analysis.jpg" alt="Peec competitor analysis" class="zoomable w-full h-auto object-cover" />
           <div class="p-6">
             <h3 class="text-lg font-700 text-primary mb-1">Peec</h3>
             <p class="text-xs font-600 tracking-widest uppercase text-accent mb-4">Focused Monitoring, 2,000+ Teams</p>
@@ -304,7 +319,7 @@
 
         <!-- Gushwork -->
         <div class="competitor-card">
-          <img src="img/Gushwork-analysis.jpg" alt="Gushwork competitor analysis" class="w-full h-auto object-cover" />
+          <img src="img/Gushwork-analysis.jpg" alt="Gushwork competitor analysis" class="zoomable w-full h-auto object-cover" />
           <div class="p-6">
             <h3 class="text-lg font-700 text-primary mb-1">Gushwork</h3>
             <p class="text-xs font-600 tracking-widest uppercase text-accent mb-4">Content at Volume, No Measurement</p>
@@ -351,21 +366,9 @@
         </a>
       </div>
 
-      <div class="scroll-wrap reveal">
-        <button class="scroll-btn scroll-btn--prev" aria-label="Previous">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-        </button>
-        <div class="h-scroll">
-          <div style="flex:none;width:clamp(280px,60vw,640px)">
-            <img src="img/flow-chart1.jpg" alt="UX Flow — Main Dashboard and Content Review and Approval" class="w-full h-auto rounded-2xl shadow-[0_4px_32px_rgba(0,0,0,0.18)]" />
-          </div>
-          <div style="flex:none;width:clamp(280px,60vw,640px)">
-            <img src="img/flow-chart2.jpg" alt="UX Flow — Content Calendar View and Performance Drill-Down" class="w-full h-auto rounded-2xl shadow-[0_4px_32px_rgba(0,0,0,0.18)]" />
-          </div>
-        </div>
-        <button class="scroll-btn scroll-btn--next" aria-label="Next">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/></svg>
-        </button>
+      <div class="reveal grid grid-cols-2 gap-4 md:gap-6">
+        <img src="img/flow-chart1.jpg" alt="UX Flow — Main Dashboard and Content Review and Approval" class="zoomable w-full h-auto rounded-xl shadow-[0_4px_32px_rgba(0,0,0,0.18)]" />
+        <img src="img/flow-chart2.jpg" alt="UX Flow — Content Calendar View and Performance Drill-Down" class="zoomable w-full h-auto rounded-xl shadow-[0_4px_32px_rgba(0,0,0,0.18)]" />
       </div>
 
     </div>
@@ -452,7 +455,7 @@
                 Asks for one thing: a URL. The crawler runs automatically, extracts brand information, and presents findings as editable pill tags for the client to confirm or adjust. Three screens total.
               </p>
             </div>
-            <img src="img/Crawler.jpg" alt="Onboarding — 3-screen flow" class="w-full h-auto rounded-xl shadow-[0_4px_32px_rgba(0,0,0,0.18)]" />
+            <img src="img/Crawler.jpg" alt="Onboarding — 3-screen flow" class="zoomable w-full h-auto rounded-xl shadow-[0_4px_32px_rgba(0,0,0,0.18)]" />
           </div>
 
           <!-- Dashboard -->
@@ -463,7 +466,7 @@
                 Answers three questions in under 10 seconds: Am I showing up? What changed? What do I do next?
               </p>
             </div>
-            <img src="img/Dashboard.jpg" alt="Dashboard" class="w-full h-auto rounded-xl shadow-[0_4px_32px_rgba(0,0,0,0.18)]" />
+            <img src="img/Dashboard.jpg" alt="Dashboard" class="zoomable w-full h-auto rounded-xl shadow-[0_4px_32px_rgba(0,0,0,0.18)]" />
           </div>
 
           <!-- Agents -->
@@ -474,7 +477,7 @@
                 Shows the full 9-step pipeline with step status, scores, and recent activity for each agent.
               </p>
             </div>
-            <img src="img/Agents.jpg" alt="Agents — 9-step pipeline view" class="w-full h-auto rounded-xl shadow-[0_4px_32px_rgba(0,0,0,0.18)]" />
+            <img src="img/Agents.jpg" alt="Agents — 9-step pipeline view" class="zoomable w-full h-auto rounded-xl shadow-[0_4px_32px_rgba(0,0,0,0.18)]" />
           </div>
 
           <!-- Content -->
@@ -485,7 +488,7 @@
                 Shows all published and in-progress pieces with tab filters, status badges, SEO scores per row, and Review and Edit actions.
               </p>
             </div>
-            <img src="img/Content.jpg" alt="Content — content management surface" class="w-full h-auto rounded-xl shadow-[0_4px_32px_rgba(0,0,0,0.18)]" />
+            <img src="img/Content.jpg" alt="Content — content management surface" class="zoomable w-full h-auto rounded-xl shadow-[0_4px_32px_rgba(0,0,0,0.18)]" />
           </div>
 
           <!-- Brand Memory -->
@@ -496,7 +499,7 @@
                 Two states: a read-only view showing everything the system knows about the brand, and an edit mode where every field becomes interactive.
               </p>
             </div>
-            <img src="img/Brand.jpg" alt="Brand Memory — read and edit states" class="w-full h-auto rounded-xl shadow-[0_4px_32px_rgba(0,0,0,0.18)]" />
+            <img src="img/Brand.jpg" alt="Brand Memory — read and edit states" class="zoomable w-full h-auto rounded-xl shadow-[0_4px_32px_rgba(0,0,0,0.18)]" />
           </div>
 
         </div>
@@ -571,6 +574,24 @@
   </footer>
 
   <script>
+    // Lightbox
+    var lb = document.getElementById('img-lightbox');
+    var lbImg = document.getElementById('img-lightbox-img');
+    document.querySelectorAll('.zoomable').forEach(function(img) {
+      img.addEventListener('click', function() {
+        lbImg.src = img.src;
+        lb.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+      });
+    });
+    lb.addEventListener('click', function() {
+      lb.style.display = 'none';
+      document.body.style.overflow = '';
+    });
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') { lb.style.display = 'none'; document.body.style.overflow = ''; }
+    });
+
     // Drag-to-scroll + arrow navigation for all .scroll-wrap containers
     document.querySelectorAll('.scroll-wrap').forEach(function(wrap) {
       var track = wrap.querySelector('.h-scroll');
