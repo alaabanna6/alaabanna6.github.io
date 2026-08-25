@@ -71,7 +71,17 @@
     .feedback-item { border-left: 2px solid var(--accent); padding-left: 1.25rem; }
 
     /* Competitor card */
-    .competitor-card { border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
+    .competitor-card { border: 1px solid var(--border); border-radius: 16px; overflow: hidden; flex: none; width: 320px; }
+    @media (min-width: 640px) { .competitor-card { width: 380px; } }
+
+    /* Horizontal scroll strip */
+    .h-scroll { display: flex; gap: 1.5rem; overflow-x: auto; padding-bottom: 1rem; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+    .h-scroll::-webkit-scrollbar { display: none; }
+    .h-scroll > * { scroll-snap-align: start; }
+
+    /* Screen card in h-scroll */
+    .screen-card { flex: none; width: 280px; }
+    @media (min-width: 640px) { .screen-card { width: 340px; } }
   </style>
   <script defer src="pull-switch.js?v=10"></script>
   <script defer src="theme.js?v=5"></script>
@@ -218,14 +228,13 @@
   <section class="relative py-20 md:py-28 border-b border-border overflow-hidden">
     <div class="dot-patch dot-patch--sm" style="bottom: 8%; left: 4%;" aria-hidden="true"></div>
     <div class="max-w-6xl mx-auto px-6 lg:px-8 relative z-10">
-      <div class="reveal max-w-3xl p-8 md:p-10 rounded-2xl border border-accent/20 bg-surface-alt relative">
-        <div class="absolute top-0 left-0 w-1 h-full bg-accent rounded-l-2xl"></div>
-        <p class="text-xs font-600 tracking-[0.25em] uppercase text-accent mb-4">Key Positioning</p>
-        <h2 class="text-2xl md:text-3xl font-700 tracking-tight mb-6">Designing Without a Reference Product</h2>
-        <p class="text-secondary text-base leading-relaxed mb-4">
+      <div class="max-w-3xl">
+        <p class="reveal text-xs font-600 tracking-[0.25em] uppercase text-accent mb-3">Key Positioning</p>
+        <h2 class="reveal text-3xl md:text-4xl font-700 tracking-tight mb-8">Designing Without a Reference Product</h2>
+        <p class="reveal text-secondary text-base leading-relaxed mb-6">
           Monstrum isn't a category with an established interface pattern to design against. Profound, Peec, and Gushwork each solve one piece of the problem, but none of them run SEO, AEO, and GEO as a single compounding, client-facing pipeline. There was no existing dashboard to benchmark against for the exact problem I was solving.
         </p>
-        <p class="text-secondary text-base leading-relaxed">
+        <p class="reveal text-secondary text-base leading-relaxed">
           That meant the information architecture, the core metric, and the interaction model all had to be defined from scratch. I couldn't adapt an existing UI pattern — I had to work from the pipeline logic and the business model directly, and build the product's vision alongside its interface. Every structural decision in this case study, from the 12-to-9-step abstraction to the AI Citation Score, came out of that starting position.
         </p>
       </div>
@@ -246,39 +255,39 @@
         </p>
       </div>
 
-      <div class="space-y-10">
+      <div class="reveal h-scroll">
 
         <!-- Profound -->
-        <div class="reveal competitor-card">
+        <div class="competitor-card">
           <img src="img/profound-analysis.jpg" alt="Profound competitor analysis" class="w-full h-auto object-cover" />
-          <div class="p-6 md:p-8">
+          <div class="p-6">
             <h3 class="text-lg font-700 text-primary mb-1">Profound</h3>
             <p class="text-xs font-600 tracking-widest uppercase text-accent mb-4">G2 Winter 2026 AEO Category Leader</p>
-            <p class="text-secondary text-base leading-relaxed">
+            <p class="text-secondary text-sm leading-relaxed">
               Profound is the G2 Winter 2026 AEO category leader with 140+ verified reviews. Strong on monitoring but the execution loop is incomplete.
             </p>
           </div>
         </div>
 
         <!-- Peec -->
-        <div class="reveal competitor-card">
+        <div class="competitor-card">
           <img src="img/peek-analysis.jpg" alt="Peec competitor analysis" class="w-full h-auto object-cover" />
-          <div class="p-6 md:p-8">
+          <div class="p-6">
             <h3 class="text-lg font-700 text-primary mb-1">Peec</h3>
             <p class="text-xs font-600 tracking-widest uppercase text-accent mb-4">Focused Monitoring, 2,000+ Teams</p>
-            <p class="text-secondary text-base leading-relaxed">
+            <p class="text-secondary text-sm leading-relaxed">
               Peec is the benchmark for focused monitoring with over 2,000 teams and self-serve pricing. The structural limit is that it stops at insight and never executes. Every Peec client still needs a separate content team.
             </p>
           </div>
         </div>
 
         <!-- Gushwork -->
-        <div class="reveal competitor-card">
+        <div class="competitor-card">
           <img src="img/Gushwork-analysis.jpg" alt="Gushwork competitor analysis" class="w-full h-auto object-cover" />
-          <div class="p-6 md:p-8">
+          <div class="p-6">
             <h3 class="text-lg font-700 text-primary mb-1">Gushwork</h3>
             <p class="text-xs font-600 tracking-widest uppercase text-accent mb-4">Content at Volume, No Measurement</p>
-            <p class="text-secondary text-base leading-relaxed">
+            <p class="text-secondary text-sm leading-relaxed">
               Gushwork executes content at volume but has no measurement layer and no feedback loop.
             </p>
           </div>
@@ -317,11 +326,11 @@
         </a>
       </div>
 
-      <div class="space-y-6">
-        <div class="reveal">
+      <div class="reveal h-scroll">
+        <div style="flex:none;width:clamp(280px,60vw,640px)">
           <img src="img/flow-chart1.jpg" alt="UX Flow — Main Dashboard and Content Review and Approval" class="w-full h-auto rounded-2xl shadow-[0_4px_32px_rgba(0,0,0,0.18)]" />
         </div>
-        <div class="reveal">
+        <div style="flex:none;width:clamp(280px,60vw,640px)">
           <img src="img/flow-chart2.jpg" alt="UX Flow — Content Calendar View and Performance Drill-Down" class="w-full h-auto rounded-2xl shadow-[0_4px_32px_rgba(0,0,0,0.18)]" />
         </div>
       </div>
@@ -341,61 +350,61 @@
         <p class="text-secondary text-base leading-relaxed max-w-2xl">High-fidelity design in progress — screens below show the interaction model and content hierarchy.</p>
       </div>
 
-      <div class="space-y-16">
+      <div class="reveal h-scroll">
 
         <!-- Onboarding -->
-        <div class="reveal">
-          <div class="mb-5">
-            <h3 class="text-xl font-700 text-primary mb-2">Onboarding</h3>
-            <p class="text-secondary text-base leading-relaxed max-w-2xl">
+        <div class="screen-card">
+          <div class="mb-4">
+            <h3 class="text-base font-700 text-primary mb-1">Onboarding</h3>
+            <p class="text-secondary text-sm leading-relaxed">
               Asks for one thing: a URL. The crawler runs automatically, extracts brand information, and presents findings as editable pill tags for the client to confirm or adjust. Three screens total.
             </p>
           </div>
-          <img src="img/Onboarding.jpg" alt="Onboarding — 3-screen flow" class="w-full h-auto rounded-2xl shadow-[0_4px_32px_rgba(0,0,0,0.18)]" />
+          <img src="img/Onboarding.jpg" alt="Onboarding — 3-screen flow" class="w-full h-auto rounded-xl shadow-[0_4px_32px_rgba(0,0,0,0.18)]" />
         </div>
 
         <!-- Dashboard -->
-        <div class="reveal">
-          <div class="mb-5">
-            <h3 class="text-xl font-700 text-primary mb-2">Dashboard</h3>
-            <p class="text-secondary text-base leading-relaxed max-w-2xl">
-              Answers three questions in under 10 seconds: Am I showing up? What changed? What do I do next? Two states: a returning user view with live data and pipeline progress, and a new user empty state with a clear starting action.
+        <div class="screen-card">
+          <div class="mb-4">
+            <h3 class="text-base font-700 text-primary mb-1">Dashboard</h3>
+            <p class="text-secondary text-sm leading-relaxed">
+              Answers three questions in under 10 seconds: Am I showing up? What changed? What do I do next? Two states: returning user view with live data, and new user empty state with a clear starting action.
             </p>
           </div>
-          <img src="img/Dashboard.jpg" alt="Dashboard — returning and new user states" class="w-full h-auto rounded-2xl shadow-[0_4px_32px_rgba(0,0,0,0.18)]" />
+          <img src="img/Dashboard.jpg" alt="Dashboard — returning and new user states" class="w-full h-auto rounded-xl shadow-[0_4px_32px_rgba(0,0,0,0.18)]" />
         </div>
 
         <!-- Agents -->
-        <div class="reveal">
-          <div class="mb-5">
-            <h3 class="text-xl font-700 text-primary mb-2">Agents</h3>
-            <p class="text-secondary text-base leading-relaxed max-w-2xl">
+        <div class="screen-card">
+          <div class="mb-4">
+            <h3 class="text-base font-700 text-primary mb-1">Agents</h3>
+            <p class="text-secondary text-sm leading-relaxed">
               Shows the full 9-step pipeline with step status, scores, and recent activity. No technical language is visible to the client anywhere on this page.
             </p>
           </div>
-          <img src="img/Agents.jpg" alt="Agents — 9-step pipeline view" class="w-full h-auto rounded-2xl shadow-[0_4px_32px_rgba(0,0,0,0.18)]" />
+          <img src="img/Agents.jpg" alt="Agents — 9-step pipeline view" class="w-full h-auto rounded-xl shadow-[0_4px_32px_rgba(0,0,0,0.18)]" />
         </div>
 
-        <!-- Content + Calendar -->
-        <div class="reveal">
-          <div class="mb-5">
-            <h3 class="text-xl font-700 text-primary mb-2">Content &amp; Calendar</h3>
-            <p class="text-secondary text-base leading-relaxed max-w-2xl">
+        <!-- Content -->
+        <div class="screen-card">
+          <div class="mb-4">
+            <h3 class="text-base font-700 text-primary mb-1">Content</h3>
+            <p class="text-secondary text-sm leading-relaxed">
               Work together as the content management surface. Content view shows all published and in-progress pieces with tab filters, status badges, SEO scores per row, and Review and Edit actions. Calendar shows the same content on a monthly grid with color-coded status indicators.
             </p>
           </div>
-          <img src="img/Content.jpg" alt="Content and Calendar — content management surface" class="w-full h-auto rounded-2xl shadow-[0_4px_32px_rgba(0,0,0,0.18)]" />
+          <img src="img/Content.jpg" alt="Content — content management surface" class="w-full h-auto rounded-xl shadow-[0_4px_32px_rgba(0,0,0,0.18)]" />
         </div>
 
         <!-- Brand Memory -->
-        <div class="reveal">
-          <div class="mb-5">
-            <h3 class="text-xl font-700 text-primary mb-2">Brand Memory</h3>
-            <p class="text-secondary text-base leading-relaxed max-w-2xl">
+        <div class="screen-card">
+          <div class="mb-4">
+            <h3 class="text-base font-700 text-primary mb-1">Brand Memory</h3>
+            <p class="text-secondary text-sm leading-relaxed">
               Two states: a read-only view showing everything the system knows about the brand, and an edit mode where every field becomes interactive.
             </p>
           </div>
-          <img src="img/Brand.jpg" alt="Brand Memory — read and edit states" class="w-full h-auto rounded-2xl shadow-[0_4px_32px_rgba(0,0,0,0.18)]" />
+          <img src="img/Brand.jpg" alt="Brand Memory — read and edit states" class="w-full h-auto rounded-xl shadow-[0_4px_32px_rgba(0,0,0,0.18)]" />
         </div>
 
       </div>
