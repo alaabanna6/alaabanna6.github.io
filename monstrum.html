@@ -114,7 +114,7 @@
   <script defer src="theme.js?v=5"></script>
   <style>
     html.live-cursor-active, html.live-cursor-active * { cursor: none !important; }
-    .live-cursor { position: fixed; top: 0; left: 0; width: 20px; height: 20px; color: var(--live-cursor-color, var(--accent)); opacity: 0; pointer-events: none; z-index: 300; will-change: transform; filter: drop-shadow(0 1px 3px rgba(0,0,0,0.35)); transition: opacity 0.25s ease; }
+    .live-cursor { position: fixed; top: 0; left: 0; width: 20px; height: 20px; color: var(--live-cursor-color, var(--accent)); opacity: 0; pointer-events: none; z-index: 10000; will-change: transform; filter: drop-shadow(0 1px 3px rgba(0,0,0,0.35)); transition: opacity 0.25s ease; }
     .live-cursor.is-active { opacity: 1; }
     .live-cursor svg { width: 100%; height: 100%; display: block; fill: currentColor; }
   </style>
