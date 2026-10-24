@@ -670,7 +670,7 @@
       lbFig.style.width = w + 'px';
       lbCap.style.minHeight = '';
       var h = 0;
-      lbGroup.forEach(function(g, i) { lbRenderCaption(g, i); h = Math.max(h, lbCap.offsetHeight); });
+      lbGroup.forEach(function(g, i) { lbRenderCaption(g, i); h = Math.max(h, Math.ceil(lbCap.getBoundingClientRect().height)); });
       return h;
     }
     function lbLayout() {
@@ -679,7 +679,7 @@
       var maxW = Math.min(window.innerWidth - (mobile ? 72 : 176), 1680);
       var ratios = lbGroup.map(function(g) { return (g.naturalWidth / g.naturalHeight) || 1.6; });
       function fit(capH) {
-        var availH = window.innerHeight - 2 * margin - gap - capH;
+        var availH = window.innerHeight - 2 * margin - gap - capH - 2;
         var w = maxW;
         ratios.forEach(function(r) { w = Math.min(w, availH * r); });
         return Math.max(200, Math.floor(w));
@@ -691,7 +691,8 @@
       var tallest = Math.ceil(Math.max.apply(null, ratios.map(function(r) { return w / r; })));
       lbMedia.style.height = tallest + 'px';
       lbCap.style.minHeight = capH + 'px';
-      var pad = Math.max(margin, (window.innerHeight - tallest - gap - capH) / 2);
+      // Floor and shave a pixel so sub-pixel rounding never triggers a scrollbar that shifts the image
+      var pad = Math.max(margin, Math.floor((window.innerHeight - tallest - gap - capH) / 2) - 1);
       lb.style.padding = pad + 'px 0';
     }
 
