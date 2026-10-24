@@ -82,7 +82,10 @@
       // width/height and the outline-color class both animate by default
       // (same rules the drawn animation uses), so without this the box
       // would briefly draw/fade itself in on every instant load.
+      // The corner handles have their own opacity fade, so switch it off too.
+      var skipHandles = box.querySelectorAll('.intro-box__handle');
       box.style.transition = 'none';
+      skipHandles.forEach(function (h) { h.style.transition = 'none'; });
       box.style.width = 'auto';
       box.style.height = 'auto';
       var reducedRect = box.getBoundingClientRect();
@@ -91,6 +94,7 @@
       box.classList.add('is-hidden-border');
       void box.offsetWidth;
       box.style.transition = '';
+      skipHandles.forEach(function (h) { h.style.transition = ''; });
       cursor.style.display = 'none';
       showInstantly(header);
       showInstantly(taglineText);

@@ -116,6 +116,7 @@
   // once intro.js runs, a couple of frames after the page is first drawn. Arriving via
   // a logo click skips the intro, so reveal the bar right now, before the first frame.
   if (resumeAt !== null) {
+    document.documentElement.classList.add('arriving-via-logo');
     const header = logoLink.closest('header');
     if (header && header.classList.contains('spawn-target')) {
       header.style.transition = 'none';

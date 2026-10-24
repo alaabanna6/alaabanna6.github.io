@@ -291,6 +291,10 @@
       transition: opacity 0.4s ease, border-color 0.5s ease;
     }
     .intro-box.is-hidden-border .intro-box__handle { opacity: 0; }
+    /* Arriving by clicking the logo on a project page skips the intro: keep the
+       box outline and handles hidden from the very first frame (set by logo-anim.js). */
+    html.arriving-via-logo #intro-box { outline-color: transparent; transition: none; }
+    html.arriving-via-logo #intro-box .intro-box__handle { opacity: 0; transition: none; }
     .intro-box__handle--tl { top: -4.5px; left: -4.5px; }
     .intro-box__handle--tr { top: -4.5px; right: -4.5px; }
     .intro-box__handle--bl { bottom: -4.5px; left: -4.5px; }
@@ -771,7 +775,7 @@
   <script defer src="pull-switch.js?v=11"></script>
   <script defer src="theme.js?v=5"></script>
   <script defer src="shimmer.js?v=2"></script>
-  <script defer src="intro.js?v=21"></script>
+  <script defer src="intro.js?v=22"></script>
   <script defer src="cursor-color.js?v=5"></script>
   <script defer src="canvas-cards.js?v=6"></script>
 </head>
@@ -800,7 +804,7 @@
       <a href="#home" id="logo-link" class="text-sm font-700 tracking-widest uppercase text-primary select-none" style="display:inline-flex">
         <span id="ly1" style="display:inline-block"><span id="lx1" style="display:inline-block"><span id="ly2" style="display:inline-block"><span id="lr1" style="display:inline-block"><span id="lr2" style="display:inline-block">A</span></span></span></span></span><span>laa El Bann</span><span id="ry1" style="display:inline-block"><span id="rx1" style="display:inline-block"><span id="ry2" style="display:inline-block"><span id="rr1" style="display:inline-block"><span id="rr2" style="display:inline-block">a</span></span></span></span></span>
       </a>
-      <script src="logo-anim.js?v=6"></script>
+      <script src="logo-anim.js?v=7"></script>
 
       <!-- Right-side group: nav links, theme toggle, mobile hamburger -->
       <div class="flex items-center gap-6">
