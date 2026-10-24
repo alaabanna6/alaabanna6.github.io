@@ -103,6 +103,11 @@ svg {
 .pull-switch.is-docked {
   top: 50%;
 }
+/* Hidden until pull-switch.js has placed it, so it never flashes at its
+   default left edge before the script moves it to the right. */
+.pull-switch:not(.is-positioned) {
+  visibility: hidden;
+}
 .pull-switch.is-dock-transitioning {
   opacity: 0 !important;
 }

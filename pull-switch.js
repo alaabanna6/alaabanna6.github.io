@@ -120,6 +120,7 @@
     var heroLeft = heroLeftFor(navRect);
     var left = (docked || heroLeft === null) ? dockedLeftFor(nav, navRect) : heroLeft;
     wrap.style.left = left + 'px';
+    wrap.classList.add('is-positioned');
   }
 
   // Never actually scrolls with the page (see the comment in theme.css) —
