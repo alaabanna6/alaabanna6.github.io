@@ -3,9 +3,14 @@
 // Every hover plays identical animation; mouse-leave resets invisibly.
 // If the logo is clicked mid-animation to go to another page, that page picks the
 // animation up from the same moment instead of replaying it from the start.
-document.addEventListener('DOMContentLoaded', () => {
+// Loaded right after the logo element (not deferred) so a resumed animation is
+// already in place on the new page's very first frame.
+(function initLogo() {
   const logoLink = document.getElementById('logo-link');
-  if (!logoLink) return;
+  if (!logoLink) {
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initLogo, { once: true });
+    return;
+  }
   const ly1 = document.getElementById('ly1'), lx1 = document.getElementById('lx1');
   const ly2 = document.getElementById('ly2'), lr1 = document.getElementById('lr1'), lr2 = document.getElementById('lr2');
   const ry1 = document.getElementById('ry1'), rx1 = document.getElementById('rx1');
@@ -13,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const allSpans = [ly1,lx1,ly2,lr1,lr2,ry1,rx1,ry2,rr1,rr2];
   const STORE_KEY = 'logoAnimElapsed';
   const TOTAL = 1100;
-  let animRunning = false, shouldReset = false, startedAt = 0, waitForLeave = false;
+  let animRunning = false, shouldReset = false, startedAt = 0, waitForLeave = false, lastDist = 0;
 
   function resetLogo() {
     shouldReset = false;
@@ -22,14 +27,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Same three phases as before, scheduled with delays instead of chained onfinish
   // callbacks so the whole sequence can be started at any point in time.
-  function play(offset) {
+  function play(offset, knownDist) {
     animRunning = true;
     shouldReset = false;
     resetLogo();
     startedAt = performance.now() - offset;
 
-    // Measure horizontal distance between the two letter wrappers
-    const dist = ry1.getBoundingClientRect().left - ly1.getBoundingClientRect().left;
+    // Measure horizontal distance between the two letter wrappers (a resumed
+    // animation reuses the previous page's measurement so it can start before fonts load)
+    const dist = knownDist || (ry1.getBoundingClientRect().left - ly1.getBoundingClientRect().left);
+    lastDist = dist;
 
     const E1 = 'cubic-bezier(0.16,1,0.3,1)'; // spring out
     const E2 = 'cubic-bezier(0.37,0,0.63,1)'; // smooth swap
@@ -83,7 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
   logoLink.addEventListener('click', () => {
     if (logoLink.pathname === location.pathname) return;
     const elapsed = animRunning ? Math.round(performance.now() - startedAt) : TOTAL;
-    try { sessionStorage.setItem(STORE_KEY, String(elapsed)); } catch (e) {}
+    try { sessionStorage.setItem(STORE_KEY, JSON.stringify({ t: elapsed, dist: lastDist })); } catch (e) {}
   });
 
   // Arriving from a logo click: continue from that moment
@@ -92,14 +99,21 @@ document.addEventListener('DOMContentLoaded', () => {
     resumeAt = sessionStorage.getItem(STORE_KEY);
     sessionStorage.removeItem(STORE_KEY);
   } catch (e) {}
-  const offset = Number(resumeAt);
+  let saved = null;
+  try { saved = JSON.parse(resumeAt); } catch (e) {}
+  const offset = saved && typeof saved === 'object' ? Number(saved.t) : Number(saved);
+  const savedDist = saved && typeof saved === 'object' ? Number(saved.dist) : 0;
   if (resumeAt !== null && offset > 0 && offset < TOTAL) {
     waitForLeave = true;
-    const start = () => play(offset);
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(start, start);
-    else start();
+    if (savedDist) {
+      play(offset, savedDist);
+    } else {
+      const start = () => play(offset);
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(start, start);
+      else start();
+    }
   } else if (resumeAt !== null && offset >= TOTAL) {
     // Already played before the click: stay still until the mouse leaves the name
     waitForLeave = true;
   }
-});
+})();
