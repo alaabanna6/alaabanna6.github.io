@@ -98,15 +98,19 @@
     .scroll-wrap { position: relative; }
     .scroll-btn {
       position: absolute; top: 50%; transform: translateY(-50%); z-index: 10;
-      width: 36px; height: 36px; border-radius: 50%;
-      background: var(--surface); border: 1px solid var(--border); color: var(--primary);
+      width: 40px; height: 40px; padding: 0;
+      background: none; border: none; color: var(--primary); opacity: .7;
       display: flex; align-items: center; justify-content: center;
-      cursor: pointer; box-shadow: 0 2px 12px rgba(0,0,0,0.35);
-      transition: background .2s, border-color .2s;
+      cursor: pointer; transition: color .2s, opacity .2s;
     }
-    .scroll-btn:hover { background: var(--surface-alt); border-color: var(--accent); color: var(--accent); }
-    .scroll-btn--prev { left: -18px; }
-    .scroll-btn--next { right: -18px; }
+    .scroll-btn:hover { color: var(--accent); opacity: 1; }
+    .scroll-btn--prev { left: -48px; }
+    .scroll-btn--next { right: -48px; }
+    @media (max-width: 767px) {
+      .scroll-btn { width: 24px; }
+      .scroll-btn--prev { left: -24px; }
+      .scroll-btn--next { right: -24px; }
+    }
     .h-scroll { cursor: grab; user-select: none; }
     .h-scroll.is-dragging { cursor: grabbing; scroll-snap-type: none; }
   </style>
@@ -289,7 +293,7 @@
 
       <div class="scroll-wrap reveal">
         <button class="scroll-btn scroll-btn--prev" aria-label="Previous">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
         </button>
         <div class="h-scroll">
 
@@ -330,7 +334,7 @@
         </div>
         </div>
         <button class="scroll-btn scroll-btn--next" aria-label="Next">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/></svg>
         </button>
       </div>
 
@@ -443,7 +447,7 @@
 
       <div class="scroll-wrap reveal">
         <button class="scroll-btn scroll-btn--prev" aria-label="Previous">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
         </button>
         <div class="h-scroll">
 
@@ -504,7 +508,7 @@
 
         </div>
         <button class="scroll-btn scroll-btn--next" aria-label="Next">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/></svg>
         </button>
       </div>
     </div>
@@ -598,6 +602,20 @@
       var btnPrev = wrap.querySelector('.scroll-btn--prev');
       var btnNext = wrap.querySelector('.scroll-btn--next');
       if (!track) return;
+
+      // Center arrows on the images, not the whole card (cards include text above/below)
+      function centerArrows() {
+        var img = track.querySelector('img');
+        if (!img) return;
+        var r = img.getBoundingClientRect();
+        var top = (r.top - wrap.getBoundingClientRect().top + r.height / 2) + 'px';
+        if (btnPrev) btnPrev.style.top = top;
+        if (btnNext) btnNext.style.top = top;
+      }
+      centerArrows();
+      track.querySelectorAll('img').forEach(function(i) { i.addEventListener('load', centerArrows); });
+      window.addEventListener('load', centerArrows);
+      window.addEventListener('resize', centerArrows);
 
       function cardWidth() {
         var first = track.children[0];
