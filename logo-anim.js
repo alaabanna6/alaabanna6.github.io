@@ -103,6 +103,20 @@
   try { saved = JSON.parse(resumeAt); } catch (e) {}
   const offset = saved && typeof saved === 'object' ? Number(saved.t) : Number(saved);
   const savedDist = saved && typeof saved === 'object' ? Number(saved.dist) : 0;
+
+  // The homepage menu bar starts hidden for its intro entrance and only gets revealed
+  // once intro.js runs, a couple of frames after the page is first drawn. Arriving via
+  // a logo click skips the intro, so reveal the bar right now, before the first frame.
+  if (resumeAt !== null) {
+    const header = logoLink.closest('header');
+    if (header && header.classList.contains('spawn-target')) {
+      header.style.transition = 'none';
+      header.classList.add('is-visible');
+      void header.offsetWidth;
+      header.style.transition = '';
+    }
+  }
+
   if (resumeAt !== null && offset > 0 && offset < TOTAL) {
     waitForLeave = true;
     if (savedDist) {
