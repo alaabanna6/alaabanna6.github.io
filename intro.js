@@ -56,8 +56,14 @@
 
     var skipAnimation = reduced || alreadyPlayed || cameFromProject;
 
+    // Skip path only: land in the final state with no fade/slide, then restore the
+    // element's transition so later effects (hover, nav glow) still animate.
     function showInstantly(el) {
-      if (el) el.classList.add('is-visible');
+      if (!el) return;
+      el.style.transition = 'none';
+      el.classList.add('is-visible');
+      void el.offsetWidth;
+      el.style.transition = '';
     }
 
     function startShimmer() {
