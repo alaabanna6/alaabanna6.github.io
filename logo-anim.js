@@ -87,11 +87,19 @@
 
   // Leaving the page through the logo: remember how far the animation got
   // (a finished animation counts as TOTAL, so the next page doesn't replay it)
-  logoLink.addEventListener('click', () => {
-    if (logoLink.pathname === location.pathname) return;
+  let leavingViaLogo = false;
+  function saveProgress() {
     const elapsed = animRunning ? Math.round(performance.now() - startedAt) : TOTAL;
     try { sessionStorage.setItem(STORE_KEY, JSON.stringify({ t: elapsed, dist: lastDist })); } catch (e) {}
+  }
+  logoLink.addEventListener('click', () => {
+    if (logoLink.pathname === location.pathname) return;
+    leavingViaLogo = true;
+    saveProgress();
   });
+  // The page keeps animating for a frame or two after the click while the next page
+  // loads, so save again at the moment it actually goes away to hand off exactly.
+  window.addEventListener('pagehide', () => { if (leavingViaLogo) saveProgress(); });
 
   // Arriving from a logo click: continue from that moment
   let resumeAt = null;
