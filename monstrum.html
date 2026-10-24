@@ -90,9 +90,10 @@
     .screen-card .card-text { height: 7.5rem; overflow: hidden; margin-bottom: 1rem; }
 
     /* Lightbox */
-    #img-lightbox { display:none; position:fixed; inset:0; z-index:9999; background:rgba(0,0,0,0.97); flex-direction:column; align-items:center; justify-content:center; gap:24px; padding:32px 80px; cursor:zoom-out; }
-    #img-lightbox img { max-width:100%; max-height:70vh; object-fit:contain; border-radius:12px; box-shadow:0 8px 64px rgba(0,0,0,0.6); }
-    .lb-caption { width:100%; max-width:760px; cursor:default; }
+    #img-lightbox { display:none; position:fixed; inset:0; z-index:9999; background:rgba(0,0,0,0.97); flex-direction:column; align-items:center; justify-content:flex-start; padding:32px 80px; overflow-y:auto; cursor:zoom-out; }
+    .lb-figure { display:flex; flex-direction:column; gap:24px; flex:none; }
+    #img-lightbox img { display:block; width:100%; height:auto; border-radius:12px; box-shadow:0 8px 64px rgba(0,0,0,0.6); }
+    .lb-caption { width:100%; text-align:left; cursor:default; }
     .lb-caption h3 { font-size:1.125rem; font-weight:700; color:#FAFAFA; margin-bottom:.25rem; }
     .lb-caption .lb-tag { font-size:.75rem; font-weight:600; letter-spacing:.15em; text-transform:uppercase; color:var(--accent); margin-bottom:.5rem; }
     .lb-caption .lb-desc { font-size:.95rem; line-height:1.65; color:rgba(250,250,250,.7); }
@@ -102,7 +103,8 @@
     .lb-nav--prev { left:16px; }
     .lb-nav--next { right:16px; }
     @media (max-width: 767px) {
-      #img-lightbox { padding:24px 40px; gap:16px; }
+      #img-lightbox { padding:24px 40px; }
+      .lb-figure { gap:16px; }
       .lb-nav { width:32px; }
       .lb-nav--prev { left:4px; }
       .lb-nav--next { right:4px; }
@@ -146,8 +148,10 @@
     <button class="lb-nav lb-nav--prev" aria-label="Previous image">
       <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
     </button>
-    <img id="img-lightbox-img" alt="" />
-    <div class="lb-caption" id="img-lightbox-caption"></div>
+    <div class="lb-figure" id="img-lightbox-figure">
+      <img id="img-lightbox-img" alt="" />
+      <div class="lb-caption" id="img-lightbox-caption"></div>
+    </div>
     <button class="lb-nav lb-nav--next" aria-label="Next image">
       <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/></svg>
     </button>
@@ -639,17 +643,35 @@
       lbNext.hidden = i === lbGroup.length - 1;
     }
 
+    // One width for every image in the group, so stepping between them never shifts
+    // the image edges or the caption. Sized to fit the tallest image plus room for text.
+    var lbFig = document.getElementById('img-lightbox-figure');
+    function lbLayout() {
+      var mobile = window.innerWidth < 768;
+      var captionRoom = mobile ? 200 : 180;
+      var maxW = Math.min(window.innerWidth - (mobile ? 80 : 176), 1600);
+      var availH = window.innerHeight - captionRoom - 64;
+      var ratios = lbGroup.map(function(g) { return (g.naturalWidth / g.naturalHeight) || 1.6; });
+      var w = maxW;
+      ratios.forEach(function(r) { w = Math.min(w, availH * r); });
+      var tallest = Math.max.apply(null, ratios.map(function(r) { return w / r; }));
+      lbFig.style.width = Math.floor(w) + 'px';
+      lb.style.paddingTop = Math.max(24, (window.innerHeight - tallest - captionRoom) / 2) + 'px';
+    }
+
     function lbClose() { lb.style.display = 'none'; document.body.style.overflow = ''; }
 
     document.querySelectorAll('.zoomable').forEach(function(img) {
       img.addEventListener('click', function() {
         var container = img.closest('.h-scroll') || img.parentElement;
         lbGroup = Array.from(container.querySelectorAll('.zoomable'));
+        lbLayout();
         lbShow(lbGroup.indexOf(img));
         lb.style.display = 'flex';
         document.body.style.overflow = 'hidden';
       });
     });
+    window.addEventListener('resize', function() { if (lb.style.display === 'flex') lbLayout(); });
     lbPrev.addEventListener('click', function(e) { e.stopPropagation(); if (lbIndex > 0) lbShow(lbIndex - 1); });
     lbNext.addEventListener('click', function(e) { e.stopPropagation(); if (lbIndex < lbGroup.length - 1) lbShow(lbIndex + 1); });
     lbCap.addEventListener('click', function(e) { e.stopPropagation(); });
