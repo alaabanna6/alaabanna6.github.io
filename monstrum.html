@@ -90,8 +90,23 @@
     .screen-card .card-text { height: 7.5rem; overflow: hidden; margin-bottom: 1rem; }
 
     /* Lightbox */
-    #img-lightbox { display:none; position:fixed; inset:0; z-index:9999; background:rgba(0,0,0,0.92); align-items:center; justify-content:center; cursor:zoom-out; }
-    #img-lightbox img { max-width:90vw; max-height:90vh; object-fit:contain; border-radius:12px; box-shadow:0 8px 64px rgba(0,0,0,0.6); }
+    #img-lightbox { display:none; position:fixed; inset:0; z-index:9999; background:rgba(0,0,0,0.92); flex-direction:column; align-items:center; justify-content:center; gap:24px; padding:32px 80px; cursor:zoom-out; }
+    #img-lightbox img { max-width:100%; max-height:70vh; object-fit:contain; border-radius:12px; box-shadow:0 8px 64px rgba(0,0,0,0.6); }
+    .lb-caption { width:100%; max-width:760px; cursor:default; }
+    .lb-caption h3 { font-size:1.125rem; font-weight:700; color:#FAFAFA; margin-bottom:.25rem; }
+    .lb-caption .lb-tag { font-size:.75rem; font-weight:600; letter-spacing:.15em; text-transform:uppercase; color:var(--accent); margin-bottom:.5rem; }
+    .lb-caption .lb-desc { font-size:.95rem; line-height:1.65; color:rgba(250,250,250,.7); }
+    .lb-nav { position:fixed; top:50%; transform:translateY(-50%); width:48px; height:48px; padding:0; background:none; border:none; color:#FAFAFA; opacity:.7; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:color .2s, opacity .2s; }
+    .lb-nav:hover { color:var(--accent); opacity:1; }
+    .lb-nav[hidden] { display:none; }
+    .lb-nav--prev { left:16px; }
+    .lb-nav--next { right:16px; }
+    @media (max-width: 767px) {
+      #img-lightbox { padding:24px 40px; gap:16px; }
+      .lb-nav { width:32px; }
+      .lb-nav--prev { left:4px; }
+      .lb-nav--next { right:4px; }
+    }
     .zoomable { cursor:zoom-in !important; }
 
     /* Scroll wrap + arrow buttons */
@@ -127,8 +142,15 @@
 
 <body class="bg-surface text-primary font-sans antialiased overflow-x-hidden">
   <!-- Lightbox -->
-  <div id="img-lightbox" role="dialog" aria-modal="true">
+  <div id="img-lightbox" role="dialog" aria-modal="true" aria-label="Image preview">
+    <button class="lb-nav lb-nav--prev" aria-label="Previous image">
+      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+    </button>
     <img id="img-lightbox-img" alt="" />
+    <div class="lb-caption" id="img-lightbox-caption"></div>
+    <button class="lb-nav lb-nav--next" aria-label="Next image">
+      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/></svg>
+    </button>
   </div>
 
   <span class="live-cursor" id="live-cursor" aria-hidden="true">
@@ -581,19 +603,62 @@
     // Lightbox
     var lb = document.getElementById('img-lightbox');
     var lbImg = document.getElementById('img-lightbox-img');
+    var lbCap = document.getElementById('img-lightbox-caption');
+    var lbPrev = lb.querySelector('.lb-nav--prev');
+    var lbNext = lb.querySelector('.lb-nav--next');
+    var lbGroup = [], lbIndex = 0;
+
+    function lbText(el) { return el ? el.textContent.replace(/\s+/g, ' ').trim() : ''; }
+
+    function lbRenderCaption(img) {
+      var card = img.closest('.competitor-card, .screen-card');
+      var title = img.alt, tag = '', desc = '';
+      if (card) {
+        var ps = card.querySelectorAll('p');
+        title = lbText(card.querySelector('h3'));
+        if (card.classList.contains('competitor-card')) { tag = lbText(ps[0]); desc = lbText(ps[1]); }
+        else { desc = lbText(ps[0]); }
+      }
+      lbCap.replaceChildren();
+      [['h3', '', title], ['p', 'lb-tag', tag], ['p', 'lb-desc', desc]].forEach(function(part) {
+        if (!part[2]) return;
+        var el = document.createElement(part[0]);
+        if (part[1]) el.className = part[1];
+        el.textContent = part[2];
+        lbCap.appendChild(el);
+      });
+    }
+
+    function lbShow(i) {
+      lbIndex = i;
+      var img = lbGroup[i];
+      lbImg.src = img.src;
+      lbImg.alt = img.alt;
+      lbRenderCaption(img);
+      lbPrev.hidden = i === 0;
+      lbNext.hidden = i === lbGroup.length - 1;
+    }
+
+    function lbClose() { lb.style.display = 'none'; document.body.style.overflow = ''; }
+
     document.querySelectorAll('.zoomable').forEach(function(img) {
       img.addEventListener('click', function() {
-        lbImg.src = img.src;
+        var container = img.closest('.h-scroll') || img.parentElement;
+        lbGroup = Array.from(container.querySelectorAll('.zoomable'));
+        lbShow(lbGroup.indexOf(img));
         lb.style.display = 'flex';
         document.body.style.overflow = 'hidden';
       });
     });
-    lb.addEventListener('click', function() {
-      lb.style.display = 'none';
-      document.body.style.overflow = '';
-    });
+    lbPrev.addEventListener('click', function(e) { e.stopPropagation(); if (lbIndex > 0) lbShow(lbIndex - 1); });
+    lbNext.addEventListener('click', function(e) { e.stopPropagation(); if (lbIndex < lbGroup.length - 1) lbShow(lbIndex + 1); });
+    lbCap.addEventListener('click', function(e) { e.stopPropagation(); });
+    lb.addEventListener('click', lbClose);
     document.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape') { lb.style.display = 'none'; document.body.style.overflow = ''; }
+      if (lb.style.display !== 'flex') return;
+      if (e.key === 'Escape') lbClose();
+      else if (e.key === 'ArrowLeft' && lbIndex > 0) { e.preventDefault(); lbShow(lbIndex - 1); }
+      else if (e.key === 'ArrowRight' && lbIndex < lbGroup.length - 1) { e.preventDefault(); lbShow(lbIndex + 1); }
     });
 
     // Drag-to-scroll + arrow navigation for all .scroll-wrap containers
@@ -631,9 +696,14 @@
         track.scrollBy({ left: cardWidth(), behavior: 'smooth' });
       });
 
-      var isDown = false, startX, scrollLeft;
+      var isDown = false, moved = false, startX, scrollLeft;
+      // A drag that ends over an image would otherwise fire a click and open the preview
+      track.addEventListener('click', function(e) {
+        if (moved) { e.stopPropagation(); e.preventDefault(); moved = false; }
+      }, true);
       track.addEventListener('mousedown', function(e) {
         isDown = true;
+        moved = false;
         track.classList.add('is-dragging');
         startX = e.pageX - track.getBoundingClientRect().left;
         scrollLeft = track.scrollLeft;
@@ -648,6 +718,7 @@
         if (!isDown) return;
         e.preventDefault();
         var x = e.pageX - track.getBoundingClientRect().left;
+        if (Math.abs(x - startX) > 5) moved = true;
         track.scrollLeft = scrollLeft - (x - startX);
       });
     });
