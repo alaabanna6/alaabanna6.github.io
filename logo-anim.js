@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const allSpans = [ly1,lx1,ly2,lr1,lr2,ry1,rx1,ry2,rr1,rr2];
   const STORE_KEY = 'logoAnimElapsed';
   const TOTAL = 1100;
-  let animRunning = false, shouldReset = false, startedAt = 0;
+  let animRunning = false, shouldReset = false, startedAt = 0, waitForLeave = false;
 
   function resetLogo() {
     shouldReset = false;
@@ -69,18 +69,21 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   logoLink.addEventListener('mouseleave', () => {
+    waitForLeave = false;
     if (animRunning) { shouldReset = true; } else { resetLogo(); }
   });
 
   logoLink.addEventListener('mouseenter', () => {
-    if (animRunning) return;
+    if (animRunning || waitForLeave) return;
     play(0);
   });
 
   // Leaving the page through the logo: remember how far the animation got
+  // (a finished animation counts as TOTAL, so the next page doesn't replay it)
   logoLink.addEventListener('click', () => {
-    if (!animRunning || logoLink.pathname === location.pathname) return;
-    try { sessionStorage.setItem(STORE_KEY, String(Math.round(performance.now() - startedAt))); } catch (e) {}
+    if (logoLink.pathname === location.pathname) return;
+    const elapsed = animRunning ? Math.round(performance.now() - startedAt) : TOTAL;
+    try { sessionStorage.setItem(STORE_KEY, String(elapsed)); } catch (e) {}
   });
 
   // Arriving from a logo click: continue from that moment
@@ -91,8 +94,12 @@ document.addEventListener('DOMContentLoaded', () => {
   } catch (e) {}
   const offset = Number(resumeAt);
   if (resumeAt !== null && offset > 0 && offset < TOTAL) {
+    waitForLeave = true;
     const start = () => play(offset);
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(start, start);
     else start();
+  } else if (resumeAt !== null && offset >= TOTAL) {
+    // Already played before the click: stay still until the mouse leaves the name
+    waitForLeave = true;
   }
 });
