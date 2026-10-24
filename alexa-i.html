@@ -38,6 +38,14 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="fonts.css?v=1" />
+  <style>
+    /* Keep the logo on screen across page changes (Chrome, Edge, Safari 18.2+).
+       Everything else still swaps instantly, exactly like a normal navigation. */
+    @view-transition { navigation: auto; }
+    #logo-link { view-transition-name: site-logo; }
+    ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none; }
+    ::view-transition-old(site-logo) { display: none; }
+  </style>
 
   <style>
     :root { --accent: #2563EB; }
