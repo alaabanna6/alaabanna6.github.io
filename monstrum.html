@@ -91,15 +91,15 @@
 
     /* Lightbox */
     #img-lightbox { display:none; position:fixed; inset:0; z-index:9999; background:rgba(0,0,0,0.97); flex-direction:column; align-items:center; justify-content:flex-start; overflow-y:auto; cursor:zoom-out; }
-    .lb-figure { display:flex; flex-direction:column; gap:20px; flex:none; }
+    .lb-figure { display:flex; flex-direction:column; gap:14px; flex:none; }
     .lb-media { position:relative; display:flex; align-items:flex-start; }
     #img-lightbox-img { display:block; width:100%; height:auto; border-radius:12px; box-shadow:0 8px 64px rgba(0,0,0,0.6); }
     .lb-caption { width:100%; text-align:left; cursor:default; }
-    .lb-cap-top { display:flex; align-items:flex-end; justify-content:space-between; gap:24px; margin-bottom:8px; }
-    .lb-tag { font-size:.7rem; font-weight:600; letter-spacing:.18em; text-transform:uppercase; color:var(--accent); margin-bottom:6px; }
-    .lb-title { font-size:1.375rem; font-weight:700; line-height:1.25; color:#FAFAFA; }
-    .lb-count { flex:none; font-size:.8rem; font-weight:500; letter-spacing:.08em; color:rgba(250,250,250,.45); font-variant-numeric:tabular-nums; }
-    .lb-desc { font-size:1rem; line-height:1.6; color:rgba(250,250,250,.68); }
+    .lb-cap-top { display:flex; align-items:flex-end; justify-content:space-between; gap:24px; margin-bottom:4px; }
+    .lb-tag { font-size:.65rem; font-weight:600; letter-spacing:.18em; text-transform:uppercase; color:var(--accent); margin-bottom:4px; }
+    .lb-title { font-size:1rem; font-weight:700; line-height:1.3; color:#FAFAFA; }
+    .lb-count { flex:none; font-size:.75rem; font-weight:500; letter-spacing:.08em; color:rgba(250,250,250,.45); font-variant-numeric:tabular-nums; }
+    .lb-desc { font-size:.85rem; line-height:1.5; color:rgba(250,250,250,.6); display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
     .lb-nav { position:absolute; top:50%; transform:translateY(-50%); width:40px; height:40px; padding:0; background:none; border:none; color:#FAFAFA; opacity:.7; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:color .2s, opacity .2s; }
     .lb-nav:hover { color:var(--accent); opacity:1; }
     .lb-nav[hidden] { display:none; }
@@ -108,9 +108,9 @@
     .lb-close { position:fixed; top:16px; right:20px; width:40px; height:40px; padding:0; background:none; border:none; color:#FAFAFA; opacity:.7; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:color .2s, opacity .2s; }
     .lb-close:hover { color:var(--accent); opacity:1; }
     @media (max-width: 767px) {
-      .lb-figure { gap:16px; }
-      .lb-title { font-size:1.125rem; }
-      .lb-desc { font-size:.9rem; }
+      .lb-figure { gap:12px; }
+      .lb-title { font-size:.95rem; }
+      .lb-desc { font-size:.8rem; }
       .lb-nav { width:28px; }
       .lb-nav--prev { left:-32px; }
       .lb-nav--next { right:-32px; }
@@ -409,8 +409,8 @@
       </div>
 
       <div class="reveal grid grid-cols-2 gap-4 md:gap-6">
-        <img src="img/flow-chart2.jpg" alt="UX Flow, Content Calendar View and Performance Drill Down" class="zoomable w-full h-auto rounded-2xl shadow-[0_4px_32px_rgba(0,0,0,0.18)]" />
-        <img src="img/flow-chart1.jpg" alt="UX Flow, Main Dashboard and Content Review and Approval" class="zoomable w-full h-auto rounded-2xl shadow-[0_4px_32px_rgba(0,0,0,0.18)]" />
+        <img src="img/flow-chart2.jpg" alt="Flows 1 and 2, Main Dashboard and Content Review" class="zoomable w-full h-auto rounded-2xl shadow-[0_4px_32px_rgba(0,0,0,0.18)]" />
+        <img src="img/flow-chart1.jpg" alt="Flows 3 and 4, Content Calendar and Performance Drill Down" class="zoomable w-full h-auto rounded-2xl shadow-[0_4px_32px_rgba(0,0,0,0.18)]" />
       </div>
 
     </div>
@@ -675,7 +675,7 @@
     }
     function lbLayout() {
       var mobile = window.innerWidth < 768;
-      var margin = mobile ? 24 : 40, gap = mobile ? 16 : 20;
+      var margin = mobile ? 24 : 32, gap = mobile ? 12 : 14;
       var maxW = Math.min(window.innerWidth - (mobile ? 72 : 176), 1680);
       var ratios = lbGroup.map(function(g) { return (g.naturalWidth / g.naturalHeight) || 1.6; });
       function fit(capH) {
