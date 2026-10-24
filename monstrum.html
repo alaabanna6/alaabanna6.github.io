@@ -635,13 +635,11 @@
 
     function lbRenderCaption(img, i) {
       var card = img.closest('.competitor-card, .screen-card');
-      var title = img.alt, tag = '', desc = '';
-      if (card) {
-        var ps = card.querySelectorAll('p');
-        title = lbText(card.querySelector('h3'));
-        if (card.classList.contains('competitor-card')) { tag = lbText(ps[0]); desc = lbText(ps[1]); }
-        else { desc = lbText(ps[0]); }
-      }
+      if (!card) { lbCap.replaceChildren(); return; }
+      var ps = card.querySelectorAll('p');
+      var title = lbText(card.querySelector('h3')), tag = '', desc = '';
+      if (card.classList.contains('competitor-card')) { tag = lbText(ps[0]); desc = lbText(ps[1]); }
+      else { desc = lbText(ps[0]); }
       var top = lbEl('div', 'lb-cap-top');
       var head = lbEl('div', '');
       if (tag) head.appendChild(lbEl('p', 'lb-tag', tag));
@@ -675,7 +673,10 @@
     }
     function lbLayout() {
       var mobile = window.innerWidth < 768;
-      var margin = mobile ? 24 : 32, gap = mobile ? 12 : 14;
+      // UX Flows have no card text, so their images get the full height
+      var hasCaption = lbGroup.some(function(g) { return g.closest('.competitor-card, .screen-card'); });
+      var margin = mobile ? 24 : 32, gap = hasCaption ? (mobile ? 12 : 14) : 0;
+      lbCap.hidden = !hasCaption;
       var maxW = Math.min(window.innerWidth - (mobile ? 72 : 176), 1680);
       var ratios = lbGroup.map(function(g) { return (g.naturalWidth / g.naturalHeight) || 1.6; });
       function fit(capH) {
@@ -684,10 +685,15 @@
         ratios.forEach(function(r) { w = Math.min(w, availH * r); });
         return Math.max(200, Math.floor(w));
       }
-      var w = fit(mobile ? 160 : 110);
-      var capH = lbCaptionHeight(w);
-      w = fit(capH);
-      capH = lbCaptionHeight(w);
+      var w = fit(hasCaption ? (mobile ? 160 : 110) : 0);
+      var capH = 0;
+      if (hasCaption) {
+        capH = lbCaptionHeight(w);
+        w = fit(capH);
+        capH = lbCaptionHeight(w);
+      } else {
+        lbFig.style.width = w + 'px';
+      }
       var tallest = Math.ceil(Math.max.apply(null, ratios.map(function(r) { return w / r; })));
       lbMedia.style.height = tallest + 'px';
       lbCap.style.minHeight = capH + 'px';
