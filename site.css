@@ -1,0 +1,278 @@
+/* Shared look for every page.
+   Bright and neutral, with one signature color (violet) and Instrument Sans.
+   Glass is used only where it does a job: the nav bar and captions over work.
+   The violet selection frame (Figma-style) is the site's signature detail. */
+
+:root,
+:root:root {
+  --white: #FFFFFF;
+  --paper: #FBFBFD;
+  --cloud: #F2F2F5;
+  --ink: #111114;
+  --graphite: #3C3C44;
+  --steel: #6B6B76;
+  --hairline: rgba(17, 17, 20, 0.09);
+  --violet: #4A3CFF;
+  --violet-hover: #3B2EE6;
+  --violet-soft: rgba(74, 60, 255, 0.08);
+  --blue: var(--violet);
+  --blue-hover: var(--violet-hover);
+  --link: var(--violet);
+
+  /* Tokens the case study markup already uses (via Tailwind classes) */
+  --primary: var(--ink);
+  --secondary: var(--steel);
+  --surface: var(--white);
+  --surface-alt: var(--cloud);
+  --border: var(--hairline);
+  --accent: var(--blue);
+
+  --wrap: 1180px;
+  --font: 'Instrument Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --display: 'Instrument Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  color-scheme: light;
+}
+
+html { background: var(--white); }
+body {
+  margin: 0;
+  background: var(--white);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: 17px;
+  line-height: 1.47;
+  letter-spacing: -0.006em;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+:where(h1, h2, h3) { font-family: var(--display); letter-spacing: -0.022em; }
+::selection { background: rgba(74, 60, 255, 0.18); }
+
+a:focus-visible,
+button:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 3px;
+  border-radius: 8px;
+}
+
+/* Frosted glass, the light kind */
+.glass {
+  background: rgba(255, 255, 255, 0.66);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+          backdrop-filter: blur(28px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04), 0 12px 40px rgba(0, 0, 0, 0.08);
+}
+
+.site-wrap {
+  max-width: var(--wrap);
+  margin: 0 auto;
+  padding-left: max(22px, env(safe-area-inset-left, 0px));
+  padding-right: max(22px, env(safe-area-inset-right, 0px));
+  box-sizing: border-box;
+}
+
+/* ─── Header: one floating liquid glass bar — the name, then the links ──── */
+.site-header {
+  position: fixed;
+  top: 14px;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  padding: 0 max(14px, env(safe-area-inset-left, 0px));
+  pointer-events: none;
+}
+.site-brand {
+  display: inline-flex;
+  align-items: center;
+  height: 40px;
+}
+
+/* The name. Same font, weight, size and spacing as on the live site
+   (Montserrat 700, text-sm, tracking-widest, uppercase); dark so it reads on
+   the light page. The letter animation lives in logo-anim.js, untouched. */
+#logo-link {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink);
+  text-decoration: none;
+  -webkit-user-select: none;
+          user-select: none;
+  white-space: nowrap;
+}
+
+/* Liquid nav (see liquid-nav.js). The glass, water canvas and fallback drop are
+   added by the script; the links work as plain links without it. */
+.liquid-nav {
+  pointer-events: auto;
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  max-width: calc(var(--wrap) - 16px);
+  margin: 0 auto;
+  padding: 10px 10px 10px 26px;
+  border-radius: 999px;
+  isolation: isolate;
+  -webkit-tap-highlight-color: transparent;
+}
+/* The glass itself: clear, lightly tinted glass. The component's SVG "refraction"
+   (bending what's behind the glass) is left out: Chrome can't redraw it on every
+   scroll frame, so the bar lagged and flickered while scrolling. */
+.liquid-nav__glass {
+  background: rgba(255, 255, 255, 0.28);
+  -webkit-backdrop-filter: blur(2px) saturate(1.2) brightness(1.08);
+          backdrop-filter: blur(2px) saturate(1.2) brightness(1.08);
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.7),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.2),
+    0 12px 32px -14px rgba(0, 40, 90, 0.5),
+    0 2px 6px rgba(0, 40, 90, 0.1);
+}
+.liquid-nav__glass {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  overflow: hidden;
+  border-radius: inherit;
+}
+.liquid-nav__water { position: absolute; left: -14px; top: -14px; z-index: -1; pointer-events: none; }
+.liquid-nav[data-gl="off"] .liquid-nav__water { display: none; }
+.liquid-nav__drop {
+  display: none;
+  position: absolute;
+  top: 10px;
+  bottom: 10px;
+  left: 0;
+  z-index: -1;
+  border-radius: 999px;
+  pointer-events: none;
+  will-change: transform, width;
+  background: radial-gradient(120% 140% at 30% 0%, rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0) 55%), rgba(255, 255, 255, 0.38);
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.95),
+    inset 0 -2px 6px rgba(74, 60, 255, 0.18),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.55),
+    0 6px 16px -6px rgba(40, 30, 140, 0.4);
+}
+.liquid-nav[data-gl="off"] .liquid-nav__drop { display: block; }
+/* Until the water has drawn its first frame, the current link wears a matching
+   static drop, so the highlight never blinks out while a page opens */
+.liquid-nav:not([data-drawn]) .liquid-nav__item[aria-current] {
+  box-sizing: border-box;
+  padding: 0 16px; /* the 2px rim replaces 2px of padding, so the text doesn't move */
+  border: 2px solid transparent;
+  background:
+    linear-gradient(#EFF8FF, #EFF8FF) padding-box,
+    linear-gradient(100deg, #8FB0FF 0%, #B8D8FF 45%, #A6EFD6 100%) border-box;
+  box-shadow: 0 4px 14px -4px rgba(80, 140, 255, 0.45), 0 0 10px rgba(160, 220, 255, 0.35);
+}
+.liquid-nav__item {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  height: 40px;
+  padding: 0 18px;
+  border-radius: 999px;
+  color: rgba(17, 17, 20, 0.6);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  transition: color 0.25s ease;
+}
+.liquid-nav__item:hover,
+.liquid-nav__item[aria-current] { color: var(--ink); }
+.liquid-nav__item:focus-visible { outline: 2px solid var(--violet); outline-offset: 2px; border-radius: 999px; }
+
+.liquid-nav__links { display: flex; align-items: center; gap: 2px; }
+
+/* Phones: the same bar wraps to two rows — the name, then the links */
+@media (max-width: 767px) {
+  .liquid-nav { flex-wrap: wrap; justify-content: center; gap: 2px; padding: 12px 8px 8px; }
+  .site-brand { width: 100%; justify-content: center; height: 30px; }
+  .liquid-nav__item { padding: 0 16px; }
+}
+
+/* ─── Footer ───────────────────────────────────────────────────────────── */
+.site-footer { background: var(--cloud); }
+.site-footer__inner {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 6px 24px;
+  padding-top: 20px;
+  padding-bottom: 22px;
+  border-top: 1px solid var(--hairline);
+  font-size: 12px;
+  color: var(--steel);
+}
+.site-footer__inner p { margin: 0; }
+
+/* ─── Case study pages: tune the existing Tailwind markup ──────────────── */
+.dot-patch { display: none; }
+
+/* Small uppercase, widely tracked labels read as template; set them as quiet text */
+.uppercase[class*="tracking-[0."],
+.uppercase.tracking-widest,
+.uppercase.tracking-wider,
+.uppercase.tracking-wide {
+  text-transform: none;
+  letter-spacing: -0.005em;
+  font-size: 15px;
+  font-weight: 600;
+}
+#logo-link.uppercase { text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.875rem; font-weight: 700; }
+
+/* Cards: white on grey sections, grey on white sections, no heavy shadows */
+.rounded-2xl { border-radius: 18px; }
+.bg-surface-alt.rounded-2xl,
+.bg-surface-alt.rounded-xl { border-color: transparent; box-shadow: none; }
+section.bg-surface-alt .bg-surface-alt.rounded-2xl,
+section.bg-surface-alt .bg-surface-alt.rounded-xl,
+section.bg-surface-alt .feedback-item { background: var(--white); }
+.feedback-item { border-color: var(--hairline); }
+[class*="shadow-[0_"] { box-shadow: none; }
+
+/* Small grey labels were faded with opacity, which drops below readable contrast
+   on the light page; use the secondary text color at full strength instead */
+p.opacity-60,
+span.opacity-60 { opacity: 1; color: var(--steel); }
+
+/* Light reds (Tailwind red-400/500) are too faint for small text on light
+   backgrounds; use a deeper red that meets 4.5:1 */
+.text-red-400,
+.text-red-500 { color: #B91C1C; }
+
+/* Cover image bands: one neutral stage on every case study */
+.bg-\[\#1a0a0a\].w-full,
+.bg-\[\#F0F4F8\].w-full,
+.bg-\[\#F0FDF4\].w-full { background: var(--cloud); }
+
+/* Dark blocks (outcome, next project): a true black, like a product reveal */
+section.bg-ink {
+  background: #000;
+  border-color: transparent;
+  /* violet lightened for dark panels so labels stay readable (8:1 on black) */
+  --accent: #A99BFF;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto !important; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .reveal { opacity: 1 !important; transform: none !important; }
+}
