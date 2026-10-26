@@ -370,6 +370,9 @@ void main(){
       // At the very bottom the last section may never reach the line; it still wins
       const atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4;
       if (atBottom) targets.forEach((t, i) => { if (t) pick = i; });
+      // Above the first section (the top of the page) the first section still counts,
+      // so the highlight never switches off and back on while scrolling near the top
+      if (pick < 0) pick = targets.findIndex(Boolean);
       setActive(pick);
     }
     if (targets.some(Boolean)) {
@@ -395,5 +398,9 @@ void main(){
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { s.ready = false; measure(); });
     measure();
     if (targets.some(Boolean)) spy();
+    // Draw the first frame right now rather than on the next animation frame, so a
+    // freshly opened page shows the water immediately instead of the static stand-in
+    step(0, performance.now());
+    draw();
   }
 })();

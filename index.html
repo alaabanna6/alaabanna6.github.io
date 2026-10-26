@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wdth,wght@75..100,400..700&display=swap" />
   <link rel="stylesheet" href="fonts.css?v=1" />
   <link rel="stylesheet" href="site.css?v=23" />
-  <script defer src="liquid-nav.js?v=14"></script>
+  <script defer src="liquid-nav.js?v=17"></script>
   <link rel="preload" as="image" href="img/home/monstrum-bk.webp" type="image/webp" />
   <style>
     /* Keep the logo on screen across page changes (Chrome, Edge, Safari 18.2+).
@@ -256,7 +256,7 @@
 
   <!-- ─── NAVBAR: one liquid glass bar ───────────────────────────────────── -->
   <header class="site-header">
-    <nav class="liquid-nav" aria-label="Main" data-active="-1">
+    <nav class="liquid-nav" aria-label="Main" data-active="0">
       <!-- The bar's glass, water and drop are in the HTML so the bar is whole
            from the first frame (liquid-nav.js brings them to life) -->
       <span class="liquid-nav__glass" aria-hidden="true"></span>
@@ -270,7 +270,7 @@
         <script src="logo-anim.js?v=7"></script>
       </div>
       <div class="liquid-nav__links">
-        <a class="liquid-nav__item" href="#projects">Projects</a>
+        <a class="liquid-nav__item" href="#projects" aria-current="location">Projects</a>
         <a class="liquid-nav__item" href="#about">About</a>
         <a class="liquid-nav__item" href="#contact">Contact</a>
       </div>
