@@ -405,6 +405,10 @@ void main(){
   }
 })();
 
+// Mark that the visitor is inside the site, so the homepage keeps its menu bar
+// on screen when they come back to it (see the "in-site" class in index.html).
+try { sessionStorage.setItem('ab-in-site', '1'); } catch (e) {}
+
 // Phones: put the links behind a hamburger button. The button is added here, so
 // without this script the bar keeps its plain two row layout.
 (function () {

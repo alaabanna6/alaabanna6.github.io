@@ -25,7 +25,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wdth,wght@75..100,400..700&display=swap" />
   <link rel="stylesheet" href="fonts.css?v=1" />
   <link rel="stylesheet" href="site.css?v=27" />
-  <script defer src="liquid-nav.js?v=18"></script>
+  <script defer src="liquid-nav.js?v=19"></script>
   <script>
     // Apply the visitor's saved choices (or their system's contrast setting)
     // before the first paint, so the page never flashes the wrong mode
@@ -42,11 +42,20 @@
     // drawn; the timer is a safety net so the page can never stay hidden.
     document.documentElement.classList.add('pre');
     setTimeout(function () { document.documentElement.classList.remove('pre'); }, 1500);
+    // Arriving from another page of this site (or reloading): the menu bar is
+    // already on screen, so it stays put and only the page under it fades in.
+    try {
+      if (sessionStorage.getItem('ab-in-site')) document.documentElement.classList.add('in-site');
+      sessionStorage.setItem('ab-in-site', '1');
+    } catch (e) {}
   </script>
   <style>
     body { transition: opacity 0.7s ease; }
     html.pre body { opacity: 0; }
-    @media (prefers-reduced-motion: reduce) { body { transition: none; } }
+    html.in-site body { opacity: 1; transition: none; }
+    html.in-site body > main, html.in-site body > footer { transition: opacity 0.7s ease; }
+    html.pre.in-site body > main, html.pre.in-site body > footer { opacity: 0; }
+    @media (prefers-reduced-motion: reduce) { body, html.in-site body > main, html.in-site body > footer { transition: none; } }
   </style>
   <noscript><style>html.pre body { opacity: 1; }</style></noscript>
   <script defer src="water.js?v=3"></script>
