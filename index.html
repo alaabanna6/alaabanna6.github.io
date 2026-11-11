@@ -4,15 +4,53 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Alaa El Banna | Product Designer</title>
-  <meta name="description" content="I combine UX/UI, AI, and creative technology to design digital experiences around real users." />
-  <meta name="theme-color" content="#FBFBFD" />
+  <meta name="description" content="Human centred product design, built on an AI native practice." />
+  <!-- Link preview for LinkedIn, iMessage, Slack, email and other apps -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://alaabanna.com/" />
+  <meta property="og:title" content="Alaa El Banna | Product Designer" />
+  <meta property="og:description" content="Human centred product design, built on an AI native practice." />
+  <meta property="og:image" content="https://alaabanna.com/img/og-image.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Alaa El Banna, Product Designer, with the Monstrum dashboard on a laptop" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Alaa El Banna | Product Designer" />
+  <meta name="twitter:description" content="Human centred product design, built on an AI native practice." />
+  <meta name="twitter:image" content="https://alaabanna.com/img/og-image.jpg" />
+  <meta name="theme-color" content="#DFE6FF" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wdth,wght@75..100,400..700&display=swap" />
   <link rel="stylesheet" href="fonts.css?v=1" />
-  <link rel="stylesheet" href="site.css?v=23" />
-  <script defer src="liquid-nav.js?v=17"></script>
+  <link rel="stylesheet" href="site.css?v=27" />
+  <script defer src="liquid-nav.js?v=18"></script>
+  <script>
+    // Apply the visitor's saved choices (or their system's contrast setting)
+    // before the first paint, so the page never flashes the wrong mode
+    (function () {
+      var d = document.documentElement, m = null, c = null;
+      try { m = localStorage.getItem('ab-motion'); c = localStorage.getItem('ab-contrast'); } catch (e) {}
+      if (m === 'calm') d.dataset.motion = 'calm';
+      if (c === 'more' || (c === null && window.matchMedia && matchMedia('(prefers-contrast: more)').matches)) d.dataset.contrast = 'more';
+    })();
+  </script>
+  <script>
+    // The page stays hidden for a moment and then appears all at once, water
+    // included, in one smooth fade. water.js lifts this as soon as the water is
+    // drawn; the timer is a safety net so the page can never stay hidden.
+    document.documentElement.classList.add('pre');
+    setTimeout(function () { document.documentElement.classList.remove('pre'); }, 1500);
+  </script>
+  <style>
+    body { transition: opacity 0.7s ease; }
+    html.pre body { opacity: 0; }
+    @media (prefers-reduced-motion: reduce) { body { transition: none; } }
+  </style>
+  <noscript><style>html.pre body { opacity: 1; }</style></noscript>
+  <script defer src="water.js?v=3"></script>
+  <script defer src="experience.js?v=4"></script>
   <link rel="preload" as="image" href="img/home/monstrum-bk.webp" type="image/webp" />
   <style>
     /* Keep the logo on screen across page changes (Chrome, Edge, Safari 18.2+).
@@ -68,7 +106,6 @@
       text-wrap: pretty;
     }
     .hero__actions { margin-top: 36px; display: flex; flex-wrap: wrap; gap: 10px; }
-    .hero__based { margin-top: 40px; font-size: 14px; color: var(--steel); }
 
     /* ─── Project carousel ───
        Slides travel only inside the stage (it clips them), and the screens drift a
@@ -240,7 +277,6 @@
       .showcase__cta { right: 12px; bottom: 12px; min-height: 40px; font-size: 14px; }
       html { scroll-padding-top: 128px; }
       .hero { padding: 168px 0 24px; gap: 48px; }
-      .hero__based { margin-top: 28px; }
       .showcase__stage { height: auto; aspect-ratio: 1 / 1.1; }
       .showcase__title { font-size: 19px; }
       .about { padding-top: 96px; }
@@ -250,9 +286,23 @@
       .slide, .slide__shot { transition: none; }
     }
   </style>
+  <link rel="stylesheet" href="elevate.css?v=3" />
+  <!-- Fusion: the 3D devices from the studio version, standing on the glass card -->
+  <script>
+    // Fusion: the flat screenshots stay hidden from the very first paint, so they
+    // never flash before the 3D device arrives (fusion.js brings them back if 3D
+    // is unavailable)
+    document.documentElement.classList.add('fusion-3d');
+  </script>
+  <link rel="stylesheet" href="fusion.css?v=29" />
+  <script defer src="layers.js?v=7"></script>
+  <script defer src="scene3d.js?v=14"></script>
+  <script defer src="fusion.js?v=14"></script>
 </head>
 
 <body>
+
+  <a class="skip-link" href="#home">Skip to content</a>
 
   <!-- ─── NAVBAR: one liquid glass bar ───────────────────────────────────── -->
   <header class="site-header">
@@ -281,13 +331,28 @@
 
     <!-- ─── HERO ───────────────────────────────────────────────────────────── -->
     <section class="hero">
+      <!-- The pool. Decorative: the real heading below stays in the HTML and
+           water.js only bends a copy of it under the surface -->
+      <div class="water hero__water" data-water data-water-text="#hero-name" aria-hidden="true"><canvas></canvas></div>
       <div class="hero__intro">
-        <h1 class="hero__name">Alaa<br>El Banna</h1>
-        <p class="hero__tagline">I combine UX/UI, AI, and creative technology to design digital experiences around real users.</p>
+        <p class="hero__based">Product Designer · Toronto, Canada</p>
+        <h1 class="hero__name" id="hero-name">Alaa<br>El Banna</h1>
+        <p class="hero__tagline">Human centred product design, built on an AI native practice.</p>
         <div class="hero__actions">
           <a href="#contact" class="btn btn--primary">Get in Touch</a>
+          <a href="Alaa El Banna Resume.pdf" class="btn btn--ghost" target="_blank" rel="noopener noreferrer">View Resume</a>
         </div>
-        <p class="hero__based">Product Designer · Toronto, Canada</p>
+
+        <!-- The page adapts to the visitor (experience.js) -->
+        <div class="adapt" id="adapt">
+          <p class="adapt__label" id="adapt-label">This page adapts to you.</p>
+          <div class="adapt__chips" role="group" aria-labelledby="adapt-label">
+            <button type="button" class="chip" data-act="brief">I have 30 seconds</button>
+            <button type="button" class="chip" data-act="calm" aria-pressed="false"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle class="chip__ring" cx="10" cy="10" r="7"/><path class="chip__check" d="M4 10.5l4 4 8-9"/></svg>Calm motion</button>
+            <button type="button" class="chip" data-act="contrast" aria-pressed="false"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle class="chip__ring" cx="10" cy="10" r="7"/><path class="chip__check" d="M4 10.5l4 4 8-9"/></svg>More contrast</button>
+          </div>
+          <p class="adapt__status" id="adapt-status" role="status"></p>
+        </div>
       </div>
 
       <!-- ─── PROJECTS: a carousel you move yourself ───────────────────────── -->
@@ -344,31 +409,36 @@
 
 
     <!-- ─── ABOUT ──────────────────────────────────────────────────────────── -->
-    <section id="about" class="about">
+    <!-- ─── THE PRINCIPLE: one statement, given its own room ─────────────── -->
+    <section id="about" class="statement" aria-labelledby="statement-title">
+      <h2 class="about__title" id="statement-title">AI changes the process. People remain the&nbsp;purpose.</h2>
+    </section>
+
+    <section class="about" aria-labelledby="about-head">
       <div class="section-head">
-        <h2 class="section-head__title">About Me</h2>
+        <h2 class="section-head__title" id="about-head">About Me</h2>
         <p class="section-head__label">Based in Toronto, Canada</p>
       </div>
       <div class="about__grid">
-        <h3 class="about__title">Every design decision has a&nbsp;reason.</h3>
-        <div>
-          <div class="about__text">
-            <p>I'm a product designer, and I believe good design starts with understanding people. My process combines <strong>UX research</strong>, <strong>information architecture</strong>, and <strong>high fidelity prototyping</strong>. Everything is based on real user needs, and I use AI automation throughout.</p>
-            <p>AI automation is part of how I work every day. I use it to come up with ideas faster, build better workflows, and ship more on my own than a designer usually could. I follow new AI tools closely because what they can do changes every week.</p>
-            <p>I have a <strong>Master of Digital Media</strong> from Toronto Metropolitan University, where my research focused on product design, AI, and human experience.</p>
-          </div>
-
-          <ul class="skills" aria-label="Skills">
-            <li>UX Research</li>
-            <li>UI Design</li>
-            <li>Prototyping</li>
-            <li>Design Systems</li>
-            <li>AI Workflows</li>
-            <li>AI Automation</li>
-            <li>Figma</li>
-            <li>Information Architecture</li>
-          </ul>
+        <div class="about__photo-wrap">
+        <figure class="about__photo">
+          <img src="img/home/alaa.webp?v=10" width="880" height="1124" alt="Alaa El Banna, wearing a black suit and shirt" loading="lazy" decoding="async" />
+        </figure>
         </div>
+        <div class="about__text">
+          <p>I'm a product designer, and I believe good design starts with understanding people. I take a product from first research to a tested prototype. I run <strong>usability tests</strong> and measure the results, build <strong>design systems</strong> that keep a product consistent as it grows, and prototype full flows. Accessibility is part of the work from the start.</p>
+          <p>AI automation is part of how I work every day. I use it to come up with ideas faster, build my own <strong>agents and workflows</strong>, and ship more on my own than a designer usually could. I stay current with new AI releases and put the useful ones to work quickly. I also believe in keeping a <strong>human in the loop</strong>, so the judgment and the final decision are always mine.</p>
+          <p>I have a <strong>Master of Digital Media</strong> from Toronto Metropolitan University, where my research focused on product design, AI, and human experience.</p>
+        </div>
+        <ul class="skills" aria-label="Skills">
+          <li>User Research</li>
+          <li>Design Systems</li>
+          <li>WCAG 2.2</li>
+          <li>Agentic Design</li>
+          <li>MCPs</li>
+          <li>Claude Code</li>
+          <li>Figma</li>
+        </ul>
       </div>
     </section>
 
@@ -376,6 +446,7 @@
     <!-- ─── CONTACT ────────────────────────────────────────────────────────── -->
     <section id="contact" class="contact">
       <div class="contact__card">
+        <div class="water contact__water" data-water data-water-dark aria-hidden="true"><canvas></canvas></div>
         <div>
           <p class="contact__label">Get in Touch</p>
           <h2 class="contact__title">Want to work together?</h2>
@@ -404,7 +475,7 @@
   <!-- ─── FOOTER ─────────────────────────────────────────────────────────── -->
   <footer class="site-footer">
     <div class="site-wrap site-footer__inner">
-      <p>© 2024 Alaa El Banna. All rights reserved.</p>
+      <p>© 2026 Alaa El Banna. All rights reserved.</p>
       <p>Product Designer · Toronto, Canada</p>
     </div>
   </footer>

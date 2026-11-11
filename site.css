@@ -12,9 +12,9 @@
   --graphite: #3C3C44;
   --steel: #6B6B76;
   --hairline: rgba(17, 17, 20, 0.09);
-  --violet: #4A3CFF;
-  --violet-hover: #3B2EE6;
-  --violet-soft: rgba(74, 60, 255, 0.08);
+  --violet: #3F35B5;  /* a deeper, calmer indigo: 8.6:1 with white text, and no electric glare on a white page */
+  --violet-hover: #332A96;
+  --violet-soft: rgba(63, 53, 181, 0.08);
   --blue: var(--violet);
   --blue-hover: var(--violet-hover);
   --link: var(--violet);
@@ -47,7 +47,7 @@ body {
 }
 
 :where(h1, h2, h3) { font-family: var(--display); letter-spacing: -0.022em; }
-::selection { background: rgba(74, 60, 255, 0.18); }
+::selection { background: rgba(63, 53, 181, 0.18); }
 
 a:focus-visible,
 button:focus-visible,
@@ -128,14 +128,15 @@ button:focus-visible,
    (bending what's behind the glass) is left out: Chrome can't redraw it on every
    scroll frame, so the bar lagged and flickered while scrolling. */
 .liquid-nav__glass {
-  background: rgba(255, 255, 255, 0.28);
-  -webkit-backdrop-filter: blur(2px) saturate(1.2) brightness(1.08);
-          backdrop-filter: blur(2px) saturate(1.2) brightness(1.08);
+  /* A solid milky tint with no blur behind it. Live blur over content that is
+     always moving (the water, the 3D device) made Chrome flicker the bar while
+     scrolling; a tint this solid looks frosted and never needs recalculating. */
+  background: rgba(255, 255, 255, 0.9);
   box-shadow:
     inset 0 1px 1px rgba(255, 255, 255, 0.7),
     inset 0 0 0 1px rgba(255, 255, 255, 0.2),
-    0 12px 32px -14px rgba(0, 40, 90, 0.5),
-    0 2px 6px rgba(0, 40, 90, 0.1);
+    0 10px 26px -16px rgba(0, 40, 90, 0.38),
+    0 1px 4px rgba(0, 40, 90, 0.08);
 }
 .liquid-nav__glass {
   position: absolute;
@@ -144,7 +145,7 @@ button:focus-visible,
   overflow: hidden;
   border-radius: inherit;
 }
-.liquid-nav__water { position: absolute; left: -14px; top: -14px; z-index: -1; pointer-events: none; }
+.liquid-nav__water { position: absolute; left: -14px; top: -14px; z-index: -1; pointer-events: none; opacity: 0.6; }  /* a calmer highlight around the active link */
 .liquid-nav[data-gl="off"] .liquid-nav__water { display: none; }
 .liquid-nav__drop {
   display: none;
@@ -183,7 +184,7 @@ button:focus-visible,
   height: 40px;
   padding: 0 18px;
   border-radius: 999px;
-  color: rgba(17, 17, 20, 0.6);
+  color: rgba(17, 17, 20, 0.72);
   font-size: 14px;
   font-weight: 500;
   line-height: 1;
@@ -204,6 +205,53 @@ button:focus-visible,
   .liquid-nav__item { padding: 0 16px; }
 }
 
+/* Phones with the script running: the name stays on one row and the links move
+   into a menu behind a hamburger button (liquid-nav.js adds the button). Without
+   the script the two row bar above still works. */
+.nav-toggle { display: none; }
+@media (max-width: 767px) {
+  .liquid-nav.has-toggle { flex-wrap: nowrap; justify-content: space-between; gap: 12px; padding: 6px 6px 6px 22px; }
+  .liquid-nav.has-toggle .site-brand { width: auto; justify-content: flex-start; height: 44px; }
+  .liquid-nav.has-toggle .liquid-nav__water,
+  .liquid-nav.has-toggle .liquid-nav__drop { display: none !important; }
+  .nav-toggle {
+    display: inline-flex; align-items: center; justify-content: center;
+    position: relative; z-index: 1; flex: none;
+    width: 44px; height: 44px; padding: 0; border: 0; border-radius: 999px;
+    background: transparent; color: var(--ink); cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .nav-toggle:focus-visible { outline: 2px solid var(--violet); outline-offset: 2px; }
+  .nav-toggle__bars { position: relative; width: 20px; height: 14px; }
+  .nav-toggle__bars i { position: absolute; left: 0; width: 100%; height: 2px; border-radius: 2px; background: currentColor; transition: transform 0.25s ease, opacity 0.2s ease, top 0.25s ease; }
+  .nav-toggle__bars i:nth-child(1) { top: 0; }
+  .nav-toggle__bars i:nth-child(2) { top: 6px; }
+  .nav-toggle__bars i:nth-child(3) { top: 12px; }
+  .liquid-nav.is-open .nav-toggle__bars i:nth-child(1) { top: 6px; transform: rotate(45deg); }
+  .liquid-nav.is-open .nav-toggle__bars i:nth-child(2) { opacity: 0; }
+  .liquid-nav.is-open .nav-toggle__bars i:nth-child(3) { top: 6px; transform: rotate(-45deg); }
+
+  .liquid-nav.has-toggle .liquid-nav__links {
+    position: absolute; top: calc(100% + 8px); left: 0; right: 0; z-index: 2;
+    flex-direction: column; align-items: stretch; gap: 2px;
+    padding: 8px; border-radius: 24px;
+    background: var(--white, #fff);
+    box-shadow: 0 0 0 1px rgba(17, 17, 20, 0.06), 0 18px 40px -18px rgba(0, 40, 90, 0.45);
+    opacity: 0; visibility: hidden; transform: translateY(-6px);
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0s linear 0.2s;
+  }
+  .liquid-nav.has-toggle.is-open .liquid-nav__links { opacity: 1; visibility: visible; transform: none; transition-delay: 0s; }
+  .liquid-nav.has-toggle .liquid-nav__links .liquid-nav__item {
+    height: 48px; padding: 0 16px !important; justify-content: flex-start;
+    font-size: 16px; border: 0 !important; border-radius: 16px;
+    background: none !important; box-shadow: none !important;
+  }
+  .liquid-nav.has-toggle .liquid-nav__links .liquid-nav__item[aria-current] { background: rgba(74, 60, 255, 0.08) !important; color: var(--ink); font-weight: 600; }
+}
+@media (max-width: 767px) and (prefers-reduced-motion: reduce) {
+  .nav-toggle__bars i, .liquid-nav.has-toggle .liquid-nav__links { transition: none; }
+}
+
 /* ─── Footer ───────────────────────────────────────────────────────────── */
 .site-footer { background: var(--cloud); }
 .site-footer__inner {
@@ -218,6 +266,11 @@ button:focus-visible,
   color: var(--steel);
 }
 .site-footer__inner p { margin: 0; }
+/* Phones: one centered line. The second line would stack under the first. */
+@media (max-width: 767px) {
+  .site-footer__inner { justify-content: center; text-align: center; }
+  .site-footer__inner p + p { display: none; }
+}
 
 /* ─── Case study pages: tune the existing Tailwind markup ──────────────── */
 .dot-patch { display: none; }

@@ -1,0 +1,260 @@
+/* Homepage layer: the water pool, glass, depth and the adaptive prompt.
+   Loaded after the page's own styles. Everything here degrades to the plain
+   page: no WebGL, no JS, reduced motion and high contrast all still read well. */
+
+/* ─── Skip link ─────────────────────────────────────────────────────────── */
+.skip-link {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 100;
+  padding: 12px 18px;
+  border-radius: 12px;
+  background: var(--ink);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 500;
+  text-decoration: none;
+  transform: translateY(-200%);
+}
+.skip-link:focus { transform: none; }
+
+/* ─── The pool ──────────────────────────────────────────────────────────── */
+.water { pointer-events: none; }
+.water canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+
+.hero { position: relative; z-index: 0; --steel: #585864; }
+.hero__water {
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  bottom: -40px;
+  left: 50%;
+  width: 100vw;
+  margin-left: -50vw;
+  background:
+    radial-gradient(70% 60% at 82% 30%, rgba(74, 60, 255, 0.10), transparent 70%),
+    radial-gradient(60% 70% at 8% 12%, rgba(120, 205, 255, 0.22), transparent 70%),
+    linear-gradient(180deg, #DFE6FF 0%, #D9EAFF 55%, #E9F1FF 100%);
+  -webkit-mask-image: linear-gradient(#000 72%, transparent);
+          mask-image: linear-gradient(#000 72%, transparent);
+}
+/* While the water is live it draws the name itself; the HTML heading stays in
+   place (readable by assistive tech, selectable, findable), just see-through */
+.hero__name.is-underwater { color: transparent; }
+.hero__name.is-underwater::selection { color: var(--ink); }
+
+.hero__based { margin: 0 0 22px; font-size: 14px; font-weight: 500; color: var(--steel); }
+.hero__actions { margin-top: 32px; }
+.btn--ghost {
+  background: rgba(255, 255, 255, 0.55);
+  color: var(--ink);
+  border: 1px solid rgba(17, 17, 20, 0.14);
+  -webkit-backdrop-filter: blur(14px) saturate(160%);
+          backdrop-filter: blur(14px) saturate(160%);
+}
+.btn--ghost:hover { background: rgba(255, 255, 255, 0.85); border-color: rgba(17, 17, 20, 0.3); }
+
+/* ─── Adaptive prompt ───────────────────────────────────────────────────── */
+.adapt { margin-top: 36px; max-width: 470px; }
+.adapt__label { display: block; margin-bottom: 10px; font-size: 14px; font-weight: 500; color: var(--graphite); }
+.adapt__chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 38px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(17, 17, 20, 0.14);
+  background: rgba(255, 255, 255, 0.55);
+  -webkit-backdrop-filter: blur(14px) saturate(160%);
+          backdrop-filter: blur(14px) saturate(160%);
+  color: var(--ink);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+.chip:hover { background: rgba(255, 255, 255, 0.9); border-color: rgba(17, 17, 20, 0.3); }
+.chip:focus-visible { border-radius: 999px; }
+/* Toggles show their state with a shape as well as a color: ring off, check on */
+.chip svg { flex: none; width: 14px; height: 14px; }
+.chip__check { display: none; }
+.chip[aria-pressed="true"],
+.chip[aria-pressed="true"]:hover { background: var(--ink); border-color: var(--ink); color: #fff; }
+.chip[aria-pressed="true"] .chip__check { display: inline; }
+.chip[aria-pressed="true"] .chip__ring { display: none; }
+.adapt__status { min-height: 21px; margin-top: 12px; font-size: 14px; line-height: 1.5; color: var(--graphite); }
+
+/* ─── Carousel: a sheet of glass over the water, with real depth ────────── */
+.showcase { perspective: 1400px; }
+.showcase__stage {
+  background:
+    radial-gradient(80% 60% at 50% 110%, rgba(74, 60, 255, 0.10), transparent 70%),
+    rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  -webkit-backdrop-filter: blur(22px) saturate(170%);
+          backdrop-filter: blur(22px) saturate(170%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    0 0 0 1px rgba(17, 17, 20, 0.05),
+    0 40px 70px -40px rgba(30, 30, 120, 0.45);
+  transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.showcase__stage.is-tilting { transition-duration: 0.12s; transition-timing-function: linear; }
+.showcase__stage::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  border-radius: inherit;
+  background: radial-gradient(55% 45% at var(--gx, 50%) var(--gy, 0%), rgba(255, 255, 255, 0.5), transparent 70%);
+  opacity: var(--glare, 0);
+  transition: opacity 0.4s ease;
+}
+.showcase__arrow {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.7);
+  border-color: rgba(17, 17, 20, 0.14);
+  -webkit-backdrop-filter: blur(14px);
+          backdrop-filter: blur(14px);
+  transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+.showcase__arrow:hover { background: #fff; }
+.showcase__arrow:active { transform: scale(0.94); }
+
+/* ─── Sections rise into place (added by JS only when motion is welcome) ─── */
+.rise { opacity: 0; transform: translateY(20px); transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1); transition-delay: var(--rise-delay, 0s); }
+.rise.is-in { opacity: 1; transform: none; }
+
+.skills li { background: var(--white); transition: border-color 0.2s ease, transform 0.2s ease; }
+
+/* ─── Contact: lights on dark water ─────────────────────────────────────── */
+.contact__card { position: relative; overflow: hidden; isolation: isolate; }
+.contact__water { position: absolute; inset: 0; z-index: -1; }
+.contact__label { color: rgba(255, 255, 255, 0.74); }
+.contact__row-label { color: rgba(255, 255, 255, 0.72); }
+
+/* ─── The 30 second version ─────────────────────────────────────────────── */
+.brief {
+  width: min(600px, calc(100vw - 32px));
+  max-height: calc(100dvh - 32px);
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.92);
+  -webkit-backdrop-filter: blur(30px) saturate(180%);
+          backdrop-filter: blur(30px) saturate(180%);
+  color: var(--ink);
+  box-shadow: 0 0 0 1px rgba(17, 17, 20, 0.08), 0 40px 80px -30px rgba(20, 20, 80, 0.5);
+  overflow: auto;
+}
+.brief::backdrop { background: rgba(17, 17, 30, 0.38); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+.brief[open] { animation: brief-in 0.35s cubic-bezier(0.2, 0.8, 0.2, 1); }
+@keyframes brief-in { from { opacity: 0; transform: translateY(14px) scale(0.98); } to { opacity: 1; transform: none; } }
+.brief__inner { padding: clamp(22px, 4vw, 34px); }
+.brief__head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+.brief__eyebrow { font-size: 14px; font-weight: 500; color: var(--violet); }
+.brief__title { margin-top: 4px; font-size: clamp(24px, 3vw, 30px); line-height: 1.1; font-weight: 600; letter-spacing: -0.025em; }
+.brief__close {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--hairline);
+  border-radius: 12px;
+  background: var(--white);
+  color: var(--ink);
+  cursor: pointer;
+}
+.brief__close:hover { border-color: rgba(17, 17, 20, 0.3); }
+.brief__close svg { width: 16px; height: 16px; }
+.brief__who { margin-top: 14px; font-size: 16px; line-height: 1.55; color: var(--graphite); }
+.brief__list { margin: 20px 0 0; padding: 0; list-style: none; display: grid; gap: 8px; }
+.brief__project {
+  display: block;
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1px solid var(--hairline);
+  background: var(--white);
+  color: inherit;
+  text-decoration: none;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+.brief__project:hover { border-color: var(--violet); background: var(--violet-soft); }
+.brief__project-name { display: flex; align-items: center; justify-content: space-between; gap: 12px; font-size: 17px; font-weight: 600; letter-spacing: -0.015em; }
+.brief__project-name svg { flex: none; width: 16px; height: 16px; color: var(--violet); }
+.brief__project-desc { margin-top: 4px; font-size: 14px; line-height: 1.5; color: var(--graphite); }
+.brief__actions { margin-top: 20px; display: flex; flex-wrap: wrap; gap: 8px; }
+.brief__actions .btn { min-height: 44px; font-size: 15px; }
+.brief__actions .btn--ghost { background: var(--white); }
+
+/* ─── Visitor asked for calm ────────────────────────────────────────────── */
+:root[data-motion="calm"] { scroll-behavior: auto; }
+:root[data-motion="calm"] .rise { opacity: 1; transform: none; transition: none; }
+:root[data-motion="calm"] .showcase__stage { transform: none; }
+:root[data-motion="calm"] .showcase__stage::after { display: none; }
+:root[data-motion="calm"] .slide,
+:root[data-motion="calm"] .slide__shot { transition: none; }
+:root[data-motion="calm"] .showcase__item.is-rolling,
+:root[data-motion="calm"] .brief[open] { animation: none; }
+
+/* ─── Visitor asked for more contrast ───────────────────────────────────── */
+:root[data-contrast="more"] {
+  --steel: #33333A;
+  --graphite: #111114;
+  --hairline: rgba(17, 17, 20, 0.5);
+  --violet: #2D1FC4;
+  --violet-hover: #2318A0;
+}
+:root[data-contrast="more"] .hero { --steel: #33333A; }
+:root[data-contrast="more"] .hero__water { background: var(--white); }
+:root[data-contrast="more"] .water canvas { display: none; }
+:root[data-contrast="more"] .showcase__stage,
+:root[data-contrast="more"] .chip,
+:root[data-contrast="more"] .btn--ghost,
+:root[data-contrast="more"] .showcase__arrow,
+:root[data-contrast="more"] .brief {
+  background: var(--white);
+  border-color: var(--ink);
+  -webkit-backdrop-filter: none;
+          backdrop-filter: none;
+}
+:root[data-contrast="more"] .chip[aria-pressed="true"] { background: var(--ink); }
+:root[data-contrast="more"] .contact__label,
+:root[data-contrast="more"] .contact__row-label { color: #fff; }
+:root[data-contrast="more"] .liquid-nav__item { color: var(--ink); }
+/* The nav bar wears the same solid white and ink outline as the cards */
+:root[data-contrast="more"] .liquid-nav__glass {
+  background: var(--white);
+  box-shadow: inset 0 0 0 1px var(--ink);
+}
+:root[data-contrast="more"] .showcase__label,
+:root[data-contrast="more"] .showcase__count { color: var(--ink); }
+:root[data-contrast="more"] a:focus-visible,
+:root[data-contrast="more"] button:focus-visible { outline-width: 3px; }
+
+@media (max-width: 960px) {
+  .adapt { max-width: 520px; }
+}
+@media (max-width: 767px) {
+  .hero__based { margin-bottom: 16px; }
+  .adapt { margin-top: 28px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rise { opacity: 1; transform: none; }
+  .showcase__stage { transform: none; }
+  .showcase__stage::after { display: none; }
+}
+@media (forced-colors: active) {
+  .water { display: none; }
+  .chip[aria-pressed="true"] { border-width: 3px; }
+}

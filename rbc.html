@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>RBC Mobile App | Alaa El Banna</title>
+  <title>RBC Mobile | Alaa El Banna</title>
+  <meta name="description" content="A running balance for the RBC Mobile transactions page. A university product design case study by Alaa El Banna." />
 
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -11,8 +12,8 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wdth,wght@75..100,400..700&display=swap" />
   <link rel="stylesheet" href="fonts.css?v=1" />
   <link rel="stylesheet" href="tailwind.css?v=4" />
-  <link rel="stylesheet" href="site.css?v=23" />
-  <script defer src="liquid-nav.js?v=17"></script>
+  <link rel="stylesheet" href="site.css?v=27" />
+  <script defer src="liquid-nav.js?v=18"></script>
   <meta name="theme-color" content="#FBFBFD" />
   <style>
     /* Keep the logo on screen across page changes (Chrome, Edge, Safari 18.2+).
@@ -24,18 +25,295 @@
   </style>
 
   <style>
-    :root { --accent: #2563EB; }
-    :root[data-theme="dark"] { --accent: #60A5FA; }
+    :root { --accent: #DC2626; }
+    :root[data-theme="dark"] { --accent: #F87171; }
 
     .reveal { opacity:0; transform:translateY(20px); transition:opacity .6s ease,transform .6s ease; }
     .reveal.visible { opacity:1; transform:translateY(0); }
     .nav-link { position:relative; }
-    .nav-link::after { content:''; position:absolute; bottom:-2px; left:0; width:0; height:1px; background:#18181B; transition:width .25s ease; }
+    .nav-link::after { content:''; position:absolute; bottom:-2px; left:0; width:0; height:1px; background:currentColor; transition:width .25s ease; }
     .nav-link:hover::after { width:100%; }
+
+    /* Placeholder image block */
+    .img-placeholder {
+      width: 100%;
+      background: color-mix(in oklab, var(--surface-alt) 80%, var(--border));
+      border: 1.5px dashed var(--border);
+      border-radius: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      color: var(--secondary);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .img-placeholder svg { opacity: 0.3; }
+
+    /* Feedback item — card style with red border */
+    .feedback-item {
+      background: var(--surface-alt);
+      border: 1px solid color-mix(in oklab, var(--accent) 45%, transparent);
+      border-radius: 16px;
+      padding: 1.5rem 1.75rem;
+    }
+
+    /* Competitor card */
+    .competitor-card { border: 1px solid var(--border); border-radius: 16px; overflow: hidden; flex: none; width: 320px; }
+    @media (min-width: 640px) { .competitor-card { width: 380px; } }
+
+    /* Horizontal scroll strip */
+    .h-scroll { display: flex; gap: 1.5rem; overflow-x: auto; padding-bottom: 1rem; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+    .h-scroll::-webkit-scrollbar { display: none; }
+    .h-scroll > * { scroll-snap-align: start; }
+
+    /* Screen card in h-scroll */
+    .screen-card { flex: none; width: 280px; display: flex; flex-direction: column; }
+    @media (min-width: 640px) { .screen-card { width: 340px; } }
+    .screen-card .card-text { height: 7.5rem; overflow: hidden; margin-bottom: 1rem; }
+
+    /* ── Case study layout (rebuilt Nov 2026) ───────────────────────────── */
+    .cs-wrap { max-width: 72rem; margin: 0 auto; padding: 0 1.5rem; }
+    @media (min-width: 1024px) { .cs-wrap { padding: 0 2rem; } }
+    .cs-sec { padding: 4.5rem 0; border-bottom: 1px solid var(--border); }
+    @media (min-width: 768px) { .cs-sec { padding: 6.5rem 0; } }
+    .cs-sec--alt { background: var(--surface-alt); }
+    .cs-eyebrow { font-size: .75rem; font-weight: 600; letter-spacing: .25em; text-transform: uppercase; color: var(--accent); margin-bottom: .75rem; }
+    .cs-h2 { font-size: clamp(1.75rem, 3.4vw, 2.5rem); font-weight: 700; letter-spacing: -.02em; line-height: 1.12; max-width: 20em; margin-bottom: 1.5rem; }
+    .cs-p { font-size: 1.0625rem; line-height: 1.7; color: var(--secondary); max-width: 44rem; }
+    .cs-p + .cs-p { margin-top: 1.1rem; }
+    .cs-head { margin-bottom: 3rem; }
+
+    /* hero additions */
+    .cs-hero-line { font-size: clamp(1.25rem, 2.3vw, 1.75rem); line-height: 1.3; font-weight: 500; letter-spacing: -.01em; max-width: 26em; margin-top: 1.25rem; color: var(--primary); }
+    .cs-actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 2rem; }
+    .cs-btn { display: inline-flex; align-items: center; gap: .5rem; min-height: 46px; padding: 0 1.25rem; border-radius: 12px; font-size: .9375rem; font-weight: 600; border: 1px solid var(--primary); background: var(--primary); color: var(--surface, #fff); transition: transform .2s ease, opacity .2s ease; }
+    .cs-btn:hover { transform: translateY(-1px); opacity: .92; }
+    .cs-btn--ghost { background: transparent; color: var(--primary); border-color: var(--border); }
+    .cs-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+    /* screens */
+    .cs-shot { margin: 0; border-radius: 14px; overflow: hidden; border: 1px solid var(--border); background: #fff; box-shadow: 0 24px 60px -32px rgba(20, 20, 60, .35), 0 2px 8px rgba(20, 20, 60, .05); }
+    .cs-shot img { display: block; width: 100%; height: auto; }
+    .cs-bar { display: flex; gap: 6px; align-items: center; height: 30px; padding: 0 12px; background: #F1F1F3; border-bottom: 1px solid #E4E4E8; }
+    .cs-bar i { width: 9px; height: 9px; border-radius: 50%; background: #D3D3D9; display: block; }
+    .cs-hero-band { background: var(--surface-alt); padding: 3.5rem 1.5rem 4.5rem; border-bottom: 1px solid var(--border); }
+    .cs-hero-band .cs-shot { max-width: min(68rem, calc((100svh - 11.5rem) * 1.55)); margin: 0 auto; box-shadow: 0 30px 70px -28px rgba(20,20,40,.28); }
+
+    /* at a glance */
+    .cs-glance { display: grid; gap: 1.25rem; }
+    @media (min-width: 860px) { .cs-glance { grid-template-columns: repeat(3, 1fr); gap: 1.5rem; } }
+    .cs-glance > div { padding: 1.5rem 1.6rem 1.7rem; border: 1px solid var(--border); border-radius: 16px; background: var(--surface, #fff); }
+    .cs-glance h3 { font-size: .8125rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; margin-bottom: .7rem; }
+    .cs-glance p { font-size: 1rem; line-height: 1.6; color: var(--secondary); }
+
+    /* competitors */
+    .cs-comp { display: grid; gap: 1.25rem; margin-top: 3rem; }
+    @media (min-width: 860px) { .cs-comp { grid-template-columns: repeat(3, 1fr); } }
+    .cs-comp figure { margin: 0; border: 1px solid var(--border); border-radius: 16px; overflow: hidden; background: var(--surface, #fff); }
+    .cs-comp img { display: block; width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: left top; background: #fff; }
+    .cs-comp figcaption { padding: 1.1rem 1.3rem 1.3rem; }
+    .cs-comp h3 { font-size: 1.0625rem; font-weight: 700; margin-bottom: .3rem; }
+    .cs-comp p { font-size: .9375rem; line-height: 1.55; color: var(--secondary); }
+    .cs-gap { margin-top: 1.25rem; padding: 1.4rem 1.6rem; border-radius: 16px; border: 1px solid color-mix(in oklab, var(--accent) 40%, transparent); background: color-mix(in oklab, var(--accent) 5%, transparent); }
+    .cs-gap strong { display: block; font-size: .8125rem; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); margin-bottom: .45rem; }
+    .cs-gap p { font-size: clamp(1.0625rem, 1.5vw, 1.25rem); line-height: 1.55; color: var(--primary); text-wrap: balance; }
+
+    /* decisions */
+    .cs-dec { display: grid; gap: 2rem; align-items: center; padding: 3rem 0; border-top: 1px solid var(--border); }
+    .cs-dec:first-of-type { border-top: 0; padding-top: 0; }
+    .cs-dec:last-of-type { padding-bottom: 0; }
+    @media (min-width: 960px) { .cs-dec { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 3.5rem; } .cs-dec--flip { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); } .cs-dec--flip .cs-dec__text { order: 2; } .cs-dec--wide { grid-template-columns: minmax(0, 1fr); gap: 2.25rem; } .cs-dec--wide .cs-dec__text { max-width: 44rem; } .cs-dec--wide .cs-duo { grid-template-columns: 1fr 1fr; gap: 1.5rem; align-items: start; } }
+    .cs-dec__num { font-size: .8125rem; font-weight: 700; letter-spacing: .14em; color: var(--accent); margin-bottom: .6rem; font-variant-numeric: tabular-nums; }
+    .cs-dec h3 { font-size: clamp(1.3rem, 2.2vw, 1.65rem); font-weight: 700; letter-spacing: -.015em; line-height: 1.2; margin-bottom: .9rem; }
+    .cs-dec p { font-size: 1.0625rem; line-height: 1.65; color: var(--secondary); }
+    .cs-ruled { margin-top: 1.2rem; padding-left: 1rem; border-left: 2px solid var(--accent); }
+    .cs-ruled span { display: block; font-size: .75rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--primary); margin-bottom: .3rem; }
+    .cs-ruled p { font-size: .9688rem; }
+    .cs-duo { display: grid; gap: 1rem; }
+
+    /* wireframe to final */
+    .cs-evo { display: grid; gap: 2.5rem; }
+    .cs-evo__row { display: grid; gap: 1.5rem; }
+    @media (min-width: 960px) { .cs-evo__row { grid-template-columns: minmax(0, 3fr) minmax(0, 4.5fr) minmax(0, 4.5fr); gap: 1.75rem; align-items: start; } }
+    .cs-evo h3 { font-size: 1.2rem; font-weight: 700; letter-spacing: -.01em; line-height: 1.25; margin-bottom: .6rem; }
+    .cs-evo p { font-size: 1rem; line-height: 1.6; color: var(--secondary); }
+    .cs-evo figure { margin: 0; }
+    .cs-evo .cs-shot img { aspect-ratio: 16 / 10; object-fit: cover; object-position: left top; }
+    .cs-tag { display: inline-block; font-size: .6875rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; padding: .28rem .6rem; border-radius: 999px; border: 1px solid var(--border); color: var(--secondary); margin-bottom: .6rem; }
+    .cs-tag--final { border-color: var(--accent); color: var(--accent); }
+
+    /* gallery */
+    .screen-card.cs-card { width: min(78vw, 560px); }
+    .cs-carousel { --cw: min(76vw, 760px); }
+    .cs-carousel { --pad: 2.5rem; --fade: 11rem; }
+    @media (max-width: 1279px) { .cs-carousel { --pad: 2rem; } .cs-carousel .scroll-btn { width: 32px; } .cs-carousel .scroll-btn--prev { left: -32px; } .cs-carousel .scroll-btn--next { right: -32px; } }
+    @media (max-width: 1023px) { .cs-carousel .scroll-btn { width: 24px; } .cs-carousel .scroll-btn--prev { left: -24px; } .cs-carousel .scroll-btn--next { right: -24px; } }
+    @media (max-width: 1023px) { .cs-carousel { --pad: 1.25rem; --fade: 2.5rem; } }
+    .cs-carousel .h-scroll { gap: 3.5rem; padding: 1rem var(--pad) 2rem; margin: -1rem calc(var(--pad) * -1) 0; scroll-padding-inline: var(--pad); }
+    .cs-carousel .h-scroll { -webkit-mask-image: linear-gradient(to right, transparent 0, #000 var(--pad), #000 calc(100% - var(--fade)), transparent 100%); mask-image: linear-gradient(to right, transparent 0, #000 var(--pad), #000 calc(100% - var(--fade)), transparent 100%); }
+    .cs-carousel.at-end .h-scroll { -webkit-mask-image: linear-gradient(to left, transparent 0, #000 var(--pad), #000 calc(100% - var(--fade)), transparent 100%); mask-image: linear-gradient(to left, transparent 0, #000 var(--pad), #000 calc(100% - var(--fade)), transparent 100%); }
+    .cs-carousel .h-scroll > .cs-card:last-child { scroll-snap-align: end; }
+    .cs-carousel .h-scroll > .cs-card { width: var(--cw); flex: none; scroll-snap-align: start; transform-origin: left center; opacity: .3; filter: blur(1.5px); transform: scale(.96); transition: opacity .35s ease, filter .35s ease, transform .35s ease; cursor: pointer; }
+    .cs-carousel .h-scroll > .cs-card.is-active { opacity: 1; filter: none; transform: none; cursor: auto; }
+    .cs-carousel .h-scroll > .cs-card:not(.is-active) img { pointer-events: none; }
+    .cs-carousel .scroll-btn { transition: opacity .25s ease, color .2s; }
+    .cs-carousel .scroll-btn.is-hidden { opacity: 0; pointer-events: none; visibility: hidden; }
+    .cs-carousel .card-text p { max-width: 38rem; }
+    @media (prefers-reduced-motion: reduce) { .cs-carousel .h-scroll > .cs-card { transition: none; } }
+    .screen-card.cs-card .card-text { height: auto; min-height: 5.2rem; margin-bottom: 0; margin-top: 1rem; overflow: visible; }
+    .cs-card h3 { font-size: 1.0625rem; font-weight: 700; margin-bottom: .3rem; }
+    .cs-card p { font-size: .9375rem; line-height: 1.55; color: var(--secondary); }
+    .cs-card .cs-shot img { aspect-ratio: 16 / 10; object-fit: cover; object-position: left top; }
+    .cs-cta { margin-top: 0; display: flex; flex-wrap: wrap; gap: 1rem 1.5rem; align-items: center; }
+    .cs-cta p { font-size: 1rem; color: var(--secondary); }
+
+    /* AI */
+    .cs-two { display: grid; gap: 1.25rem; margin-top: 2.5rem; }
+    @media (min-width: 860px) { .cs-two { grid-template-columns: 1fr 1fr; gap: 1.5rem; } }
+    .cs-two > div { padding: 1.6rem 1.7rem 1.8rem; border: 1px solid var(--border); border-radius: 16px; background: var(--surface, #fff); }
+    .cs-two h3 { font-size: 1.0625rem; font-weight: 700; margin-bottom: .9rem; }
+    .cs-two ul { list-style: none; padding: 0; margin: 0; display: grid; gap: .7rem; }
+    .cs-two li { position: relative; padding-left: 1.3rem; font-size: 1rem; line-height: 1.55; color: var(--secondary); }
+    .cs-two li::before { content: ""; position: absolute; left: 0; top: .6em; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+
+    /* takeaway */
+    .cs-quote { font-size: clamp(1.5rem, 3.2vw, 2.4rem); font-weight: 600; letter-spacing: -.02em; line-height: 1.2; max-width: 22em; }
+    .cs-quote + .cs-p { margin-top: 1.5rem; }
+
+    /* StageUp additions */
+    .cs-hero-band .cs-shot--plain { max-width: min(68rem, calc((100svh - 11.5rem) * 1.79)); }
+    .cs-shot--plain { border: 0; background: transparent; }
+    .cs-plats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-top: 2.5rem; }
+    @media (min-width: 860px) { .cs-plats { grid-template-columns: repeat(4, 1fr); gap: 1.25rem; } }
+    .cs-plats > div { padding: 1.2rem 1.3rem 1.3rem; border: 1px solid var(--border); border-radius: 16px; background: var(--surface, #fff); }
+    .cs-plats h3 { font-size: 1rem; font-weight: 700; margin-bottom: .3rem; }
+    .cs-plats p { font-size: .9375rem; line-height: 1.5; color: var(--secondary); }
+    .cs-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-top: 2.5rem; }
+    @media (min-width: 860px) { .cs-stats { grid-template-columns: repeat(4, 1fr); gap: 1.25rem; } }
+    .cs-stats > div { padding: 1.4rem 1.4rem 1.3rem; border: 1px solid var(--border); border-radius: 16px; background: var(--surface, #fff); }
+    .cs-stats strong { display: block; font-size: clamp(2rem, 4vw, 2.75rem); font-weight: 700; letter-spacing: -.03em; line-height: 1; color: var(--primary); }
+    .cs-stats > div:first-child strong { color: var(--accent); }
+    .cs-stats span { display: block; margin-top: .6rem; font-size: .9375rem; line-height: 1.4; color: var(--secondary); }
+    .cs-two p { font-size: 1rem; line-height: 1.6; color: var(--secondary); }
+    .cs-two .cs-ruled { margin-top: 1rem; }
+    .cs-tri { display: grid; gap: 1.5rem; margin-top: 3rem; }
+    @media (min-width: 860px) { .cs-tri { grid-template-columns: repeat(3, 1fr); } }
+    .cs-tri figure { margin: 0; }
+    .cs-tri .cs-shot img { aspect-ratio: 16 / 9; object-fit: cover; object-position: center; }
+    .cs-sub { font-size: 1.2rem; font-weight: 700; letter-spacing: -.01em; margin: 3.5rem 0 .6rem; }
+    .cs-swatches { display: flex; flex-wrap: wrap; align-items: stretch; gap: 1rem; margin-top: 1.5rem; }
+    .cs-swatch { display: flex; align-items: center; gap: .9rem; padding: .9rem 1.2rem .9rem .9rem; border: 1px solid var(--border); border-radius: 14px; background: var(--surface, #fff); }
+    .cs-swatch i { width: 2.75rem; height: 2.75rem; border-radius: 10px; flex: none; }
+    .cs-swatch b { display: block; font-size: .9375rem; }
+    .cs-swatch span { display: block; font-size: .875rem; color: var(--secondary); }
+    .cs-wide { margin-top: 2.5rem; }
+    .cs-wide figcaption { margin-top: .9rem; font-size: .9375rem; line-height: 1.55; color: var(--secondary); max-width: 44rem; }
+    .cs-dec .cs-shot--plain img { border-radius: 14px; }
+    .cs-gap p { text-wrap: wrap; }
+    .cs-phones { --pad: 2.5rem; margin-top: 2.5rem; }
+    @media (max-width: 1279px) { .cs-phones { --pad: 2rem; } .cs-phones .scroll-btn { width: 32px; } .cs-phones .scroll-btn--prev { left: -32px; } .cs-phones .scroll-btn--next { right: -32px; } }
+    @media (max-width: 1023px) { .cs-phones { --pad: 1.25rem; } .cs-phones .scroll-btn { width: 24px; } .cs-phones .scroll-btn--prev { left: -24px; } .cs-phones .scroll-btn--next { right: -24px; } }
+    .cs-phones .h-scroll { gap: var(--pad); padding: 1rem var(--pad) 2rem; margin: -1rem calc(var(--pad) * -1) 0; scroll-padding-inline: var(--pad); -webkit-mask-image: linear-gradient(to right, transparent 0, #000 var(--pad), #000 calc(100% - var(--pad)), transparent 100%); mask-image: linear-gradient(to right, transparent 0, #000 var(--pad), #000 calc(100% - var(--pad)), transparent 100%); }
+    .cs-phones { --n: 4; }
+    @media (max-width: 1023px) { .cs-phones { --n: 3; } }
+    @media (max-width: 639px) { .cs-phones { --n: 2; } }
+    .cs-phone { flex: none; width: calc((100% - (var(--n) - 1) * var(--pad)) / var(--n)); scroll-snap-align: start; }
+    .cs-phone figure { max-width: 100%; }
+    .cs-phone figure { margin: 0; padding: 7px; border-radius: 2.5rem; background: #0b1020; box-shadow: 0 24px 50px -28px rgba(20, 20, 60, .45), 0 2px 8px rgba(20, 20, 60, .06); }
+    .cs-phone img { display: block; width: 100%; height: auto; border-radius: 2.1rem; }
+    .cs-phone h3 { font-size: 1rem; font-weight: 700; margin: 1.1rem 0 .3rem; }
+    .cs-phone p { font-size: .9063rem; line-height: 1.5; color: var(--secondary); }
+    .cs-phones .scroll-btn.is-hidden { opacity: 0; pointer-events: none; visibility: hidden; }
+
+    /* RBC additions */
+    .cs-stats--3 { grid-template-columns: 1fr; }
+    @media (min-width: 560px) { .cs-stats--3 { grid-template-columns: repeat(3, 1fr); } }
+    @media (min-width: 860px) { .cs-stats--3 { grid-template-columns: repeat(3, 1fr); } }
+    .cs-flows { display: grid; gap: 1.5rem; margin-top: 2.5rem; }
+    @media (min-width: 860px) { .cs-flows { grid-template-columns: 1fr 1fr; } }
+    .cs-flows figure { margin: 0; }
+    .cs-flows figcaption { margin-top: .8rem; font-size: .9375rem; line-height: 1.5; color: var(--secondary); }
+    .cs-list { margin: 1.25rem 0 0; padding: 0; list-style: none; max-width: 44rem; }
+    .cs-list li { position: relative; padding-left: 1.3rem; font-size: 1.0313rem; line-height: 1.6; color: var(--secondary); }
+    .cs-list li + li { margin-top: .5rem; }
+    .cs-list li::before { content: ""; position: absolute; left: 0; top: .68em; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+    .cs-note { margin-top: 1rem; font-size: .875rem; color: var(--secondary); opacity: .75; }
+
+    /* Lightbox */
+    #img-lightbox { display:none; position:fixed; inset:0; z-index:9999; background:rgba(0,0,0,0.97); flex-direction:column; align-items:center; justify-content:flex-start; overflow-y:auto; cursor:zoom-out; }
+    .lb-figure { display:flex; flex-direction:column; gap:14px; flex:none; }
+    .lb-media { position:relative; display:flex; align-items:flex-start; }
+    #img-lightbox-img { display:block; width:100%; height:auto; border-radius:12px; box-shadow:0 8px 64px rgba(0,0,0,0.6); }
+    .lb-caption { width:100%; text-align:left; cursor:default; }
+    .lb-cap-top { display:flex; align-items:flex-end; justify-content:space-between; gap:24px; margin-bottom:4px; }
+    .lb-tag { font-size:.65rem; font-weight:600; letter-spacing:.18em; text-transform:uppercase; color:var(--accent); margin-bottom:4px; }
+    .lb-title { font-size:1rem; font-weight:700; line-height:1.3; color:#FAFAFA; }
+    .lb-count { flex:none; font-size:.75rem; font-weight:500; letter-spacing:.08em; color:rgba(250,250,250,.45); font-variant-numeric:tabular-nums; }
+    .lb-desc { font-size:.85rem; line-height:1.5; color:rgba(250,250,250,.6); display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+    .lb-nav { position:absolute; top:50%; transform:translateY(-50%); width:40px; height:40px; padding:0; background:none; border:none; color:#FAFAFA; opacity:.7; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:color .2s, opacity .2s; }
+    .lb-nav:hover { color:var(--accent); opacity:1; }
+    .lb-nav[hidden] { display:none; }
+    .lb-nav--prev { left:-56px; }
+    .lb-nav--next { right:-56px; }
+    .lb-close { position:fixed; top:16px; right:20px; width:40px; height:40px; padding:0; background:none; border:none; color:#FAFAFA; opacity:.7; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:color .2s, opacity .2s; }
+    .lb-close:hover { color:var(--accent); opacity:1; }
+    @media (max-width: 767px) {
+      .lb-figure { gap:12px; }
+      .lb-title { font-size:.95rem; }
+      .lb-desc { font-size:.8rem; }
+      .lb-nav { width:28px; }
+      .lb-nav--prev { left:-32px; }
+      .lb-nav--next { right:-32px; }
+      .lb-close { top:8px; right:8px; }
+    }
+    .zoomable { cursor:zoom-in !important; }
+
+    /* Scroll wrap + arrow buttons */
+    .scroll-wrap { position: relative; }
+    .scroll-btn {
+      position: absolute; top: 50%; transform: translateY(-50%); z-index: 10;
+      width: 40px; height: 40px; padding: 0;
+      background: none; border: none; color: var(--primary); opacity: .7;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: color .2s, opacity .2s;
+    }
+    .scroll-btn:hover { color: var(--accent); opacity: 1; }
+    .scroll-btn--prev { left: -48px; }
+    .scroll-btn--next { right: -48px; }
+    @media (max-width: 767px) {
+      .scroll-btn { width: 24px; }
+      .scroll-btn--prev { left: -24px; }
+      .scroll-btn--next { right: -24px; }
+    }
+    .h-scroll { cursor: grab; user-select: none; }
+    .h-scroll.is-dragging { cursor: grabbing; scroll-snap-type: none; }
   </style>
 </head>
 
 <body class="text-primary font-sans antialiased overflow-x-hidden">
+  <!-- Lightbox -->
+  <div id="img-lightbox" role="dialog" aria-modal="true" aria-label="Image preview">
+    <button class="lb-close" aria-label="Close preview">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <div class="lb-figure" id="img-lightbox-figure">
+      <div class="lb-media" id="img-lightbox-media">
+        <button class="lb-nav lb-nav--prev" aria-label="Previous image">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+        </button>
+        <img id="img-lightbox-img" alt="" />
+        <button class="lb-nav lb-nav--next" aria-label="Next image">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/></svg>
+        </button>
+      </div>
+      <div class="lb-caption" id="img-lightbox-caption"></div>
+    </div>
+  </div>
+
 
   <!-- ─── NAVBAR ─────────────────────────────────────────────────────────── -->
   <header class="site-header">
@@ -61,393 +339,223 @@
 
 
   <!-- ─── HERO ───────────────────────────────────────────────────────────── -->
-  <section class="relative pt-32 pb-16 md:pt-40 md:pb-24 bg-surface-alt border-b border-border overflow-hidden">
-    <div class="dot-patch dot-patch--xl" style="top: -8%; right: -70px;" aria-hidden="true"></div>
-    <div class="dot-patch dot-patch--sm" style="bottom: 5%; left: 5%;" aria-hidden="true"></div>
+  <section class="relative pt-32 pb-12 md:pt-40 md:pb-14 bg-surface-alt overflow-hidden">
     <div class="max-w-6xl mx-auto px-6 lg:px-8 relative z-10">
 
-      <!-- Breadcrumb -->
       <div class="reveal flex items-center gap-2 text-xs text-secondary/60 font-500 mb-8">
         <a href="index.html#projects" class="hover:text-accent transition-colors cursor-pointer">Projects</a>
         <span>/</span>
-        <span class="text-primary">RBC Mobile App</span>
+        <span class="text-primary">RBC Mobile</span>
       </div>
 
-      <p class="reveal text-xs font-600 tracking-[0.25em] uppercase text-accent mb-4">UX / UI · Product Design</p>
+      <p class="reveal text-xs font-600 tracking-[0.25em] uppercase text-accent mb-6">Mobile Banking App</p>
 
-      <h1 class="reveal text-5xl sm:text-6xl md:text-7xl font-800 leading-tight tracking-tight text-primary max-w-4xl" style="transition-delay:.1s">
-        RBC Mobile<br />Case Study
-      </h1>
+      <h1 class="reveal text-5xl sm:text-6xl md:text-7xl font-800 leading-tight tracking-tight text-primary max-w-4xl" style="transition-delay:.1s">RBC Mobile</h1>
 
-      <p class="reveal text-lg md:text-xl text-secondary font-400 mt-6 max-w-2xl leading-relaxed" style="transition-delay:.2s">
-        A usability driven redesign of the RBC Mobile app's Running Balance feature
-      </p>
+      <p class="reveal cs-hero-line" style="transition-delay:.15s">A running balance for the transactions page, so every purchase shows what is left.</p>
 
-      <!-- Meta row -->
-      <div class="reveal grid grid-cols-2 sm:grid-cols-3 gap-x-12 gap-y-8 mt-12 pt-10 border-t border-border" style="transition-delay:.3s">
+      <div class="reveal cs-actions" style="transition-delay:.18s">
+        <a class="cs-btn" href="https://www.figma.com/proto/LBa8phH2RJfLuZd63pSfYB/RBC-interface?node-id=406-788&p=f&t=n3GC5tL6YaDxxmQt-0&scaling=scale-down&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=561%3A590" target="_blank" rel="noopener noreferrer">View prototype <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z"/><path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z"/></svg></a>
+      </div>
+
+      <div class="reveal grid grid-cols-2 sm:grid-cols-4 gap-x-12 gap-y-8 mt-12 pt-10 border-t border-border" style="transition-delay:.2s">
         <div class="min-w-0">
-          <p class="text-sm font-bold uppercase tracking-wider text-primary mb-2">My Role</p>
-          <p class="text-sm font-normal text-secondary opacity-60 leading-relaxed">UX/UI Product Designer (Academic Case Study)</p>
+          <p class="text-sm font-bold uppercase tracking-wider text-primary mb-2">Role</p>
+          <p class="text-sm font-normal text-secondary opacity-60 leading-relaxed">Product Designer<br>University project</p>
+        </div>
+        <div class="min-w-0">
+          <p class="text-sm font-bold uppercase tracking-wider text-primary mb-2">Scope</p>
+          <p class="text-sm font-normal text-secondary opacity-60 leading-relaxed">Heuristic evaluation to tested prototype</p>
+        </div>
+        <div class="min-w-0">
+          <p class="text-sm font-bold uppercase tracking-wider text-primary mb-2">Testing</p>
+          <p class="text-sm font-normal text-secondary opacity-60 leading-relaxed">5 participants<br>Moderated sessions</p>
         </div>
         <div class="min-w-0">
           <p class="text-sm font-bold uppercase tracking-wider text-primary mb-2">Tools</p>
-          <p class="text-sm font-normal text-secondary opacity-60 leading-relaxed">Figma, Figjam, Notion, Google Workspace</p>
-        </div>
-        <div class="min-w-0">
-          <p class="text-sm font-bold uppercase tracking-wider text-primary mb-2">Deliverables</p>
-          <p class="text-sm font-normal text-secondary opacity-60 leading-relaxed">Heuristic Evaluation, Design Analysis, Low Fidelity Wireframes, High Fidelity Prototype, Usability Test Plan &amp; Report</p>
+          <p class="text-sm font-normal text-secondary opacity-60 leading-relaxed">Figma · FigJam · Notion</p>
         </div>
       </div>
+      <p class="reveal cs-note">A concept redesign made as coursework. It is not affiliated with RBC.</p>
     </div>
   </section>
 
-  <!-- Hero image -->
-  <div class="w-full bg-[#F0F4F8] flex items-center justify-center py-14 px-6">
-    <img src="img/rbc1.jpeg" alt="RBC Mobile App redesign overview" class="w-full max-w-4xl h-auto object-contain rounded-2xl shadow-[0_8px_48px_-4px_rgba(37,99,235,0.18)]" />
+  <div class="cs-hero-band">
+    <figure class="cs-shot cs-shot--plain"><img src="img/rbc/hero.webp" width="1920" height="1080" alt="Three RBC Mobile screens showing sign in and the transactions page with the Running Balance toggle off and on" class="zoomable" /></figure>
   </div>
 
 
-  <!-- ─── PROJECT OVERVIEW ──────────────────────────────────────────────── -->
-  <section class="relative py-20 md:py-28 border-b border-border overflow-hidden">
-    <div class="dot-patch dot-patch--md" style="top: 10%; left: -55px;" aria-hidden="true"></div>
-    <div class="max-w-6xl mx-auto px-6 lg:px-8 relative z-10">
-      <div class="max-w-3xl">
-        <p class="reveal text-xs font-600 tracking-[0.25em] uppercase text-accent mb-3">Overview</p>
-        <h2 class="reveal text-3xl md:text-4xl font-700 tracking-tight mb-8">Project Overview</h2>
-        <p class="reveal text-secondary text-base leading-relaxed mb-4">
-          This project is a university case study completed as part of my academic work.
-        </p>
-        <p class="reveal text-secondary text-base leading-relaxed mb-4">
-          RBC Mobile is one of Canada's most widely used banking apps.
-        </p>
-        <p class="reveal text-secondary text-base leading-relaxed">
-          Users rely on the Transactions page to understand how their balance changes, but the original design presents only one static balance at the top.
-        </p>
-      </div>
-    </div>
-  </section>
-
-
-  <!-- ─── EMPATHIZE ─────────────────────────────────────────────────────── -->
-  <section class="relative py-20 md:py-28 bg-surface-alt border-b border-border overflow-hidden">
-    <div class="dot-patch dot-patch--lg" style="top: -8%; left: -50px;" aria-hidden="true"></div>
-    <div class="max-w-6xl mx-auto px-6 lg:px-8 relative z-10">
-
-      <div class="reveal mb-12">
-        <p class="text-xs font-600 tracking-[0.25em] uppercase text-accent mb-3">01 · Empathize</p>
-        <h2 class="text-3xl md:text-4xl font-700 tracking-tight">Understanding the Users</h2>
-      </div>
-
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+  <!-- ─── AT A GLANCE ─────────────────────────────────────────────────────── -->
+  <section class="cs-sec">
+    <div class="cs-wrap">
+      <p class="reveal cs-eyebrow">At a glance</p>
+      <div class="reveal cs-glance">
         <div>
-          <p class="reveal text-secondary text-base leading-relaxed mb-4">
-            For this case study, I focused on everyday mobile banking users between the ages of 18 and 60.
-          </p>
-          <p class="reveal text-secondary text-base leading-relaxed mb-8">
-            Most of these users rely on the Transactions page to confirm purchases.
-          </p>
-
-          <!-- Pain points -->
-          <div class="reveal space-y-3">
-            <h3 class="text-sm font-700 text-primary uppercase tracking-widest mb-4">Key Pain Points</h3>
-
-            <div class="flex gap-4 p-4 rounded-xl border border-border bg-surface">
-              <span class="text-accent font-700 text-sm shrink-0 mt-0.5">01</span>
-              <p class="text-sm font-600 text-primary">No visibility into balance changes</p>
-            </div>
-
-            <div class="flex gap-4 p-4 rounded-xl border border-border bg-surface">
-              <span class="text-accent font-700 text-sm shrink-0 mt-0.5">02</span>
-              <p class="text-sm font-600 text-primary">High cognitive effort</p>
-            </div>
-
-            <div class="flex gap-4 p-4 rounded-xl border border-border bg-surface">
-              <span class="text-accent font-700 text-sm shrink-0 mt-0.5">03</span>
-              <p class="text-sm font-600 text-primary">Difficulty verifying account activity</p>
-            </div>
-
-            <div class="flex gap-4 p-4 rounded-xl border border-border bg-surface">
-              <span class="text-accent font-700 text-sm shrink-0 mt-0.5">04</span>
-              <p class="text-sm font-600 text-primary">Misalignment with real world expectations</p>
-            </div>
-
-            <div class="flex gap-4 p-4 rounded-xl border border-border bg-surface">
-              <span class="text-accent font-700 text-sm shrink-0 mt-0.5">05</span>
-              <p class="text-sm font-600 text-primary">Higher risk of errors</p>
-            </div>
-          </div>
+          <h3>The problem</h3>
+          <p>The transactions page shows one balance at the top. To know what was left after any single purchase, people have to work it out in their heads.</p>
         </div>
-
-        <div class="space-y-8">
-          <!-- Heuristic evaluation -->
-          <div class="reveal p-6 rounded-2xl border border-border bg-surface">
-            <h3 class="text-sm font-700 text-primary uppercase tracking-widest mb-4">Heuristic Evaluation</h3>
-            <ul class="space-y-2">
-              <li class="flex items-center gap-2 text-sm text-secondary">
-                <span class="w-1.5 h-1.5 rounded-full bg-accent shrink-0"></span>
-                Visibility of system status
-              </li>
-              <li class="flex items-center gap-2 text-sm text-secondary">
-                <span class="w-1.5 h-1.5 rounded-full bg-accent shrink-0"></span>
-                Recognition over recall
-              </li>
-              <li class="flex items-center gap-2 text-sm text-secondary">
-                <span class="w-1.5 h-1.5 rounded-full bg-accent shrink-0"></span>
-                Error prevention
-              </li>
-              <li class="flex items-center gap-2 text-sm text-secondary">
-                <span class="w-1.5 h-1.5 rounded-full bg-accent shrink-0"></span>
-                Match between system and real world
-              </li>
-              <li class="flex items-center gap-2 text-sm text-secondary">
-                <span class="w-1.5 h-1.5 rounded-full bg-accent shrink-0"></span>
-                Flexibility and efficiency of use
-              </li>
-            </ul>
-          </div>
-
-          <!-- Persona -->
-          <div class="reveal p-6 rounded-2xl border border-border bg-surface">
-            <h3 class="text-sm font-700 text-primary uppercase tracking-widest mb-4">Persona · The Everyday Spender</h3>
-            <div class="flex items-center gap-4 mb-4">
-              <div class="w-12 h-12 rounded-full bg-gradient-to-br from-[#003168] to-[#0072BC] flex items-center justify-center text-white font-700 text-lg shrink-0">G</div>
-              <div>
-                <p class="text-sm font-700 text-primary">Gabriel, 29</p>
-                <p class="text-xs text-secondary">Everyday Spender</p>
-              </div>
-            </div>
-            <p class="text-sm text-secondary leading-relaxed">
-              Gabriel is a young professional who uses mobile banking several times a week.
-            </p>
-          </div>
+        <div>
+          <h3>My role</h3>
+          <p>A university case study. I ran the heuristic evaluation, mapped the task flow, designed two versions of the feature and tested them with users.</p>
         </div>
-      </div>
-
-      <!-- Task flow before -->
-      <div class="reveal mt-12">
-        <h3 class="text-sm font-700 text-primary uppercase tracking-widest mb-4">Task Flow · Before Redesign</h3>
-        <img src="img/Frame 1.jpg" alt="Task flow before redesign" class="w-full h-auto object-contain rounded-2xl shadow-[0_8px_48px_-4px_rgba(37,99,235,0.18)]" />
-      </div>
-
-      <!-- Research insights -->
-      <div class="reveal mt-6 p-6 md:p-8 rounded-2xl border border-border bg-surface">
-        <h3 class="text-sm font-700 text-primary uppercase tracking-widest mb-4">Research Insights</h3>
-        <p class="text-sm text-secondary leading-relaxed">
-          Across user research, heuristic evaluation, and analysis of the original task flow, a clear pattern emerged.
-        </p>
-      </div>
-
-    </div>
-  </section>
-
-
-  <!-- ─── DEFINE ────────────────────────────────────────────────────────── -->
-  <section class="relative py-20 md:py-28 border-b border-border overflow-hidden">
-    <div class="dot-patch dot-patch--lg" style="bottom: -10%; right: -60px;" aria-hidden="true"></div>
-    <div class="max-w-6xl mx-auto px-6 lg:px-8 relative z-10">
-      <div class="reveal mb-10">
-        <p class="text-xs font-600 tracking-[0.25em] uppercase text-accent mb-3">02 · Define</p>
-        <h2 class="text-3xl md:text-4xl font-700 tracking-tight">Defining the User Needs</h2>
-      </div>
-      <div class="reveal max-w-3xl">
-        <p class="text-secondary text-base leading-relaxed">
-          Problem Statement restated with focus on solution.
-        </p>
+        <div>
+          <h3>The result</h3>
+          <p>A Running Balance toggle, tested in five moderated sessions. Participants found it easily and consistently preferred the second version.</p>
+        </div>
       </div>
     </div>
   </section>
 
 
-  <!-- ─── IDEATE ────────────────────────────────────────────────────────── -->
-  <section class="relative py-20 md:py-28 bg-surface-alt border-b border-border overflow-hidden">
-    <div class="dot-patch dot-patch--sm" style="bottom: 6%; right: 4%;" aria-hidden="true"></div>
-    <div class="max-w-6xl mx-auto px-6 lg:px-8 relative z-10">
-
-      <div class="reveal mb-14">
-        <p class="text-xs font-600 tracking-[0.25em] uppercase text-accent mb-3">03 · Ideate</p>
-        <h2 class="text-3xl md:text-4xl font-700 tracking-tight">Designing the Solution</h2>
-      </div>
-
-      <!-- Task flow after — full width -->
-      <div class="reveal mb-14">
-        <div class="flex items-center justify-between mb-4">
-          <h3 class="text-sm font-700 text-primary uppercase tracking-widest">Task Flow · After Redesign</h3>
-          <button onclick="openLightbox('img/Frame 2 .jpg','Task flow after redesign')" class="text-xs font-600 text-accent hover:underline cursor-pointer flex items-center gap-1">
-            View full
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor"><path d="M3 4a1 1 0 011-1h4a1 1 0 010 2H6.414l2.293 2.293a1 1 0 11-1.414 1.414L5 6.414V8a1 1 0 01-2 0V4zm9 1a1 1 0 010-2h4a1 1 0 011 1v4a1 1 0 01-2 0V6.414l-2.293 2.293a1 1 0 11-1.414-1.414L13.586 5H12zm-9 7a1 1 0 012 0v1.586l2.293-2.293a1 1 0 111.414 1.414L6.414 15H8a1 1 0 010 2H4a1 1 0 01-1-1v-4zm13 2a1 1 0 01-2 0v-1.586l-2.293 2.293a1 1 0 01-1.414-1.414L13.586 15H12a1 1 0 010-2h4a1 1 0 011 1v4z"/></svg>
-          </button>
-        </div>
-        <img src="img/Frame 2 .jpg" alt="Task flow after redesign" onclick="openLightbox('img/Frame 2 .jpg','Task flow after redesign')" class="w-full h-auto object-contain rounded-2xl shadow-[0_8px_48px_-4px_rgba(37,99,235,0.18)] cursor-zoom-in" />
-      </div>
-
-      <!-- Low-fi — full width -->
-      <div class="reveal mb-14">
-        <div class="flex items-center justify-between mb-4">
-          <h3 class="text-sm font-700 text-primary uppercase tracking-widest">Low Fidelity Concepts</h3>
-          <button onclick="openLightbox('img/rbc-low-fid.jpeg','Low-fidelity wireframes')" class="text-xs font-600 text-accent hover:underline cursor-pointer flex items-center gap-1">
-            View full
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor"><path d="M3 4a1 1 0 011-1h4a1 1 0 010 2H6.414l2.293 2.293a1 1 0 11-1.414 1.414L5 6.414V8a1 1 0 01-2 0V4zm9 1a1 1 0 010-2h4a1 1 0 011 1v4a1 1 0 01-2 0V6.414l-2.293 2.293a1 1 0 11-1.414-1.414L13.586 5H12zm-9 7a1 1 0 012 0v1.586l2.293-2.293a1 1 0 111.414 1.414L6.414 15H8a1 1 0 010 2H4a1 1 0 01-1-1v-4zm13 2a1 1 0 01-2 0v-1.586l-2.293 2.293a1 1 0 01-1.414-1.414L13.586 15H12a1 1 0 010-2h4a1 1 0 011 1v4z"/></svg>
-          </button>
-        </div>
-        <img src="img/rbc-low-fid.jpeg" alt="RBC low fidelity wireframes" onclick="openLightbox('img/rbc-low-fid.jpeg','Low-fidelity wireframes')" class="w-full h-auto object-contain rounded-2xl shadow-[0_8px_48px_-4px_rgba(37,99,235,0.18)] cursor-zoom-in" />
-      </div>
-
-      <!-- High-fi V1 — full width -->
+  <!-- ─── 01 THE CHALLENGE ────────────────────────────────────────────────── -->
+  <section class="cs-sec cs-sec--alt">
+    <div class="cs-wrap">
       <div class="reveal">
-        <div class="flex items-center justify-between mb-4">
-          <h3 class="text-sm font-700 text-primary uppercase tracking-widest">First High Fidelity Prototype</h3>
-          <button onclick="openLightbox('img/rbc-high-fid.jpeg','High-fidelity prototype V1')" class="text-xs font-600 text-accent hover:underline cursor-pointer flex items-center gap-1">
-            View full
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor"><path d="M3 4a1 1 0 011-1h4a1 1 0 010 2H6.414l2.293 2.293a1 1 0 11-1.414 1.414L5 6.414V8a1 1 0 01-2 0V4zm9 1a1 1 0 010-2h4a1 1 0 011 1v4a1 1 0 01-2 0V6.414l-2.293 2.293a1 1 0 11-1.414-1.414L13.586 5H12zm-9 7a1 1 0 012 0v1.586l2.293-2.293a1 1 0 111.414 1.414L6.414 15H8a1 1 0 010 2H4a1 1 0 01-1-1v-4zm13 2a1 1 0 01-2 0v-1.586l-2.293 2.293a1 1 0 01-1.414-1.414L13.586 15H12a1 1 0 010-2h4a1 1 0 011 1v4z"/></svg>
-          </button>
-        </div>
-        <img src="img/rbc-high-fid.jpeg" alt="RBC high fidelity prototype V1" onclick="openLightbox('img/rbc-high-fid.jpeg','High-fidelity prototype V1')" class="w-full h-auto object-contain rounded-2xl shadow-[0_8px_48px_-4px_rgba(37,99,235,0.18)] cursor-zoom-in mb-5" />
-        <div class="flex flex-wrap items-center justify-between gap-4">
-          <a href="https://www.figma.com/proto/LBa8phH2RJfLuZd63pSfYB/RBC-interface?node-id=39-34&starting-point-node-id=39%3A34" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-sm font-600 text-accent hover:underline cursor-pointer">View in Figma →</a>
-          <div class="flex flex-wrap gap-x-6 gap-y-1">
-            <span class="text-xs text-secondary flex items-center gap-1.5"><span class="text-red-400">•</span> Transaction list used half the screen height</span>
-            <span class="text-xs text-secondary flex items-center gap-1.5"><span class="text-red-400">•</span> Typography too small</span>
-            <span class="text-xs text-secondary flex items-center gap-1.5"><span class="text-red-400">•</span> Excessive scrolling required</span>
-            <span class="text-xs text-secondary flex items-center gap-1.5"><span class="text-red-400">•</span> Running balance area felt cramped</span>
-          </div>
-        </div>
+        <p class="cs-eyebrow">01 · The challenge</p>
+        <h2 class="cs-h2">One balance at the top, mental math for the rest</h2>
+        <p class="cs-p">People open the transactions page to confirm purchases and see how their balance moved. The original design gives them a single static number, so checking any one transaction means adding and subtracting by hand.</p>
+        <p class="cs-p">A heuristic evaluation pointed to four principles the page works against.</p>
       </div>
 
-    </div>
-  </section>
-
-
-  <!-- ─── TEST ──────────────────────────────────────────────────────────── -->
-  <section class="relative py-20 md:py-28 border-b border-border overflow-hidden">
-    <div class="dot-patch dot-patch--lg" style="top: -8%; left: -60px;" aria-hidden="true"></div>
-    <div class="dot-patch dot-patch--sm" style="bottom: 6%; right: 4%;" aria-hidden="true"></div>
-    <div class="max-w-6xl mx-auto px-6 lg:px-8 relative z-10">
-
-      <div class="reveal mb-12">
-        <p class="text-xs font-600 tracking-[0.25em] uppercase text-accent mb-3">04 · Test</p>
-        <h2 class="text-3xl md:text-4xl font-700 tracking-tight">Usability Testing</h2>
+      <div class="reveal cs-plats">
+        <div><h3>Visibility of system status</h3><p>The balance after each transaction is never shown.</p></div>
+        <div><h3>Recognition over recall</h3><p>People must remember and calculate.</p></div>
+        <div><h3>Error prevention</h3><p>Mental math invites mistakes with money.</p></div>
+        <div><h3>Match with the real world</h3><p>A bank statement shows a balance on every line.</p></div>
       </div>
 
-      <!-- V2 — full width -->
-      <div class="reveal mb-16">
-        <div class="flex items-center justify-between mb-4">
-          <h3 class="text-sm font-700 text-primary uppercase tracking-widest">High Fidelity Prototype V2 · Final</h3>
-          <button onclick="openLightbox('img/rbc-high-fid-v2.jpeg','High fidelity prototype V2, Final')" class="text-xs font-600 text-accent hover:underline cursor-pointer flex items-center gap-1">
-            View full
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor"><path d="M3 4a1 1 0 011-1h4a1 1 0 010 2H6.414l2.293 2.293a1 1 0 11-1.414 1.414L5 6.414V8a1 1 0 01-2 0V4zm9 1a1 1 0 010-2h4a1 1 0 011 1v4a1 1 0 01-2 0V6.414l-2.293 2.293a1 1 0 11-1.414-1.414L13.586 5H12zm-9 7a1 1 0 012 0v1.586l2.293-2.293a1 1 0 111.414 1.414L6.414 15H8a1 1 0 010 2H4a1 1 0 01-1-1v-4zm13 2a1 1 0 01-2 0v-1.586l-2.293 2.293a1 1 0 01-1.414-1.414L13.586 15H12a1 1 0 010-2h4a1 1 0 011 1v4z"/></svg>
-          </button>
-        </div>
-        <img src="img/rbc-high-fid-v2.jpeg" alt="RBC high fidelity prototype V2 final" onclick="openLightbox('img/rbc-high-fid-v2.jpeg','High fidelity prototype V2, Final')" class="w-full h-auto object-contain rounded-2xl shadow-[0_8px_48px_-4px_rgba(37,99,235,0.18)] cursor-zoom-in mb-5" />
-        <div class="flex flex-wrap items-center justify-between gap-4">
-          <a href="https://www.figma.com/proto/LBa8phH2RJfLuZd63pSfYB/RBC-interface?node-id=406-788&p=f&t=n3GC5tL6YaDxxmQt-0&scaling=scale-down&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=561%3A590" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-sm font-600 text-accent hover:underline cursor-pointer">View in Figma →</a>
-          <div class="flex flex-wrap gap-x-6 gap-y-1">
-            <span class="text-xs text-secondary flex items-center gap-1.5"><span class="text-green-500">✓</span> Increased transaction list height</span>
-            <span class="text-xs text-secondary flex items-center gap-1.5"><span class="text-green-500">✓</span> Enlarged typography</span>
-            <span class="text-xs text-secondary flex items-center gap-1.5"><span class="text-green-500">✓</span> Red/green colour coding</span>
-            <span class="text-xs text-secondary flex items-center gap-1.5"><span class="text-green-500">✓</span> Dark blue daily balance</span>
-            <span class="text-xs text-secondary flex items-center gap-1.5"><span class="text-green-500">✓</span> Maintained RBC's minimal style</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Method & Participants -->
-      <div class="reveal p-6 md:p-8 rounded-2xl border border-border bg-surface-alt mb-8">
-        <h3 class="text-sm font-700 text-primary uppercase tracking-widest mb-4">Method &amp; Participants</h3>
-        <p class="text-sm text-secondary leading-relaxed mb-2">The study followed a formative, moderated testing method.</p>
-        <p class="text-sm text-secondary leading-relaxed mb-2">Sessions were run in a quiet space over Zoom.</p>
-        <p class="text-sm text-secondary leading-relaxed">Each test lasted around 15 to 20 minutes.</p>
-      </div>
-
-      <!-- Tasks -->
-      <div class="reveal p-6 md:p-8 rounded-2xl border border-border bg-surface-alt mb-8">
-        <h3 class="text-sm font-700 text-primary uppercase tracking-widest mb-4">Tasks</h3>
-        <ol class="space-y-2 list-decimal list-inside text-sm text-secondary">
-          <li>Navigate from home to Chequing account</li>
-          <li>Turn Running Balance toggle on</li>
-          <li>Scroll through transactions</li>
-          <li>Turn toggle off and compare</li>
-          <li>Identify running balance after specific transaction</li>
-        </ol>
-      </div>
-
-      <!-- Key Findings -->
-      <div class="reveal mb-8">
-        <h3 class="text-sm font-700 text-primary uppercase tracking-widest mb-4">Key Findings</h3>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div class="p-5 rounded-xl border border-border bg-surface">
-            <p class="text-sm text-secondary leading-relaxed">Users easily found the Running Balance toggle</p>
-          </div>
-          <div class="p-5 rounded-xl border border-border bg-surface">
-            <p class="text-sm text-secondary leading-relaxed">The taller transaction list and larger typography improved readability</p>
-          </div>
-          <div class="p-5 rounded-xl border border-border bg-surface">
-            <p class="text-sm text-secondary leading-relaxed">The color coding helped users quickly interpret financial changes</p>
-          </div>
-          <div class="p-5 rounded-xl border border-border bg-surface">
-            <p class="text-sm text-secondary leading-relaxed">Participants liked having the option to switch between simple and detailed views</p>
-          </div>
-          <div class="p-5 rounded-xl border border-border bg-surface">
-            <p class="text-sm text-secondary leading-relaxed">The V2 design was consistently preferred</p>
-          </div>
-          <div class="p-5 rounded-xl border border-border bg-surface">
-            <p class="text-sm text-secondary leading-relaxed">Overall, V2 felt clearer, more logical, and more similar to real banking app behavior</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Design Tweaks After Testing -->
-      <div class="reveal p-6 md:p-8 rounded-2xl border border-border bg-surface-alt">
-        <h3 class="text-sm font-700 text-primary uppercase tracking-widest mb-4">Design Tweaks After Testing</h3>
-        <div class="space-y-2">
-          <div class="flex items-start gap-3 text-sm text-secondary">
-            <span class="text-accent shrink-0 mt-0.5">•</span>
-            Increased spacing under section headers
-          </div>
-          <div class="flex items-start gap-3 text-sm text-secondary">
-            <span class="text-accent shrink-0 mt-0.5">•</span>
-            Enhanced contrast for running balance numbers
-          </div>
-          <div class="flex items-start gap-3 text-sm text-secondary">
-            <span class="text-accent shrink-0 mt-0.5">•</span>
-            Added slightly more padding in transaction rows
-          </div>
-          <div class="flex items-start gap-3 text-sm text-secondary">
-            <span class="text-accent shrink-0 mt-0.5">•</span>
-            Improved alignment for a cleaner, more consistent RBC style layout
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-
-  <!-- ─── CONCLUSION ─────────────────────────────────────────────────────── -->
-  <section class="relative py-20 md:py-28 bg-ink text-on-ink overflow-hidden">
-    <div class="dot-patch dot-patch--on-dark dot-patch--md" style="top: 8%; right: 6%;" aria-hidden="true"></div>
-    <div class="max-w-6xl mx-auto px-6 lg:px-8 relative z-10">
-      <div class="max-w-2xl">
-        <p class="reveal text-xs font-600 tracking-[0.25em] uppercase text-accent mb-3">Conclusion</p>
-        <h2 class="reveal text-3xl md:text-4xl font-700 tracking-tight mb-6">Outcome</h2>
-        <p class="reveal text-on-ink/70 text-base leading-relaxed">
-          This project focused on improving the clarity and usability of the Running Balance feature. The final design reduces cognitive load and improves readability.
-        </p>
+      <div class="reveal cs-flows">
+        <figure><span class="cs-tag">Before</span><figure class="cs-shot"><img src="img/rbc/flow-before.webp" width="1586" height="764" alt="Task flow before the redesign, ending with mental math and the user left uncertain" class="zoomable" loading="lazy" decoding="async" /></figure><figcaption>The original flow ends in mental math and an uncertain user.</figcaption></figure>
+        <figure><span class="cs-tag cs-tag--final">After</span><figure class="cs-shot"><img src="img/rbc/flow-after.webp" width="1586" height="764" alt="Task flow after the redesign, ending with the balance beside each transaction and instant understanding" class="zoomable" loading="lazy" decoding="async" /></figure><figcaption>The new flow ends with the balance beside each transaction.</figcaption></figure>
       </div>
     </div>
   </section>
 
 
-  <!-- ─── NEXT PROJECT ───────────────────────────────────────────────────── -->
-  <section class="py-16 border-t border-white/10 bg-ink">
-    <div class="max-w-6xl mx-auto px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-6">
-      <a href="stageup.html" class="text-sm font-600 text-on-ink/50 hover:text-on-ink transition-colors cursor-pointer flex items-center gap-2">
+  <!-- ─── 02 KEY DECISIONS ────────────────────────────────────────────────── -->
+  <section class="cs-sec">
+    <div class="cs-wrap">
+      <div class="reveal">
+        <p class="cs-eyebrow">02 · Key decisions</p>
+        <h2 class="cs-h2">Three decisions behind one small feature</h2>
+      </div>
+      
+      <div class="reveal cs-dec">
+        <div class="cs-dec__text">
+          <p class="cs-dec__num">01</p>
+          <h3>A toggle, not a permanent column</h3>
+          <p>Running Balance is a switch above the list. Off, the page looks the way RBC customers already know it. On, every row gains its balance.</p>
+          <div class="cs-ruled"><span>Why</span><p>It keeps the simple view for people who want it. In testing, participants liked being able to switch between the simple and the detailed view.</p></div>
+        </div>
+        <figure class="cs-shot"><img src="img/rbc/toggle.webp" width="1800" height="1125" alt="Transactions page with the Running Balance toggle off and on" class="zoomable" loading="lazy" decoding="async" /></figure>
+      </div>
+      
+      <div class="reveal cs-dec cs-dec--flip">
+        <div class="cs-dec__text">
+          <p class="cs-dec__num">02</p>
+          <h3>The balance sits under each amount</h3>
+          <p>Each row shows the amount first and the balance after it directly below. Money out is red, money in is green and the running balance is dark blue.</p>
+          <div class="cs-ruled"><span>Why</span><p>Two numbers in one row can be confused. Giving the balance its own colour and position keeps them apart, and colour helped participants read changes quickly.</p></div>
+        </div>
+        <figure class="cs-shot"><img src="img/rbc/rows.webp" width="1800" height="1125" alt="Transaction rows showing the amount in red or green with the running balance in dark blue below" class="zoomable" loading="lazy" decoding="async" /></figure>
+      </div>
+      
+      <div class="reveal cs-dec">
+        <div class="cs-dec__text">
+          <p class="cs-dec__num">03</p>
+          <h3>The list got more room</h3>
+          <p>The first version gave the transaction list only half the screen, with small type and a cramped balance. The second tightened the account header, raised the list and enlarged the type.</p>
+          <div class="cs-ruled"><span>Why</span><p>The list is the reason people open this page. The taller list and larger type improved readability in testing.</p></div>
+        </div>
+        <figure class="cs-shot"><img src="img/rbc/v1-final.webp" width="1800" height="1125" alt="First version beside the final version, where the transaction list starts higher and the type is larger" class="zoomable" loading="lazy" decoding="async" /></figure>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ─── 03 FROM WIREFRAME TO FINAL ──────────────────────────────────────── -->
+  <section class="cs-sec cs-sec--alt">
+    <div class="cs-wrap">
+      <div class="reveal">
+        <p class="cs-eyebrow">03 · Iteration</p>
+        <h2 class="cs-h2">From wireframe to final</h2>
+        <p class="cs-p">The idea was settled as a wireframe first, then built twice in high fidelity. The design stays inside RBC's existing visual style, so the feature reads as part of the app.</p>
+      </div>
+      <div class="reveal cs-tri">
+        <figure><span class="cs-tag">Wireframes</span><figure class="cs-shot"><img src="img/rbc/low.webp" width="2000" height="1335" alt="Low fidelity wireframes of the transactions page with the toggle off and on" class="zoomable" loading="lazy" decoding="async" /></figure></figure>
+        <figure><span class="cs-tag">First version</span><figure class="cs-shot"><img src="img/rbc/v1.webp" width="1920" height="1080" alt="First high fidelity version with the toggle off and on" class="zoomable" loading="lazy" decoding="async" /></figure></figure>
+        <figure><span class="cs-tag cs-tag--final">Final</span><figure class="cs-shot"><img src="img/rbc/final.webp" width="1920" height="1080" alt="Final high fidelity screens" class="zoomable" loading="lazy" decoding="async" /></figure></figure>
+      </div>
+      <div class="reveal cs-cta" style="margin-top:2.5rem">
+        <a class="cs-btn" href="https://www.figma.com/proto/LBa8phH2RJfLuZd63pSfYB/RBC-interface?node-id=406-788&p=f&t=n3GC5tL6YaDxxmQt-0&scaling=scale-down&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=561%3A590" target="_blank" rel="noopener noreferrer">Open the full prototype <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z"/><path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z"/></svg></a>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ─── 04 TESTING ──────────────────────────────────────────────────────── -->
+  <section class="cs-sec">
+    <div class="cs-wrap">
+      <div class="reveal">
+        <p class="cs-eyebrow">04 · Testing</p>
+        <h2 class="cs-h2">Tested in five moderated sessions</h2>
+        <p class="cs-p">Each session ran over Zoom for 15 to 20 minutes. Participants opened the Chequing account, turned Running Balance on, scrolled the list, turned it off to compare, and then named the balance after a specific transaction.</p>
+      </div>
+
+      <div class="reveal cs-stats cs-stats--3">
+        <div><strong>5</strong><span>Participants</span></div>
+        <div><strong>5</strong><span>Tasks per session</span></div>
+        <div><strong>V2</strong><span>Consistently preferred</span></div>
+      </div>
+
+      <div class="reveal cs-two">
+        <div>
+          <h3>What testing showed</h3>
+          <ul>
+            <li>Participants found the toggle easily.</li>
+            <li>The taller list and larger type were easier to read.</li>
+            <li>Colour helped them read changes quickly.</li>
+            <li>The second version felt clearer and closer to how a banking app should behave.</li>
+          </ul>
+        </div>
+        <div>
+          <h3>What changed after</h3>
+          <ul>
+            <li>More spacing under section headers.</li>
+            <li>Stronger contrast on the running balance numbers.</li>
+            <li>A little more padding in each transaction row.</li>
+            <li>Tighter alignment across the page.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ─── 05 TAKEAWAY ─────────────────────────────────────────────────────── -->
+  <section class="cs-sec">
+    <div class="cs-wrap">
+      <div class="reveal">
+        <p class="cs-eyebrow">05 · Takeaway</p>
+        <h2 class="cs-h2">One toggle and one number per row</h2>
+        <p class="cs-p">The whole redesign adds a single control and a single line of information. Working inside an established product taught me that the restraint is the design. The job was to remove the mental math without changing what people already know.</p>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ─── NEXT PROJECT ──────────────────────────────────────────────────────── -->
+  <section class="relative py-16 border-t border-border bg-surface-alt overflow-hidden">
+    <div class="dot-patch dot-patch--sm" style="top: 10%; left: 6%;" aria-hidden="true"></div>
+    <div class="max-w-6xl mx-auto px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-6 relative z-10">
+      <a href="stageup.html" class="text-sm font-600 text-secondary/50 hover:text-primary transition-colors cursor-pointer flex items-center gap-2">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
           <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
         </svg>
         Back to StageUp
       </a>
-      <a href="index.html#projects" class="text-sm font-600 text-on-ink hover:text-accent transition-colors cursor-pointer flex items-center gap-2">
-        All Projects
+      <a href="index.html#projects" class="text-sm font-600 text-primary hover:text-accent transition-colors cursor-pointer flex items-center gap-2">
+        All projects
         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
           <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
         </svg>
@@ -460,22 +568,188 @@
   <!-- ─── FOOTER ─────────────────────────────────────────────────────────── -->
   <footer class="site-footer">
     <div class="site-wrap site-footer__inner">
-      <p>© 2025 Alaa El Banna. All rights reserved.</p>
+      <p>© 2026 Alaa El Banna. All rights reserved.</p>
       <p>Product Designer · Toronto, Canada</p>
     </div>
   </footer>
 
-  <!-- Lightbox -->
-  <div id="lightbox" class="fixed inset-0 z-[999] bg-black/90 backdrop-blur-sm hidden items-center justify-center p-4" onclick="closeLightbox()">
-    <button onclick="closeLightbox()" class="absolute top-5 right-5 text-white/60 hover:text-white cursor-pointer">
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" viewBox="0 0 20 20" fill="currentColor">
-        <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
-      </svg>
-    </button>
-    <img id="lightbox-img" src="" alt="" class="max-w-full max-h-[90vh] object-contain rounded-xl shadow-2xl" onclick="event.stopPropagation()" />
-  </div>
-
   <script>
+    // Lightbox
+    var lb = document.getElementById('img-lightbox');
+    var lbImg = document.getElementById('img-lightbox-img');
+    var lbCap = document.getElementById('img-lightbox-caption');
+    var lbPrev = lb.querySelector('.lb-nav--prev');
+    var lbNext = lb.querySelector('.lb-nav--next');
+    var lbGroup = [], lbIndex = 0;
+
+    function lbText(el) { return el ? el.textContent.replace(/\s+/g, ' ').trim() : ''; }
+
+    function lbEl(tag, cls, text) {
+      var el = document.createElement(tag);
+      el.className = cls;
+      if (text) el.textContent = text;
+      return el;
+    }
+
+    function lbRenderCaption(img, i) {
+      var card = img.closest('.competitor-card, .screen-card');
+      if (!card) { lbCap.replaceChildren(); return; }
+      var ps = card.querySelectorAll('p');
+      var title = lbText(card.querySelector('h3')), tag = '', desc = '';
+      if (card.classList.contains('competitor-card')) { tag = lbText(ps[0]); desc = lbText(ps[1]); }
+      else { desc = lbText(ps[0]); }
+      var top = lbEl('div', 'lb-cap-top');
+      var head = lbEl('div', '');
+      if (tag) head.appendChild(lbEl('p', 'lb-tag', tag));
+      head.appendChild(lbEl('h3', 'lb-title', title));
+      top.appendChild(head);
+      if (lbGroup.length > 1) top.appendChild(lbEl('span', 'lb-count', (i + 1) + ' / ' + lbGroup.length));
+      lbCap.replaceChildren(top);
+      if (desc) lbCap.appendChild(lbEl('p', 'lb-desc', desc));
+    }
+
+    function lbShow(i) {
+      lbIndex = i;
+      var img = lbGroup[i];
+      lbImg.src = img.src;
+      lbImg.alt = img.alt;
+      lbRenderCaption(img, i);
+      lbPrev.hidden = i === 0;
+      lbNext.hidden = i === lbGroup.length - 1;
+    }
+
+    // Every image in a group gets the same width, image area and caption height, so
+    // stepping through never shifts anything. The block is then centred vertically.
+    var lbFig = document.getElementById('img-lightbox-figure');
+    var lbMedia = document.getElementById('img-lightbox-media');
+    function lbCaptionHeight(w) {
+      lbFig.style.width = w + 'px';
+      lbCap.style.minHeight = '';
+      var h = 0;
+      lbGroup.forEach(function(g, i) { lbRenderCaption(g, i); h = Math.max(h, Math.ceil(lbCap.getBoundingClientRect().height)); });
+      return h;
+    }
+    function lbLayout() {
+      var mobile = window.innerWidth < 768;
+      // UX Flows have no card text, so their images get the full height
+      var hasCaption = lbGroup.some(function(g) { return g.closest('.competitor-card, .screen-card'); });
+      var margin = mobile ? 24 : 32, gap = hasCaption ? (mobile ? 12 : 14) : 0;
+      lbCap.hidden = !hasCaption;
+      var maxW = Math.min(window.innerWidth - (mobile ? 72 : 176), 1680);
+      var ratios = lbGroup.map(function(g) { return (g.naturalWidth / g.naturalHeight) || 1.6; });
+      function fit(capH) {
+        var availH = window.innerHeight - 2 * margin - gap - capH - 2;
+        var w = maxW;
+        ratios.forEach(function(r) { w = Math.min(w, availH * r); });
+        return Math.max(200, Math.floor(w));
+      }
+      var w = fit(hasCaption ? (mobile ? 160 : 110) : 0);
+      var capH = 0;
+      if (hasCaption) {
+        capH = lbCaptionHeight(w);
+        w = fit(capH);
+        capH = lbCaptionHeight(w);
+      } else {
+        lbFig.style.width = w + 'px';
+      }
+      var tallest = Math.ceil(Math.max.apply(null, ratios.map(function(r) { return w / r; })));
+      lbMedia.style.height = tallest + 'px';
+      lbCap.style.minHeight = capH + 'px';
+      // Floor and shave a pixel so sub-pixel rounding never triggers a scrollbar that shifts the image
+      var pad = Math.max(margin, Math.floor((window.innerHeight - tallest - gap - capH) / 2) - 1);
+      lb.style.padding = pad + 'px 0';
+    }
+
+    function lbClose() { lb.style.display = 'none'; document.body.style.overflow = ''; }
+
+    document.querySelectorAll('.zoomable').forEach(function(img) {
+      img.addEventListener('click', function() {
+        var container = img.closest('.h-scroll') || img.parentElement;
+        lbGroup = Array.from(container.querySelectorAll('.zoomable'));
+        lb.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+        lbLayout();
+        lbShow(lbGroup.indexOf(img));
+      });
+    });
+    window.addEventListener('resize', function() {
+      if (lb.style.display !== 'flex') return;
+      lbLayout();
+      lbShow(lbIndex);
+    });
+    lbPrev.addEventListener('click', function(e) { e.stopPropagation(); if (lbIndex > 0) lbShow(lbIndex - 1); });
+    lbNext.addEventListener('click', function(e) { e.stopPropagation(); if (lbIndex < lbGroup.length - 1) lbShow(lbIndex + 1); });
+    lbCap.addEventListener('click', function(e) { e.stopPropagation(); });
+    lb.addEventListener('click', lbClose);
+    document.addEventListener('keydown', function(e) {
+      if (lb.style.display !== 'flex') return;
+      if (e.key === 'Escape') lbClose();
+      else if (e.key === 'ArrowLeft' && lbIndex > 0) { e.preventDefault(); lbShow(lbIndex - 1); }
+      else if (e.key === 'ArrowRight' && lbIndex < lbGroup.length - 1) { e.preventDefault(); lbShow(lbIndex + 1); }
+    });
+
+    // Drag-to-scroll + arrow navigation for all .scroll-wrap containers
+    document.querySelectorAll('.scroll-wrap').forEach(function(wrap) {
+      var track = wrap.querySelector('.h-scroll');
+      var btnPrev = wrap.querySelector('.scroll-btn--prev');
+      var btnNext = wrap.querySelector('.scroll-btn--next');
+      if (!track) return;
+
+      // Center arrows on the images, not the whole card (cards include text above/below)
+      function centerArrows() {
+        var img = track.querySelector('img');
+        if (!img) return;
+        var r = img.getBoundingClientRect();
+        var top = (r.top - wrap.getBoundingClientRect().top + r.height / 2) + 'px';
+        if (btnPrev) btnPrev.style.top = top;
+        if (btnNext) btnNext.style.top = top;
+      }
+      centerArrows();
+      track.querySelectorAll('img').forEach(function(i) { i.addEventListener('load', centerArrows); });
+      window.addEventListener('load', centerArrows);
+      window.addEventListener('resize', centerArrows);
+
+      function cardWidth() {
+        var first = track.children[0];
+        if (!first) return 320;
+        var gap = parseInt(getComputedStyle(track).gap) || 24;
+        return first.offsetWidth + gap;
+      }
+
+      if (btnPrev) btnPrev.addEventListener('click', function() {
+        track.scrollBy({ left: -cardWidth(), behavior: 'smooth' });
+      });
+      if (btnNext) btnNext.addEventListener('click', function() {
+        track.scrollBy({ left: cardWidth(), behavior: 'smooth' });
+      });
+
+      var isDown = false, moved = false, startX, scrollLeft;
+      // A drag that ends over an image would otherwise fire a click and open the preview
+      track.addEventListener('click', function(e) {
+        if (moved) { e.stopPropagation(); e.preventDefault(); moved = false; }
+      }, true);
+      track.addEventListener('mousedown', function(e) {
+        isDown = true;
+        moved = false;
+        track.classList.add('is-dragging');
+        startX = e.pageX - track.getBoundingClientRect().left;
+        scrollLeft = track.scrollLeft;
+        e.preventDefault();
+      });
+      document.addEventListener('mouseup', function() {
+        if (!isDown) return;
+        isDown = false;
+        track.classList.remove('is-dragging');
+      });
+      track.addEventListener('mousemove', function(e) {
+        if (!isDown) return;
+        e.preventDefault();
+        var x = e.pageX - track.getBoundingClientRect().left;
+        if (Math.abs(x - startX) > 5) moved = true;
+        track.scrollLeft = scrollLeft - (x - startX);
+      });
+    });
+
     const observer = new IntersectionObserver(
       entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
       { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
@@ -486,23 +760,51 @@
     const mobileMenu = document.getElementById('mobile-menu');
     if (toggle) toggle.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
     function closeMobileMenu() { if (mobileMenu) mobileMenu.classList.add('hidden'); }
-
-    function openLightbox(src, alt) {
-      const lb = document.getElementById('lightbox');
-      document.getElementById('lightbox-img').src = src;
-      document.getElementById('lightbox-img').alt = alt;
-      lb.classList.remove('hidden');
-      lb.classList.add('flex');
-      document.body.style.overflow = 'hidden';
-    }
-    function closeLightbox() {
-      const lb = document.getElementById('lightbox');
-      lb.classList.add('hidden');
-      lb.classList.remove('flex');
-      document.body.style.overflow = '';
-    }
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
   </script>
 
+
+  <script>
+    document.querySelectorAll('.cs-carousel').forEach(function (wrap) {
+      var track = wrap.querySelector('.h-scroll'); if (!track) return;
+      var cards = Array.prototype.slice.call(track.children);
+      var prev = wrap.querySelector('.scroll-btn--prev'), next = wrap.querySelector('.scroll-btn--next');
+      var active = -1, tick = false;
+      function update() {
+        tick = false;
+        var t = track.getBoundingClientRect(), best = 0, bd = Infinity, max = track.scrollWidth - track.clientWidth;
+        var pad = parseFloat(getComputedStyle(track).paddingLeft) || 0;
+        cards.forEach(function (c, i) { var d = Math.abs(c.getBoundingClientRect().left - t.left - pad); if (d < bd) { bd = d; best = i; } });
+        if (track.scrollLeft >= max - 4) best = cards.length - 1;
+        if (track.scrollLeft <= 4) best = 0;
+        if (best === active) return;
+        active = best;
+        cards.forEach(function (c, i) { c.classList.toggle('is-active', i === best); });
+        if (prev) prev.classList.toggle('is-hidden', best === 0);
+        if (next) next.classList.toggle('is-hidden', best === cards.length - 1);
+        wrap.classList.toggle('at-end', best === cards.length - 1);
+      }
+      track.addEventListener('scroll', function () { if (!tick) { tick = true; requestAnimationFrame(update); } }, { passive: true });
+      window.addEventListener('resize', update);
+      cards.forEach(function (c, i) {
+        c.addEventListener('click', function (e) {
+          if (i === active) return;
+          e.preventDefault(); e.stopPropagation();
+          var t = track.getBoundingClientRect(), r = c.getBoundingClientRect();
+          track.scrollBy({ left: r.left - t.left - (parseFloat(getComputedStyle(track).paddingLeft) || 0), behavior: 'smooth' });
+        }, true);
+      });
+      track.scrollLeft = 0; update();
+    });
+  </script>
+
+  <script>
+    document.querySelectorAll('.cs-phones').forEach(function (wrap) {
+      var t = wrap.querySelector('.h-scroll'), p = wrap.querySelector('.scroll-btn--prev'), n = wrap.querySelector('.scroll-btn--next');
+      function u() { var max = t.scrollWidth - t.clientWidth; p.classList.toggle('is-hidden', t.scrollLeft <= 4); n.classList.toggle('is-hidden', t.scrollLeft >= max - 4); }
+      function page(dir) { return function (e) { e.stopImmediatePropagation(); var pad = parseFloat(getComputedStyle(t).paddingLeft) || 0; t.scrollBy({ left: dir * (t.clientWidth - pad), behavior: 'smooth' }); }; }
+      p.addEventListener('click', page(-1), true); n.addEventListener('click', page(1), true);
+      t.addEventListener('scroll', u, { passive: true }); window.addEventListener('resize', u); window.addEventListener('load', u); u();
+    });
+  </script>
 </body>
 </html>

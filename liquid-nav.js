@@ -404,3 +404,36 @@ void main(){
     draw();
   }
 })();
+
+// Phones: put the links behind a hamburger button. The button is added here, so
+// without this script the bar keeps its plain two row layout.
+(function () {
+  function setup(nav) {
+    var links = nav.querySelector('.liquid-nav__links');
+    if (!links || nav.querySelector('.nav-toggle')) return;
+    if (!links.id) links.id = 'site-nav-links';
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'nav-toggle';
+    btn.setAttribute('aria-controls', links.id);
+    btn.setAttribute('aria-expanded', 'false');
+    btn.setAttribute('aria-label', 'Open menu');
+    btn.innerHTML = '<span class="nav-toggle__bars" aria-hidden="true"><i></i><i></i><i></i></span>';
+    nav.insertBefore(btn, links);
+    nav.classList.add('has-toggle');
+    function set(open) {
+      nav.classList.toggle('is-open', open);
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    }
+    btn.addEventListener('click', function () { set(!nav.classList.contains('is-open')); });
+    links.addEventListener('click', function (e) { if (e.target.closest('a')) set(false); });
+    document.addEventListener('click', function (e) { if (!nav.contains(e.target)) set(false); });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && nav.classList.contains('is-open')) { set(false); btn.focus(); }
+    });
+    window.addEventListener('resize', function () { if (window.innerWidth > 767) set(false); });
+  }
+  function init() { Array.prototype.forEach.call(document.querySelectorAll('.liquid-nav'), setup); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+})();

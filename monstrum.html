@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Monstrum | Alaa El Banna</title>
+  <meta name="description" content="Turning twelve AI agents into a product a marketing manager can trust. A product design case study by Alaa El Banna." />
 
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -11,8 +12,8 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wdth,wght@75..100,400..700&display=swap" />
   <link rel="stylesheet" href="fonts.css?v=1" />
   <link rel="stylesheet" href="tailwind.css?v=4" />
-  <link rel="stylesheet" href="site.css?v=23" />
-  <script defer src="liquid-nav.js?v=17"></script>
+  <link rel="stylesheet" href="site.css?v=27" />
+  <script defer src="liquid-nav.js?v=18"></script>
   <meta name="theme-color" content="#FBFBFD" />
   <style>
     /* Keep the logo on screen across page changes (Chrome, Edge, Safari 18.2+).
@@ -73,6 +74,115 @@
     .screen-card { flex: none; width: 280px; display: flex; flex-direction: column; }
     @media (min-width: 640px) { .screen-card { width: 340px; } }
     .screen-card .card-text { height: 7.5rem; overflow: hidden; margin-bottom: 1rem; }
+
+    /* ── Case study layout (rebuilt Nov 2026) ───────────────────────────── */
+    .cs-wrap { max-width: 72rem; margin: 0 auto; padding: 0 1.5rem; }
+    @media (min-width: 1024px) { .cs-wrap { padding: 0 2rem; } }
+    .cs-sec { padding: 4.5rem 0; border-bottom: 1px solid var(--border); }
+    @media (min-width: 768px) { .cs-sec { padding: 6.5rem 0; } }
+    .cs-sec--alt { background: var(--surface-alt); }
+    .cs-eyebrow { font-size: .75rem; font-weight: 600; letter-spacing: .25em; text-transform: uppercase; color: var(--accent); margin-bottom: .75rem; }
+    .cs-h2 { font-size: clamp(1.75rem, 3.4vw, 2.5rem); font-weight: 700; letter-spacing: -.02em; line-height: 1.12; max-width: 20em; margin-bottom: 1.5rem; }
+    .cs-p { font-size: 1.0625rem; line-height: 1.7; color: var(--secondary); max-width: 44rem; }
+    .cs-p + .cs-p { margin-top: 1.1rem; }
+    .cs-head { margin-bottom: 3rem; }
+
+    /* hero additions */
+    .cs-hero-line { font-size: clamp(1.25rem, 2.3vw, 1.75rem); line-height: 1.3; font-weight: 500; letter-spacing: -.01em; max-width: 26em; margin-top: 1.25rem; color: var(--primary); }
+    .cs-actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 2rem; }
+    .cs-btn { display: inline-flex; align-items: center; gap: .5rem; min-height: 46px; padding: 0 1.25rem; border-radius: 12px; font-size: .9375rem; font-weight: 600; border: 1px solid var(--primary); background: var(--primary); color: var(--surface, #fff); transition: transform .2s ease, opacity .2s ease; }
+    .cs-btn:hover { transform: translateY(-1px); opacity: .92; }
+    .cs-btn--ghost { background: transparent; color: var(--primary); border-color: var(--border); }
+    .cs-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+    /* screens */
+    .cs-shot { margin: 0; border-radius: 14px; overflow: hidden; border: 1px solid var(--border); background: #fff; box-shadow: 0 24px 60px -32px rgba(20, 20, 60, .35), 0 2px 8px rgba(20, 20, 60, .05); }
+    .cs-shot img { display: block; width: 100%; height: auto; }
+    .cs-bar { display: flex; gap: 6px; align-items: center; height: 30px; padding: 0 12px; background: #F1F1F3; border-bottom: 1px solid #E4E4E8; }
+    .cs-bar i { width: 9px; height: 9px; border-radius: 50%; background: #D3D3D9; display: block; }
+    .cs-hero-band { background: var(--surface-alt); padding: 3.5rem 1.5rem 4.5rem; border-bottom: 1px solid var(--border); }
+    .cs-hero-band .cs-shot { max-width: min(68rem, calc((100svh - 11.5rem) * 1.55)); margin: 0 auto; box-shadow: 0 30px 70px -28px rgba(20,20,40,.28); }
+
+    /* at a glance */
+    .cs-glance { display: grid; gap: 1.25rem; }
+    @media (min-width: 860px) { .cs-glance { grid-template-columns: repeat(3, 1fr); gap: 1.5rem; } }
+    .cs-glance > div { padding: 1.5rem 1.6rem 1.7rem; border: 1px solid var(--border); border-radius: 16px; background: var(--surface, #fff); }
+    .cs-glance h3 { font-size: .8125rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; margin-bottom: .7rem; }
+    .cs-glance p { font-size: 1rem; line-height: 1.6; color: var(--secondary); }
+
+    /* competitors */
+    .cs-comp { display: grid; gap: 1.25rem; margin-top: 3rem; }
+    @media (min-width: 860px) { .cs-comp { grid-template-columns: repeat(3, 1fr); } }
+    .cs-comp figure { margin: 0; border: 1px solid var(--border); border-radius: 16px; overflow: hidden; background: var(--surface, #fff); }
+    .cs-comp img { display: block; width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: left top; background: #fff; }
+    .cs-comp figcaption { padding: 1.1rem 1.3rem 1.3rem; }
+    .cs-comp h3 { font-size: 1.0625rem; font-weight: 700; margin-bottom: .3rem; }
+    .cs-comp p { font-size: .9375rem; line-height: 1.55; color: var(--secondary); }
+    .cs-gap { margin-top: 1.25rem; padding: 1.4rem 1.6rem; border-radius: 16px; border: 1px solid color-mix(in oklab, var(--accent) 40%, transparent); background: color-mix(in oklab, var(--accent) 5%, transparent); }
+    .cs-gap strong { display: block; font-size: .8125rem; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); margin-bottom: .45rem; }
+    .cs-gap p { font-size: clamp(1.0625rem, 1.5vw, 1.25rem); line-height: 1.55; color: var(--primary); text-wrap: balance; }
+
+    /* decisions */
+    .cs-dec { display: grid; gap: 2rem; align-items: center; padding: 3rem 0; border-top: 1px solid var(--border); }
+    .cs-dec:first-of-type { border-top: 0; padding-top: 0; }
+    .cs-dec:last-of-type { padding-bottom: 0; }
+    @media (min-width: 960px) { .cs-dec { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 3.5rem; } .cs-dec--flip { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); } .cs-dec--flip .cs-dec__text { order: 2; } .cs-dec--wide { grid-template-columns: minmax(0, 1fr); gap: 2.25rem; } .cs-dec--wide .cs-dec__text { max-width: 44rem; } .cs-dec--wide .cs-duo { grid-template-columns: 1fr 1fr; gap: 1.5rem; align-items: start; } }
+    .cs-dec__num { font-size: .8125rem; font-weight: 700; letter-spacing: .14em; color: var(--accent); margin-bottom: .6rem; font-variant-numeric: tabular-nums; }
+    .cs-dec h3 { font-size: clamp(1.3rem, 2.2vw, 1.65rem); font-weight: 700; letter-spacing: -.015em; line-height: 1.2; margin-bottom: .9rem; }
+    .cs-dec p { font-size: 1.0625rem; line-height: 1.65; color: var(--secondary); }
+    .cs-ruled { margin-top: 1.2rem; padding-left: 1rem; border-left: 2px solid var(--accent); }
+    .cs-ruled span { display: block; font-size: .75rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--primary); margin-bottom: .3rem; }
+    .cs-ruled p { font-size: .9688rem; }
+    .cs-duo { display: grid; gap: 1rem; }
+
+    /* wireframe to final */
+    .cs-evo { display: grid; gap: 2.5rem; }
+    .cs-evo__row { display: grid; gap: 1.5rem; }
+    @media (min-width: 960px) { .cs-evo__row { grid-template-columns: minmax(0, 3fr) minmax(0, 4.5fr) minmax(0, 4.5fr); gap: 1.75rem; align-items: start; } }
+    .cs-evo h3 { font-size: 1.2rem; font-weight: 700; letter-spacing: -.01em; line-height: 1.25; margin-bottom: .6rem; }
+    .cs-evo p { font-size: 1rem; line-height: 1.6; color: var(--secondary); }
+    .cs-evo figure { margin: 0; }
+    .cs-evo .cs-shot img { aspect-ratio: 16 / 10; object-fit: cover; object-position: left top; }
+    .cs-tag { display: inline-block; font-size: .6875rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; padding: .28rem .6rem; border-radius: 999px; border: 1px solid var(--border); color: var(--secondary); margin-bottom: .6rem; }
+    .cs-tag--final { border-color: var(--accent); color: var(--accent); }
+
+    /* gallery */
+    .screen-card.cs-card { width: min(78vw, 560px); }
+    .cs-carousel { --cw: min(76vw, 760px); }
+    .cs-carousel { --pad: 2.5rem; --fade: 11rem; }
+    @media (max-width: 1279px) { .cs-carousel { --pad: 2rem; } .cs-carousel .scroll-btn { width: 32px; } .cs-carousel .scroll-btn--prev { left: -32px; } .cs-carousel .scroll-btn--next { right: -32px; } }
+    @media (max-width: 1023px) { .cs-carousel .scroll-btn { width: 24px; } .cs-carousel .scroll-btn--prev { left: -24px; } .cs-carousel .scroll-btn--next { right: -24px; } }
+    @media (max-width: 1023px) { .cs-carousel { --pad: 1.25rem; --fade: 2.5rem; } }
+    .cs-carousel .h-scroll { gap: 3.5rem; padding: 1rem var(--pad) 2rem; margin: -1rem calc(var(--pad) * -1) 0; scroll-padding-inline: var(--pad); }
+    .cs-carousel .h-scroll { -webkit-mask-image: linear-gradient(to right, transparent 0, #000 var(--pad), #000 calc(100% - var(--fade)), transparent 100%); mask-image: linear-gradient(to right, transparent 0, #000 var(--pad), #000 calc(100% - var(--fade)), transparent 100%); }
+    .cs-carousel.at-end .h-scroll { -webkit-mask-image: linear-gradient(to left, transparent 0, #000 var(--pad), #000 calc(100% - var(--fade)), transparent 100%); mask-image: linear-gradient(to left, transparent 0, #000 var(--pad), #000 calc(100% - var(--fade)), transparent 100%); }
+    .cs-carousel .h-scroll > .cs-card:last-child { scroll-snap-align: end; }
+    .cs-carousel .h-scroll > .cs-card { width: var(--cw); flex: none; scroll-snap-align: start; transform-origin: left center; opacity: .3; filter: blur(1.5px); transform: scale(.96); transition: opacity .35s ease, filter .35s ease, transform .35s ease; cursor: pointer; }
+    .cs-carousel .h-scroll > .cs-card.is-active { opacity: 1; filter: none; transform: none; cursor: auto; }
+    .cs-carousel .h-scroll > .cs-card:not(.is-active) img { pointer-events: none; }
+    .cs-carousel .scroll-btn { transition: opacity .25s ease, color .2s; }
+    .cs-carousel .scroll-btn.is-hidden { opacity: 0; pointer-events: none; visibility: hidden; }
+    .cs-carousel .card-text p { max-width: 38rem; }
+    @media (prefers-reduced-motion: reduce) { .cs-carousel .h-scroll > .cs-card { transition: none; } }
+    .screen-card.cs-card .card-text { height: auto; min-height: 5.2rem; margin-bottom: 0; margin-top: 1rem; overflow: visible; }
+    .cs-card h3 { font-size: 1.0625rem; font-weight: 700; margin-bottom: .3rem; }
+    .cs-card p { font-size: .9375rem; line-height: 1.55; color: var(--secondary); }
+    .cs-card .cs-shot img { aspect-ratio: 16 / 10; object-fit: cover; object-position: left top; }
+    .cs-cta { margin-top: 0; display: flex; flex-wrap: wrap; gap: 1rem 1.5rem; align-items: center; }
+    .cs-cta p { font-size: 1rem; color: var(--secondary); }
+
+    /* AI */
+    .cs-two { display: grid; gap: 1.25rem; margin-top: 2.5rem; }
+    @media (min-width: 860px) { .cs-two { grid-template-columns: 1fr 1fr; gap: 1.5rem; } }
+    .cs-two > div { padding: 1.6rem 1.7rem 1.8rem; border: 1px solid var(--border); border-radius: 16px; background: var(--surface, #fff); }
+    .cs-two h3 { font-size: 1.0625rem; font-weight: 700; margin-bottom: .9rem; }
+    .cs-two ul { list-style: none; padding: 0; margin: 0; display: grid; gap: .7rem; }
+    .cs-two li { position: relative; padding-left: 1.3rem; font-size: 1rem; line-height: 1.55; color: var(--secondary); }
+    .cs-two li::before { content: ""; position: absolute; left: 0; top: .6em; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+
+    /* takeaway */
+    .cs-quote { font-size: clamp(1.5rem, 3.2vw, 2.4rem); font-weight: 600; letter-spacing: -.02em; line-height: 1.2; max-width: 22em; }
+    .cs-quote + .cs-p { margin-top: 1.5rem; }
 
     /* Lightbox */
     #img-lightbox { display:none; position:fixed; inset:0; z-index:9999; background:rgba(0,0,0,0.97); flex-direction:column; align-items:center; justify-content:flex-start; overflow-y:auto; cursor:zoom-out; }
@@ -170,9 +280,7 @@
 
 
   <!-- ─── HERO ───────────────────────────────────────────────────────────── -->
-  <section class="relative pt-32 pb-16 md:pt-40 md:pb-24 bg-surface-alt border-b border-border overflow-hidden">
-    <div class="dot-patch dot-patch--lg" style="top: -6%; right: -50px;" aria-hidden="true"></div>
-    <div class="dot-patch dot-patch--sm" style="bottom: 4%; left: 4%;" aria-hidden="true"></div>
+  <section class="relative pt-32 pb-12 md:pt-40 md:pb-14 bg-surface-alt overflow-hidden">
     <div class="max-w-6xl mx-auto px-6 lg:px-8 relative z-10">
 
       <div class="reveal flex items-center gap-2 text-xs text-secondary/60 font-500 mb-8">
@@ -181,21 +289,16 @@
         <span class="text-primary">Monstrum</span>
       </div>
 
-      <div class="reveal flex flex-wrap items-center gap-3 mb-6">
-        <p class="text-xs font-600 tracking-[0.25em] uppercase text-accent">UX / UI · Product Design</p>
-        <span class="inline-flex items-center gap-1.5 text-xs font-700 px-3 py-1 rounded-full border border-accent/40 text-accent tracking-widest uppercase">
-          <span class="w-1.5 h-1.5 rounded-full bg-accent animate-pulse inline-block"></span>
-          In Progress
-        </span>
+      <p class="reveal text-xs font-600 tracking-[0.25em] uppercase text-accent mb-6">AI SaaS · Web App</p>
+
+      <h1 class="reveal text-5xl sm:text-6xl md:text-7xl font-800 leading-tight tracking-tight text-primary max-w-4xl" style="transition-delay:.1s">Monstrum</h1>
+
+      <p class="reveal cs-hero-line" style="transition-delay:.15s">Turning twelve AI agents into a product a marketing manager can trust.</p>
+
+      <div class="reveal cs-actions" style="transition-delay:.18s">
+        <a class="cs-btn" href="https://www.figma.com/proto/qImtu34wvnPina7IjoPtN9/Hi-fidelity-M--Copy-?node-id=3029-1866&starting-point-node-id=3029%3A1866&page-id=0%3A1&scaling=scale-down-width&content-scaling=fixed&hide-ui=1" target="_blank" rel="noopener noreferrer">View prototype <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z"/><path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z"/></svg></a>
+        <a class="cs-btn cs-btn--ghost" href="https://www.monstrum.digital/" target="_blank" rel="noopener noreferrer">monstrum.digital <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z"/><path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z"/></svg></a>
       </div>
-
-      <h1 class="reveal text-5xl sm:text-6xl md:text-7xl font-800 leading-tight tracking-tight text-primary max-w-4xl" style="transition-delay:.1s">
-        Monstrum<br class="hidden sm:block" /><span class="text-accent"> AI Growth Engine</span>
-      </h1>
-
-      <p class="reveal text-base text-secondary/70 font-500 mt-5 max-w-xl leading-relaxed" style="transition-delay:.15s">
-        An AI powered growth engine that helps businesses become visible in AI search results like ChatGPT, Perplexity, and Google AI Overviews.
-      </p>
 
       <div class="reveal grid grid-cols-2 sm:grid-cols-4 gap-x-12 gap-y-8 mt-12 pt-10 border-t border-border" style="transition-delay:.2s">
         <div class="min-w-0">
@@ -203,349 +306,266 @@
           <p class="text-sm font-normal text-secondary opacity-60 leading-relaxed">Product Designer<br>Sole designer</p>
         </div>
         <div class="min-w-0">
+          <p class="text-sm font-bold uppercase tracking-wider text-primary mb-2">Scope</p>
+          <p class="text-sm font-normal text-secondary opacity-60 leading-relaxed">Research to high fidelity prototype</p>
+        </div>
+        <div class="min-w-0">
+          <p class="text-sm font-bold uppercase tracking-wider text-primary mb-2">Timeline</p>
+          <p class="text-sm font-normal text-secondary opacity-60 leading-relaxed">7 months</p>
+        </div>
+        <div class="min-w-0">
           <p class="text-sm font-bold uppercase tracking-wider text-primary mb-2">Tools</p>
           <p class="text-sm font-normal text-secondary opacity-60 leading-relaxed">Figma · Claude · Notion</p>
         </div>
-        <div class="min-w-0">
-          <p class="text-sm font-bold uppercase tracking-wider text-primary mb-2">Platform</p>
-          <p class="text-sm font-normal text-secondary opacity-60 leading-relaxed">Web</p>
-        </div>
-        <div class="min-w-0">
-          <p class="text-sm font-bold uppercase tracking-wider text-primary mb-2">Company</p>
-          <a href="https://www.monstrum.digital/" target="_blank" rel="noopener noreferrer" class="text-sm font-500 text-accent hover:underline inline-flex items-center gap-1">
-            monstrum.digital
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" viewBox="0 0 20 20" fill="currentColor"><path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z"/><path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z"/></svg>
-          </a>
-        </div>
       </div>
     </div>
   </section>
 
-  <!-- Hero image -->
-  <div class="w-full bg-[#1a0a0a] flex items-center justify-center py-14 px-6">
-    <img src="img/monstrum.jpeg" alt="Monstrum dashboard preview" class="w-full max-w-4xl h-auto object-contain rounded-2xl shadow-[0_8px_48px_-4px_rgba(0,0,0,0.40)]" />
+  <!-- The finished product, first -->
+  <div class="cs-hero-band">
+    <figure class="cs-shot"><div class="cs-bar" aria-hidden="true"><i></i><i></i><i></i></div><img src="img/monstrum/hero.webp" width="2400" height="1500" alt="Monstrum dashboard showing the AI Citation Score, AI visibility over time and share of voice against competitors" class="zoomable" /></figure>
   </div>
 
 
-  <!-- ─── THE PRODUCT ──────────────────────────────────────────────────────── -->
-  <section class="relative py-20 md:py-28 border-b border-border overflow-hidden">
-    <div class="dot-patch dot-patch--md" style="top: 12%; left: -60px;" aria-hidden="true"></div>
-    <div class="max-w-6xl mx-auto px-6 lg:px-8 relative z-10">
-      <div class="max-w-3xl">
-        <p class="reveal text-xs font-600 tracking-[0.25em] uppercase text-accent mb-3">The Product</p>
-        <h2 class="reveal text-3xl md:text-4xl font-700 tracking-tight mb-8">What Is Monstrum?</h2>
-        <p class="reveal text-secondary text-base leading-relaxed">
-          Monstrum is a design agency building an AI powered growth engine that helps businesses become visible in AI search results like ChatGPT, Perplexity, and Google AI Overviews. It runs three layers at the same time, which are SEO for Google rankings, AEO to get cited in AI generated answers, and GEO to become the default source AI engines pull from. Twelve agents run a continuous pipeline covering research, content writing, optimization, publishing, and performance monitoring. The system compounds over time because performance data automatically feeds back into strategy without any manual work from the client.
-        </p>
+  <!-- ─── AT A GLANCE ─────────────────────────────────────────────────────── -->
+  <section class="cs-sec">
+    <div class="cs-wrap">
+      <p class="reveal cs-eyebrow">At a glance</p>
+      <div class="reveal cs-glance">
+        <div>
+          <h3>The problem</h3>
+          <p>Monstrum runs twelve AI agents that research, write, optimize and publish content across SEO, AEO and GEO. Its clients are marketing managers who want one answer. Is my brand showing up in AI search?</p>
+        </div>
+        <div>
+          <h3>My role</h3>
+          <p>I was the only designer. I defined the product from scratch, from competitor research and information architecture to the core metric and a full high fidelity web app.</p>
+        </div>
+        <div>
+          <h3>The result</h3>
+          <p>A complete high fidelity design, now in development. It covers sign up, onboarding, new and returning clients, the nine step pipeline, content review and performance, refined through several rounds of founder review.</p>
+        </div>
       </div>
     </div>
   </section>
 
 
-  <!-- ─── DESIGN CHALLENGE ─────────────────────────────────────────────────── -->
-  <section class="relative py-20 md:py-28 bg-surface-alt border-b border-border overflow-hidden">
-    <div class="dot-patch dot-patch--xl" style="top: -12%; right: -60px;" aria-hidden="true"></div>
-    <div class="max-w-6xl mx-auto px-6 lg:px-8 relative z-10">
-      <div class="max-w-3xl">
-        <p class="reveal text-xs font-600 tracking-[0.25em] uppercase text-accent mb-3">Design Challenge</p>
-        <h2 class="reveal text-3xl md:text-4xl font-700 tracking-tight mb-8">Making a 12 Agent Pipeline Feel Simple</h2>
-        <p class="reveal text-secondary text-base leading-relaxed mb-6">
-          The core tension was making a 12 agent technical pipeline feel simple and trustworthy for a marketing manager who just wants to know if their brand is showing up.
-        </p>
-        <p class="reveal text-secondary text-base leading-relaxed">
-          I solved this in two ways. First, I abstracted the pipeline into 9 human readable steps with three clear states, which are complete, active, and locked. Second, I replaced all agent references in the UI with plain language activity labels like <em class="text-primary not-italic font-600">Writing</em>, <em class="text-primary not-italic font-600">Awaiting your review</em>, and <em class="text-primary not-italic font-600">Goes live Mon</em>.
-        </p>
+  <!-- ─── 01 THE CHALLENGE ────────────────────────────────────────────────── -->
+  <section class="cs-sec cs-sec--alt">
+    <div class="cs-wrap">
+      <p class="reveal cs-eyebrow">01 · The challenge</p>
+      <h2 class="reveal cs-h2">A technical engine, built for a non technical client</h2>
+      <p class="reveal cs-p">Monstrum's engine is complex by design. Twelve agents run in a continuous loop, and performance data feeds back into strategy on its own. The person paying for it is a marketing manager with a few minutes a day and no interest in how agents work.</p>
+      <p class="reveal cs-p">There was also nothing to copy. I spent two weeks studying the market before drawing a screen, and each competitor solved only one piece.</p>
+
+      <div class="reveal cs-comp">
+        <figure>
+          <img class="zoomable" src="img/monstrum/comp-profound.webp" alt="Profound competitor analysis" loading="lazy" decoding="async" />
+          <figcaption><h3>Profound</h3><p>The category leader in monitoring. Strong on insight, with an incomplete execution loop.</p></figcaption>
+        </figure>
+        <figure>
+          <img class="zoomable" src="img/monstrum/comp-peec.webp" alt="Peec competitor analysis" loading="lazy" decoding="async" />
+          <figcaption><h3>Peec</h3><p>Focused monitoring used by over 2,000 teams. It stops at insight, so clients still need a content team.</p></figcaption>
+        </figure>
+        <figure>
+          <img class="zoomable" src="img/monstrum/comp-gushwork.webp" alt="Gushwork competitor analysis" loading="lazy" decoding="async" />
+          <figcaption><h3>Gushwork</h3><p>Content produced at volume, with no measurement layer and no feedback loop.</p></figcaption>
+        </figure>
+      </div>
+
+      <div class="reveal cs-gap">
+        <strong>The gap</strong>
+        <p>No product ran SEO, AEO and GEO as one compounding pipeline. With no interface to benchmark against, the structure, the core metric and the interaction model all had to be designed from first principles.</p>
       </div>
     </div>
   </section>
 
 
-  <!-- ─── DESIGNING WITHOUT A REFERENCE PRODUCT ───────────────────────────── -->
-  <section class="relative py-20 md:py-28 border-b border-border overflow-hidden">
-    <div class="dot-patch dot-patch--sm" style="bottom: 8%; left: 4%;" aria-hidden="true"></div>
-    <div class="max-w-6xl mx-auto px-6 lg:px-8 relative z-10">
-      <div class="max-w-3xl">
-        <p class="reveal text-xs font-600 tracking-[0.25em] uppercase text-accent mb-3">Key Positioning</p>
-        <h2 class="reveal text-3xl md:text-4xl font-700 tracking-tight mb-8">Designing Without a Reference Product</h2>
-        <p class="reveal text-secondary text-base leading-relaxed mb-6">
-          Monstrum's AI powered platform operates in a space with no established interface pattern to design against. Profound, Peec, and Gushwork each solve one piece of the problem, but none of them run SEO, AEO, and GEO as a single compounding client facing pipeline. There was no existing dashboard to benchmark against for the exact problem I was solving.
-        </p>
-        <p class="reveal text-secondary text-base leading-relaxed">
-          That meant the information architecture, the core metric, and the interaction model all had to be defined from scratch. I couldn't adapt an existing UI pattern, so I had to work from the pipeline logic and the business model directly, and build the product's vision alongside its interface. Every structural decision in this case study, from the 12 to 9 step abstraction to the AI Citation Score, came out of that starting position.
-        </p>
+  <!-- ─── 02 KEY DECISIONS ────────────────────────────────────────────────── -->
+  <section class="cs-sec">
+    <div class="cs-wrap">
+      <div class="cs-head">
+        <p class="reveal cs-eyebrow">02 · Key decisions</p>
+        <h2 class="reveal cs-h2">Four decisions that shaped the product</h2>
+      </div>
+
+      <div class="reveal cs-dec">
+        <div class="cs-dec__text">
+          <p class="cs-dec__num">01</p>
+          <h3>Twelve agents became nine plain steps</h3>
+          <p>I grouped the agents into nine steps a client can follow, each with one of three states. A step is complete, running or locked. Clients see progress, never machinery.</p>
+          <div class="cs-ruled"><span>Ruled out</span><p>Showing every agent and its status. It was accurate, but it turned a simple question into a systems diagram.</p></div>
+        </div>
+        <figure class="cs-shot"><div class="cs-bar" aria-hidden="true"><i></i><i></i><i></i></div><img src="img/monstrum/agents.webp" width="2400" height="1750" alt="Agents screen showing the nine step growth pipeline with one step complete, one ready to run and the rest locked" class="zoomable" loading="lazy" decoding="async" /></figure>
+      </div>
+
+      <div class="reveal cs-dec cs-dec--flip">
+        <div class="cs-dec__text">
+          <p class="cs-dec__num">02</p>
+          <h3>One number answers the first question</h3>
+          <p>The dashboard opens with the AI Citation Score, a single measure of how often AI engines cite the brand. Within ten seconds a client can tell whether they are showing up, what changed, and what to do next.</p>
+          <div class="cs-ruled"><span>Ruled out</span><p>Leading with traffic and ranking tables. They describe classic search well and say nothing about AI answers.</p></div>
+        </div>
+        <figure class="cs-shot"><div class="cs-bar" aria-hidden="true"><i></i><i></i><i></i></div><img src="img/monstrum/detail-score.webp" width="2400" height="1483" alt="Dashboard top section with the AI Citation Score card, the AI visibility chart and share of voice ranking" class="zoomable" loading="lazy" decoding="async" /></figure>
+      </div>
+
+      <div class="reveal cs-dec">
+        <div class="cs-dec__text">
+          <p class="cs-dec__num">03</p>
+          <h3>System language became human language</h3>
+          <p>Early tables told clients which agent owned each piece, such as Agent 8 or Agent 5. The founder pointed out that those numbers meant nothing to a marketing manager. Every agent reference left the interface. The Activity column now reads Monitoring, Needs review or Writing.</p>
+          <div class="cs-ruled"><span>Ruled out</span><p>Keeping agent names with a tooltip to explain them. If a label needs explaining, it is the wrong label.</p></div>
+        </div>
+        <figure class="cs-shot"><img src="img/monstrum/detail-table.webp" width="1880" height="1120" alt="Close up of the content pipeline table with plain language status and activity labels" class="zoomable" loading="lazy" decoding="async" /></figure>
+      </div>
+
+      <div class="reveal cs-dec cs-dec--flip">
+        <div class="cs-dec__text">
+          <p class="cs-dec__num">04</p>
+          <h3>Day one always shows the next step</h3>
+          <p>Onboarding asks for one thing, a website address. The engine reads the site and shows what it learned as editable tags to confirm. A new client then lands on a dashboard where a single banner and a single active step point to the same first action.</p>
+          <div class="cs-ruled"><span>Ruled out</span><p>A dashboard full of zeros. It was honest, but it told a new client nothing about where to begin.</p></div>
+        </div>
+        <figure class="cs-shot"><div class="cs-bar" aria-hidden="true"><i></i><i></i><i></i></div><img src="img/monstrum/detail-newuser.webp" width="2400" height="1700" alt="New client dashboard with a banner and a single active pipeline step that both point to the first action" class="zoomable" loading="lazy" decoding="async" /></figure>
       </div>
     </div>
   </section>
 
 
-  <!-- ─── COMPETITOR ANALYSIS ──────────────────────────────────────────────── -->
-  <section class="relative py-20 md:py-28 bg-surface-alt border-b border-border overflow-hidden">
-    <div class="dot-patch dot-patch--lg" style="top: -8%; right: -60px;" aria-hidden="true"></div>
-    <div class="max-w-6xl mx-auto px-6 lg:px-8 relative z-10">
-
-      <div class="reveal mb-12">
-        <p class="text-xs font-600 tracking-[0.25em] uppercase text-accent mb-3">Research</p>
-        <h2 class="text-3xl md:text-4xl font-700 tracking-tight mb-4">Competitor Analysis</h2>
-        <p class="text-secondary text-base leading-relaxed max-w-2xl">
-          I spent two weeks on competitive analysis before touching any screens. The three main competitors were Profound, Peec, and Gushwork.
-        </p>
+  <!-- ─── 03 WIREFRAME TO PRODUCT ─────────────────────────────────────────── -->
+  <section class="cs-sec cs-sec--alt">
+    <div class="cs-wrap">
+      <div class="cs-head">
+        <p class="reveal cs-eyebrow">03 · Iteration</p>
+        <h2 class="reveal cs-h2">From wireframe to product</h2>
+        <p class="reveal cs-p">The founder reviewed the wireframes in detail over several rounds. Three changes mattered most. Each one is shown as the first wireframe next to the final design.</p>
       </div>
 
-      <div class="scroll-wrap reveal">
-        <button class="scroll-btn scroll-btn--prev" aria-label="Previous">
+      <div class="cs-evo">
+        <div class="reveal cs-evo__row">
+          <div>
+            <h3>The pipeline moved beside the content</h3>
+            <p>It began as a row of dots at the bottom of the dashboard, where it read as an afterthought. It became its own column, with a name and a status on every step.</p>
+          </div>
+          <figure><span class="cs-tag">Wireframe</span><figure class="cs-shot"><img src="img/monstrum/wf-dashboard.webp" width="2400" height="1500" alt="First dashboard wireframe with the pipeline as a row of dots at the bottom and an Agent column in the table" class="zoomable" loading="lazy" decoding="async" /></figure></figure>
+          <figure><span class="cs-tag cs-tag--final">Final</span><figure class="cs-shot"><img src="img/monstrum/dashboard.webp" width="2400" height="2712" alt="Final dashboard design" class="zoomable" loading="lazy" decoding="async" /></figure></figure>
+        </div>
+
+        <div class="reveal cs-evo__row">
+          <div>
+            <h3>Findings became editable</h3>
+            <p>The first version told clients every field was editable but gave them no visible way to do it. In the final design every tag carries its own remove control, so fixing a wrong detail takes one click.</p>
+          </div>
+          <figure><span class="cs-tag">Wireframe</span><figure class="cs-shot"><img src="img/monstrum/wf-findings.webp" width="2400" height="1500" alt="First onboarding findings wireframe with detected details shown as plain pills" class="zoomable" loading="lazy" decoding="async" /></figure></figure>
+          <figure><span class="cs-tag cs-tag--final">Final</span><figure class="cs-shot"><img src="img/monstrum/findings.webp" width="2400" height="1500" alt="Final onboarding findings screen" class="zoomable" loading="lazy" decoding="async" /></figure></figure>
+        </div>
+
+        <div class="reveal cs-evo__row">
+          <div>
+            <h3>Onboarding fits any business</h3>
+            <p>Labels like Copy tone, Team info and Testimonials did not suit every client. A law firm has no testimonials in the way a software company does. Every step became general, and the final design adds a progress count and a live result under each one.</p>
+          </div>
+          <figure><span class="cs-tag">Wireframe</span><figure class="cs-shot"><img src="img/monstrum/wf-crawler.webp" width="2400" height="1500" alt="First onboarding analysis wireframe with steps named Copy tone, Team info and Testimonials" class="zoomable" loading="lazy" decoding="async" /></figure></figure>
+          <figure><span class="cs-tag cs-tag--final">Final</span><figure class="cs-shot"><img src="img/monstrum/onboarding-analysis.webp" width="2400" height="1500" alt="Final onboarding analysis screen with progress and results per step" class="zoomable" loading="lazy" decoding="async" /></figure></figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ─── 04 THE PRODUCT ──────────────────────────────────────────────────── -->
+  <section class="cs-sec">
+    <div class="cs-wrap">
+      <div class="cs-head">
+        <p class="reveal cs-eyebrow">04 · The product</p>
+        <h2 class="reveal cs-h2">Every surface, for new and returning clients</h2>
+        <p class="reveal cs-p">The prototype is built on my own design system and covers two journeys in one flow. A new client goes from sign up through onboarding to a first pipeline step. A returning client lands on live data, reviews content and tracks performance.</p>
+      </div>
+
+      <div class="scroll-wrap cs-carousel reveal">
+        <button class="scroll-btn scroll-btn--prev is-hidden" aria-label="Previous screen">
           <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
         </button>
-        <div class="h-scroll" tabindex="0" role="region" aria-label="Competitor analysis, scrolls sideways">
-
-        <!-- Profound -->
-        <div class="competitor-card">
-          <img src="img/profound-analysis.jpg" alt="Profound competitor analysis" class="zoomable w-full h-auto object-cover" />
-          <div class="p-6">
-            <h3 class="text-lg font-700 text-primary mb-1">Profound</h3>
-            <p class="text-xs font-600 tracking-widest uppercase text-accent mb-4">G2 Winter 2026 AEO Category Leader</p>
-            <p class="text-secondary text-sm leading-relaxed">
-              Profound is the G2 Winter 2026 AEO category leader with 140+ verified reviews. It is strong on monitoring, but its execution loop is incomplete.
-            </p>
+        <div class="h-scroll" tabindex="0" role="region" aria-label="Product screens, scrolls sideways">
+          
+          <div class="screen-card cs-card">
+            <figure class="cs-shot"><div class="cs-bar" aria-hidden="true"><i></i><i></i><i></i></div><img src="img/monstrum/agents-running.webp" width="2400" height="1750" alt="Agents screen with step five running and four steps complete" class="zoomable" loading="lazy" decoding="async" /></figure>
+            <div class="card-text"><h3>A pipeline that shows its work</h3><p>Running a step updates the progress bar, the scores and the activity feed, so the client always knows what the engine is doing.</p></div>
+          </div>
+          <div class="screen-card cs-card">
+            <figure class="cs-shot"><div class="cs-bar" aria-hidden="true"><i></i><i></i><i></i></div><img src="img/monstrum/review.webp" width="2400" height="1750" alt="Content review screen with a draft preview, an optimization score and approve or request changes actions" class="zoomable" loading="lazy" decoding="async" /></figure>
+            <div class="card-text"><h3>Review before anything goes live</h3><p>Each draft opens with an optimization score and a short checklist. The client approves it or asks for changes.</p></div>
+          </div>
+          <div class="screen-card cs-card">
+            <figure class="cs-shot"><div class="cs-bar" aria-hidden="true"><i></i><i></i><i></i></div><img src="img/monstrum/content.webp" width="2400" height="1750" alt="Content library with tabs for each status and a score for every piece" class="zoomable" loading="lazy" decoding="async" /></figure>
+            <div class="card-text"><h3>One library, filtered by status</h3><p>Tabs follow the life of a piece, from planned and drafting through review to published.</p></div>
+          </div>
+          <div class="screen-card cs-card">
+            <figure class="cs-shot"><div class="cs-bar" aria-hidden="true"><i></i><i></i><i></i></div><img src="img/monstrum/performance.webp" width="2400" height="2518" alt="Performance screen with citation score over twelve months, platforms, top pages and a suggested action" class="zoomable" loading="lazy" decoding="async" /></figure>
+            <div class="card-text"><h3>Performance that ends in an action</h3><p>Every chart leads to a next step. A drop in citations comes with a suggested fix and a button to schedule it.</p></div>
+          </div>
+          <div class="screen-card cs-card">
+            <figure class="cs-shot"><div class="cs-bar" aria-hidden="true"><i></i><i></i><i></i></div><img src="img/monstrum/brand.webp" width="2400" height="1750" alt="Brand memory screen listing identity, voice, audience, keywords and competitors" class="zoomable" loading="lazy" decoding="async" /></figure>
+            <div class="card-text"><h3>Brand memory the client can correct</h3><p>Everything the engine knows about the brand sits on one page, and every field can be edited.</p></div>
+          </div>
+          <div class="screen-card cs-card">
+            <figure class="cs-shot"><div class="cs-bar" aria-hidden="true"><i></i><i></i><i></i></div><img src="img/monstrum/calendar.webp" width="2400" height="1750" alt="Content calendar for the month with pieces colour coded by status" class="zoomable" loading="lazy" decoding="async" /></figure>
+            <div class="card-text"><h3>A calendar the pipeline fills in</h3><p>The publishing plan is generated by the engine, with colour showing where each piece stands.</p></div>
+          </div>
+          <div class="screen-card cs-card">
+            <figure class="cs-shot"><div class="cs-bar" aria-hidden="true"><i></i><i></i><i></i></div><img src="img/monstrum/onboarding-url.webp" width="2400" height="1500" alt="First onboarding step asking for a website address" class="zoomable" loading="lazy" decoding="async" /></figure>
+            <div class="card-text"><h3>Onboarding in one field</h3><p>A website address is all it takes to start. A side rail shows the four steps ahead.</p></div>
           </div>
         </div>
-
-        <!-- Peec -->
-        <div class="competitor-card">
-          <img src="img/peek-analysis.jpg" alt="Peec competitor analysis" class="zoomable w-full h-auto object-cover" />
-          <div class="p-6">
-            <h3 class="text-lg font-700 text-primary mb-1">Peec</h3>
-            <p class="text-xs font-600 tracking-widest uppercase text-accent mb-4">Focused Monitoring, 2,000+ Teams</p>
-            <p class="text-secondary text-sm leading-relaxed">
-              Peec is the benchmark for focused monitoring with over 2,000 teams and self serve pricing. The structural limit is that it stops at insight and never executes. Every Peec client still needs a separate content team.
-            </p>
-          </div>
-        </div>
-
-        <!-- Gushwork -->
-        <div class="competitor-card">
-          <img src="img/Gushwork-analysis.jpg" alt="Gushwork competitor analysis" class="zoomable w-full h-auto object-cover" />
-          <div class="p-6">
-            <h3 class="text-lg font-700 text-primary mb-1">Gushwork</h3>
-            <p class="text-xs font-600 tracking-widest uppercase text-accent mb-4">Content at Volume, No Measurement</p>
-            <p class="text-secondary text-sm leading-relaxed">
-              Gushwork executes content at volume but has no measurement layer and no feedback loop.
-            </p>
-          </div>
-        </div>
-        </div>
-        <button class="scroll-btn scroll-btn--next" aria-label="Next">
+        <button class="scroll-btn scroll-btn--next" aria-label="Next screen">
           <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/></svg>
         </button>
       </div>
 
-      <!-- Gap / differentiator callout -->
-      <div class="reveal mt-12 p-6 md:p-8 rounded-2xl bg-surface border border-border">
-        <p class="text-sm font-700 text-primary mb-3">The Gap I Found</p>
-        <p class="text-secondary text-base leading-relaxed">
-          No competitor runs SEO, AEO, and GEO in one compounding pipeline. That gap is Monstrum's core differentiator, and it shaped my design decisions. It also points to three things no competitor is building. These are GEO as a named and executed discipline, a compounding feedback loop where performance data updates strategy automatically, and an agency architecture with no client caps.
-        </p>
-      </div>
-
-    </div>
-  </section>
-
-
-  <!-- ─── UX FLOWS ─────────────────────────────────────────────────────────── -->
-  <section class="relative py-20 md:py-28 border-b border-border overflow-hidden">
-    <div class="dot-patch dot-patch--sm" style="top: 10%; left: -40px;" aria-hidden="true"></div>
-    <div class="max-w-6xl mx-auto px-6 lg:px-8 relative z-10">
-
-      <div class="reveal mb-10">
-        <p class="text-xs font-600 tracking-[0.25em] uppercase text-accent mb-3">UX Flows</p>
-        <h2 class="text-3xl md:text-4xl font-700 tracking-tight mb-4">Four Flows, Mapped End to End</h2>
-        <div class="flex flex-wrap gap-3 mt-6">
-          <span class="text-xs font-600 px-3 py-1.5 rounded-full border border-border text-secondary">Main Dashboard</span>
-          <span class="text-xs font-600 px-3 py-1.5 rounded-full border border-border text-secondary">Content Review &amp; Approval</span>
-          <span class="text-xs font-600 px-3 py-1.5 rounded-full border border-border text-secondary">Content Calendar View</span>
-          <span class="text-xs font-600 px-3 py-1.5 rounded-full border border-border text-secondary">Performance Drill Down</span>
-        </div>
-        <a href="https://www.figma.com/board/b3ote08zxuyKWnyYVf4sqO" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-xs font-600 text-accent hover:underline mt-5">
-          View in FigJam
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" viewBox="0 0 20 20" fill="currentColor"><path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z"/><path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z"/></svg>
-        </a>
-      </div>
-
-      <div class="reveal grid grid-cols-2 gap-4 md:gap-6">
-        <img src="img/flow-chart2.jpg" alt="Flows 1 and 2, Main Dashboard and Content Review" class="zoomable w-full h-auto rounded-2xl shadow-[0_4px_32px_rgba(0,0,0,0.18)]" />
-        <img src="img/flow-chart1.jpg" alt="Flows 3 and 4, Content Calendar and Performance Drill Down" class="zoomable w-full h-auto rounded-2xl shadow-[0_4px_32px_rgba(0,0,0,0.18)]" />
-      </div>
-
-    </div>
-  </section>
-
-
-  <!-- ─── FEEDBACK APPLIED ─────────────────────────────────────────────────── -->
-  <section class="relative py-20 md:py-28 border-b border-border overflow-hidden">
-    <div class="dot-patch dot-patch--md" style="bottom: 8%; right: -40px;" aria-hidden="true"></div>
-    <div class="max-w-6xl mx-auto px-6 lg:px-8 relative z-10">
-
-      <div class="reveal mb-12">
-        <p class="text-xs font-600 tracking-[0.25em] uppercase text-accent mb-3">Iteration</p>
-        <h2 class="text-3xl md:text-4xl font-700 tracking-tight mb-4">Feedback Applied</h2>
-        <p class="text-secondary text-base leading-relaxed max-w-2xl">
-          The founder reviewed the wireframe in detail, and the feedback took several rounds of iteration to work through.
-        </p>
-      </div>
-
-      <div class="flex flex-col gap-6">
-
-        <div class="reveal feedback-item">
-          <h3 class="text-base font-700 text-primary mb-2">Crawler items were too specific</h3>
-          <p class="text-secondary text-base leading-relaxed">
-            The original onboarding screen listed items like Copy tone, Team info, and Testimonials. The feedback flagged that these labels would not apply to every type of business using the product. A law firm does not have testimonials the same way a SaaS company does. I rewrote every crawler item to be generic and action based: Scanning your pages, Analysing your content, Mapping your structure, Finding social proof, Identifying competitors. The experience now feels relevant regardless of what industry the client is in.
-          </p>
-        </div>
-
-        <div class="reveal feedback-item">
-          <h3 class="text-base font-700 text-primary mb-2">The Findings screen lacked structure and editability</h3>
-          <p class="text-secondary text-base leading-relaxed">
-            The original design showed detected brand information as a flat list with no clear way to edit individual sections. The feedback asked for a modal container with a proper header, and a dedicated edit icon on each section so the client could target exactly what they wanted to change. I rebuilt the screen with a modal header reading "What we found," individual edit icons per section, and a clear separation between the confirmation action and the editing action.
-          </p>
-        </div>
-
-        <div class="reveal feedback-item">
-          <h3 class="text-base font-700 text-primary mb-2">Agent numbers meant nothing to clients</h3>
-          <p class="text-secondary text-base leading-relaxed">
-            The Content Pipeline table originally showed which agent was responsible for each piece of content, such as Agent 8, Agent 7, and Agent 5. The feedback was direct. A marketing manager has no context for what those numbers mean, and they create confusion rather than clarity. I removed every agent reference from the client facing UI and replaced them with plain language descriptions of what is actually happening, such as Writing, Awaiting your review, Optimising for search, and Goes live Mon. The column header changed from Agent to Activity.
-          </p>
-        </div>
-
-        <div class="reveal feedback-item">
-          <h3 class="text-base font-700 text-primary mb-2">The pipeline section on the Dashboard was in the wrong place</h3>
-          <p class="text-secondary text-base leading-relaxed">
-            The original design had a horizontal row of pipeline steps at the bottom of the Dashboard. The feedback identified two problems. The horizontal layout could not show enough information per step, and placing it at the bottom made it feel like an afterthought rather than the central mechanism of the product. I moved the pipeline to the right column, changed it to a vertical layout, and added a step description, status badge, and activity label to each step. The pipeline now reads as a primary feature rather than a secondary status indicator.
-          </p>
-        </div>
-
-        <div class="reveal feedback-item">
-          <h3 class="text-base font-700 text-primary mb-2">The new user Dashboard lacked a clear starting point</h3>
-          <p class="text-secondary text-base leading-relaxed">
-            The first version showed zero values across all metric cards but gave the client no direction on what to do next. Someone landing on the product for the first time had no idea where to begin. The feedback pushed for a stronger empty state that removes any ambiguity. I redesigned the content pipeline area to show a focused empty state with the message "your content will appear here once your pipeline is running," paired with a single CTA button pointing to the first action. The pipeline section on the right was updated so Step 1 is the only active and highlighted item with a Start now button, while every other step is visibly locked and grayed out. Now the page clearly tells the client where to start.
-          </p>
-        </div>
-
+      <div class="reveal cs-cta">
+        <a class="cs-btn" href="https://www.figma.com/proto/qImtu34wvnPina7IjoPtN9/Hi-fidelity-M--Copy-?node-id=3029-1866&starting-point-node-id=3029%3A1866&page-id=0%3A1&scaling=scale-down-width&content-scaling=fixed&hide-ui=1" target="_blank" rel="noopener noreferrer">Open the full prototype <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z"/><path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z"/></svg></a>
+        <p>Start at Create account to follow the new client journey, or log in to see the returning one.</p>
       </div>
     </div>
   </section>
 
 
-  <!-- ─── KEY SCREENS ──────────────────────────────────────────────────────── -->
-  <section class="relative py-20 md:py-28 bg-surface-alt border-b border-border overflow-hidden">
-    <div class="dot-patch dot-patch--xl" style="top: -10%; right: -60px;" aria-hidden="true"></div>
-    <div class="max-w-6xl mx-auto px-6 lg:px-8 relative z-10">
+  <!-- ─── 05 AI IN THE PROCESS ────────────────────────────────────────────── -->
+  <section class="cs-sec cs-sec--alt">
+    <div class="cs-wrap">
+      <p class="reveal cs-eyebrow">05 · Process</p>
+      <h2 class="reveal cs-h2">Where AI helped, and where it didn't</h2>
+      <p class="reveal cs-p">Every high fidelity screen is my own work in Figma. AI sped up the process around the design. It helped me visualise ideas faster, so I could compare directions early and spend my time on the decisions.</p>
 
-      <div class="reveal mb-12">
-        <p class="text-xs font-600 tracking-[0.25em] uppercase text-accent mb-3">Key Screens</p>
-        <h2 class="text-3xl md:text-4xl font-700 tracking-tight mb-4">11 Screens, 5 Surface Areas</h2>
-        <p class="text-secondary text-base leading-relaxed max-w-2xl">High fidelity design is in progress. The screens below show the interaction model and content hierarchy.</p>
-      </div>
-
-      <div class="scroll-wrap reveal">
-        <button class="scroll-btn scroll-btn--prev" aria-label="Previous">
-          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-        </button>
-        <div class="h-scroll" tabindex="0" role="region" aria-label="Key screens, scrolls sideways">
-
-          <!-- Onboarding -->
-          <div class="screen-card">
-            <div class="card-text">
-              <h3 class="text-base font-700 text-primary mb-1">Onboarding</h3>
-              <p class="text-secondary text-sm leading-relaxed">
-                Asks for one thing, a URL. The crawler runs automatically, extracts brand information, and presents findings as editable pill tags for the client to confirm or adjust.
-              </p>
-            </div>
-            <img src="img/Crawler.jpg" alt="Onboarding, 3 screen flow" class="zoomable w-full h-auto rounded-xl shadow-[0_4px_32px_rgba(0,0,0,0.18)]" />
-          </div>
-
-          <!-- Dashboard -->
-          <div class="screen-card">
-            <div class="card-text">
-              <h3 class="text-base font-700 text-primary mb-1">Dashboard</h3>
-              <p class="text-secondary text-sm leading-relaxed">
-                Answers three questions in under 10 seconds: Am I showing up? What changed? What do I do next?
-              </p>
-            </div>
-            <img src="img/Dashboard.jpg" alt="Dashboard" class="zoomable w-full h-auto rounded-xl shadow-[0_4px_32px_rgba(0,0,0,0.18)]" />
-          </div>
-
-          <!-- Agents -->
-          <div class="screen-card">
-            <div class="card-text">
-              <h3 class="text-base font-700 text-primary mb-1">Agents</h3>
-              <p class="text-secondary text-sm leading-relaxed">
-                Shows the full 9 step pipeline with step status, scores, and recent activity for each agent.
-              </p>
-            </div>
-            <img src="img/Agents.jpg" alt="Agents, 9 step pipeline view" class="zoomable w-full h-auto rounded-xl shadow-[0_4px_32px_rgba(0,0,0,0.18)]" />
-          </div>
-
-          <!-- Content -->
-          <div class="screen-card">
-            <div class="card-text">
-              <h3 class="text-base font-700 text-primary mb-1">Content</h3>
-              <p class="text-secondary text-sm leading-relaxed">
-                Shows all published and in progress pieces with tab filters, status badges, SEO scores per row, and Review and Edit actions.
-              </p>
-            </div>
-            <img src="img/Content.jpg" alt="Content management surface" class="zoomable w-full h-auto rounded-xl shadow-[0_4px_32px_rgba(0,0,0,0.18)]" />
-          </div>
-
-          <!-- Brand Memory -->
-          <div class="screen-card">
-            <div class="card-text">
-              <h3 class="text-base font-700 text-primary mb-1">Brand Memory</h3>
-              <p class="text-secondary text-sm leading-relaxed">
-                Has two states, a read only view showing everything the system knows about the brand, and an edit mode where every field becomes interactive.
-              </p>
-            </div>
-            <img src="img/Brand.jpg" alt="Brand Memory, read and edit states" class="zoomable w-full h-auto rounded-xl shadow-[0_4px_32px_rgba(0,0,0,0.18)]" />
-          </div>
-
+      <div class="reveal cs-two">
+        <div>
+          <h3>AI sped up</h3>
+          <ul>
+            <li>Visualising early ideas quickly, so I could compare directions before committing.</li>
+            <li>Rough first layouts to react to, before I designed the real screens.</li>
+            <li>Checking finished screens for overlap, overflow and inconsistent labels.</li>
+          </ul>
         </div>
-        <button class="scroll-btn scroll-btn--next" aria-label="Next">
-          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/></svg>
-        </button>
+        <div>
+          <h3>I designed and decided</h3>
+          <ul>
+            <li>Every high fidelity screen, component and state.</li>
+            <li>The nine step model, the citation score and the product structure.</li>
+            <li>The language clients read on every screen.</li>
+            <li>What changed after each round of founder feedback, and what was rebuilt when it missed the bar.</li>
+          </ul>
+        </div>
       </div>
     </div>
   </section>
 
 
-  <!-- ─── AI PROCESS CALLOUT ───────────────────────────────────────────────── -->
-  <section class="relative py-16 md:py-20 bg-surface-alt border-b border-border overflow-hidden">
-    <div class="max-w-6xl mx-auto px-6 lg:px-8 relative z-10">
-      <div class="reveal max-w-2xl">
-        <p class="text-xs font-600 tracking-[0.25em] uppercase text-accent mb-4">AI Process</p>
-        <p class="text-secondary text-base leading-relaxed">
-          I used Claude to speed up the early wireframes. I gave it structured design brief files instead of freeform prompts, and it turned my sketches into starting layouts faster. Every decision after that was mine, including structure, hierarchy, content, and iteration based on feedback.
-        </p>
-      </div>
-    </div>
-  </section>
-
-
-  <!-- ─── WHAT'S NEXT ──────────────────────────────────────────────────────── -->
-  <section class="relative py-20 md:py-28 border-b border-border overflow-hidden">
-    <div class="dot-patch dot-patch--lg" style="bottom: -10%; right: -60px;" aria-hidden="true"></div>
-    <div class="max-w-6xl mx-auto px-6 lg:px-8 relative z-10">
-      <div class="reveal max-w-3xl">
-        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-accent/30 bg-accent/5 mb-8">
-          <span class="w-2 h-2 rounded-full bg-accent animate-pulse inline-block"></span>
-          <span class="text-xs font-700 text-accent uppercase tracking-widest">In Progress</span>
-        </div>
-        <h2 class="text-3xl md:text-4xl font-700 tracking-tight mb-6">What's Next</h2>
-        <p class="text-secondary text-base leading-relaxed mb-10">
-          High fidelity design is currently in progress. What's left is finalizing the hi fi visual system across all 11 screens, usability testing, and an accessibility review.
-        </p>
-        <a href="https://www.monstrum.digital/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-sm font-700 text-primary bg-surface-alt border border-border px-6 py-3 rounded-xl hover:border-primary transition-colors cursor-pointer">
-          Visit monstrum.digital
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor"><path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z"/><path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z"/></svg>
-        </a>
-      </div>
+  <!-- ─── 06 TAKEAWAY ─────────────────────────────────────────────────────── -->
+  <section class="cs-sec">
+    <div class="cs-wrap">
+      <p class="reveal cs-eyebrow">06 · Outcome</p>
+      <p class="reveal cs-quote">With no reference product to learn from, the business model became the brief.</p>
+      <p class="reveal cs-p">Every strong decision on this project, from the nine step pipeline to the plain language labels, came from understanding how Monstrum works and who pays for it before drawing a single screen.</p>
+      <p class="reveal cs-p">After seven months the design was complete. I met with the developers to hand it over, and Monstrum is now in development.</p>
     </div>
   </section>
 
@@ -561,7 +581,7 @@
         Back to Projects
       </a>
       <a href="stageup.html" class="text-sm font-600 text-primary hover:text-accent transition-colors cursor-pointer flex items-center gap-2">
-        Next: StageUp Mobile App
+        Next: StageUp
         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
           <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
         </svg>
@@ -574,7 +594,7 @@
   <!-- ─── FOOTER ─────────────────────────────────────────────────────────── -->
   <footer class="site-footer">
     <div class="site-wrap site-footer__inner">
-      <p>© 2025 Alaa El Banna. All rights reserved.</p>
+      <p>© 2026 Alaa El Banna. All rights reserved.</p>
       <p>Product Designer · Toronto, Canada</p>
     </div>
   </footer>
@@ -768,5 +788,39 @@
     function closeMobileMenu() { if (mobileMenu) mobileMenu.classList.add('hidden'); }
   </script>
 
+
+  <script>
+    document.querySelectorAll('.cs-carousel').forEach(function (wrap) {
+      var track = wrap.querySelector('.h-scroll'); if (!track) return;
+      var cards = Array.prototype.slice.call(track.children);
+      var prev = wrap.querySelector('.scroll-btn--prev'), next = wrap.querySelector('.scroll-btn--next');
+      var active = -1, tick = false;
+      function update() {
+        tick = false;
+        var t = track.getBoundingClientRect(), best = 0, bd = Infinity, max = track.scrollWidth - track.clientWidth;
+        var pad = parseFloat(getComputedStyle(track).paddingLeft) || 0;
+        cards.forEach(function (c, i) { var d = Math.abs(c.getBoundingClientRect().left - t.left - pad); if (d < bd) { bd = d; best = i; } });
+        if (track.scrollLeft >= max - 4) best = cards.length - 1;
+        if (track.scrollLeft <= 4) best = 0;
+        if (best === active) return;
+        active = best;
+        cards.forEach(function (c, i) { c.classList.toggle('is-active', i === best); });
+        if (prev) prev.classList.toggle('is-hidden', best === 0);
+        if (next) next.classList.toggle('is-hidden', best === cards.length - 1);
+        wrap.classList.toggle('at-end', best === cards.length - 1);
+      }
+      track.addEventListener('scroll', function () { if (!tick) { tick = true; requestAnimationFrame(update); } }, { passive: true });
+      window.addEventListener('resize', update);
+      cards.forEach(function (c, i) {
+        c.addEventListener('click', function (e) {
+          if (i === active) return;
+          e.preventDefault(); e.stopPropagation();
+          var t = track.getBoundingClientRect(), r = c.getBoundingClientRect();
+          track.scrollBy({ left: r.left - t.left - (parseFloat(getComputedStyle(track).paddingLeft) || 0), behavior: 'smooth' });
+        }, true);
+      });
+      track.scrollLeft = 0; update();
+    });
+  </script>
 </body>
 </html>

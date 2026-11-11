@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>StageUp Mobile App | Alaa El Banna</title>
+  <title>StageUp | Alaa El Banna</title>
+  <meta name="description" content="One clear view of career growth, built from learning scattered across four platforms. A product design case study by Alaa El Banna." />
 
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -11,8 +12,8 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wdth,wght@75..100,400..700&display=swap" />
   <link rel="stylesheet" href="fonts.css?v=1" />
   <link rel="stylesheet" href="tailwind.css?v=4" />
-  <link rel="stylesheet" href="site.css?v=23" />
-  <script defer src="liquid-nav.js?v=17"></script>
+  <link rel="stylesheet" href="site.css?v=27" />
+  <script defer src="liquid-nav.js?v=18"></script>
   <meta name="theme-color" content="#FBFBFD" />
   <style>
     /* Keep the logo on screen across page changes (Chrome, Edge, Safari 18.2+).
@@ -24,20 +25,281 @@
   </style>
 
   <style>
-    :root { --accent: #16A34A; }
-    :root[data-theme="dark"] { --accent: #4ADE80; }
+    :root { --accent: #DC2626; }
+    :root[data-theme="dark"] { --accent: #F87171; }
 
     .reveal { opacity:0; transform:translateY(20px); transition:opacity .6s ease,transform .6s ease; }
     .reveal.visible { opacity:1; transform:translateY(0); }
     .nav-link { position:relative; }
-    .nav-link::after { content:''; position:absolute; bottom:-2px; left:0; width:0; height:1px; background:#18181B; transition:width .25s ease; }
+    .nav-link::after { content:''; position:absolute; bottom:-2px; left:0; width:0; height:1px; background:currentColor; transition:width .25s ease; }
     .nav-link:hover::after { width:100%; }
-    .read-more-extra { display:none; }
-    .read-more-extra.open { display:block; }
+
+    /* Placeholder image block */
+    .img-placeholder {
+      width: 100%;
+      background: color-mix(in oklab, var(--surface-alt) 80%, var(--border));
+      border: 1.5px dashed var(--border);
+      border-radius: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      color: var(--secondary);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .img-placeholder svg { opacity: 0.3; }
+
+    /* Feedback item — card style with red border */
+    .feedback-item {
+      background: var(--surface-alt);
+      border: 1px solid color-mix(in oklab, var(--accent) 45%, transparent);
+      border-radius: 16px;
+      padding: 1.5rem 1.75rem;
+    }
+
+    /* Competitor card */
+    .competitor-card { border: 1px solid var(--border); border-radius: 16px; overflow: hidden; flex: none; width: 320px; }
+    @media (min-width: 640px) { .competitor-card { width: 380px; } }
+
+    /* Horizontal scroll strip */
+    .h-scroll { display: flex; gap: 1.5rem; overflow-x: auto; padding-bottom: 1rem; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+    .h-scroll::-webkit-scrollbar { display: none; }
+    .h-scroll > * { scroll-snap-align: start; }
+
+    /* Screen card in h-scroll */
+    .screen-card { flex: none; width: 280px; display: flex; flex-direction: column; }
+    @media (min-width: 640px) { .screen-card { width: 340px; } }
+    .screen-card .card-text { height: 7.5rem; overflow: hidden; margin-bottom: 1rem; }
+
+    /* ── Case study layout (rebuilt Nov 2026) ───────────────────────────── */
+    .cs-wrap { max-width: 72rem; margin: 0 auto; padding: 0 1.5rem; }
+    @media (min-width: 1024px) { .cs-wrap { padding: 0 2rem; } }
+    .cs-sec { padding: 4.5rem 0; border-bottom: 1px solid var(--border); }
+    @media (min-width: 768px) { .cs-sec { padding: 6.5rem 0; } }
+    .cs-sec--alt { background: var(--surface-alt); }
+    .cs-eyebrow { font-size: .75rem; font-weight: 600; letter-spacing: .25em; text-transform: uppercase; color: var(--accent); margin-bottom: .75rem; }
+    .cs-h2 { font-size: clamp(1.75rem, 3.4vw, 2.5rem); font-weight: 700; letter-spacing: -.02em; line-height: 1.12; max-width: 20em; margin-bottom: 1.5rem; }
+    .cs-p { font-size: 1.0625rem; line-height: 1.7; color: var(--secondary); max-width: 44rem; }
+    .cs-p + .cs-p { margin-top: 1.1rem; }
+    .cs-head { margin-bottom: 3rem; }
+
+    /* hero additions */
+    .cs-hero-line { font-size: clamp(1.25rem, 2.3vw, 1.75rem); line-height: 1.3; font-weight: 500; letter-spacing: -.01em; max-width: 26em; margin-top: 1.25rem; color: var(--primary); }
+    .cs-actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 2rem; }
+    .cs-btn { display: inline-flex; align-items: center; gap: .5rem; min-height: 46px; padding: 0 1.25rem; border-radius: 12px; font-size: .9375rem; font-weight: 600; border: 1px solid var(--primary); background: var(--primary); color: var(--surface, #fff); transition: transform .2s ease, opacity .2s ease; }
+    .cs-btn:hover { transform: translateY(-1px); opacity: .92; }
+    .cs-btn--ghost { background: transparent; color: var(--primary); border-color: var(--border); }
+    .cs-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+    /* screens */
+    .cs-shot { margin: 0; border-radius: 14px; overflow: hidden; border: 1px solid var(--border); background: #fff; box-shadow: 0 24px 60px -32px rgba(20, 20, 60, .35), 0 2px 8px rgba(20, 20, 60, .05); }
+    .cs-shot img { display: block; width: 100%; height: auto; }
+    .cs-bar { display: flex; gap: 6px; align-items: center; height: 30px; padding: 0 12px; background: #F1F1F3; border-bottom: 1px solid #E4E4E8; }
+    .cs-bar i { width: 9px; height: 9px; border-radius: 50%; background: #D3D3D9; display: block; }
+    .cs-hero-band { background: var(--surface-alt); padding: 3.5rem 1.5rem 4.5rem; border-bottom: 1px solid var(--border); }
+    .cs-hero-band .cs-shot { max-width: min(68rem, calc((100svh - 11.5rem) * 1.55)); margin: 0 auto; box-shadow: 0 30px 70px -28px rgba(20,20,40,.28); }
+
+    /* at a glance */
+    .cs-glance { display: grid; gap: 1.25rem; }
+    @media (min-width: 860px) { .cs-glance { grid-template-columns: repeat(3, 1fr); gap: 1.5rem; } }
+    .cs-glance > div { padding: 1.5rem 1.6rem 1.7rem; border: 1px solid var(--border); border-radius: 16px; background: var(--surface, #fff); }
+    .cs-glance h3 { font-size: .8125rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; margin-bottom: .7rem; }
+    .cs-glance p { font-size: 1rem; line-height: 1.6; color: var(--secondary); }
+
+    /* competitors */
+    .cs-comp { display: grid; gap: 1.25rem; margin-top: 3rem; }
+    @media (min-width: 860px) { .cs-comp { grid-template-columns: repeat(3, 1fr); } }
+    .cs-comp figure { margin: 0; border: 1px solid var(--border); border-radius: 16px; overflow: hidden; background: var(--surface, #fff); }
+    .cs-comp img { display: block; width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: left top; background: #fff; }
+    .cs-comp figcaption { padding: 1.1rem 1.3rem 1.3rem; }
+    .cs-comp h3 { font-size: 1.0625rem; font-weight: 700; margin-bottom: .3rem; }
+    .cs-comp p { font-size: .9375rem; line-height: 1.55; color: var(--secondary); }
+    .cs-gap { margin-top: 1.25rem; padding: 1.4rem 1.6rem; border-radius: 16px; border: 1px solid color-mix(in oklab, var(--accent) 40%, transparent); background: color-mix(in oklab, var(--accent) 5%, transparent); }
+    .cs-gap strong { display: block; font-size: .8125rem; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); margin-bottom: .45rem; }
+    .cs-gap p { font-size: clamp(1.0625rem, 1.5vw, 1.25rem); line-height: 1.55; color: var(--primary); text-wrap: balance; }
+
+    /* decisions */
+    .cs-dec { display: grid; gap: 2rem; align-items: center; padding: 3rem 0; border-top: 1px solid var(--border); }
+    .cs-dec:first-of-type { border-top: 0; padding-top: 0; }
+    .cs-dec:last-of-type { padding-bottom: 0; }
+    @media (min-width: 960px) { .cs-dec { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 3.5rem; } .cs-dec--flip { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); } .cs-dec--flip .cs-dec__text { order: 2; } .cs-dec--wide { grid-template-columns: minmax(0, 1fr); gap: 2.25rem; } .cs-dec--wide .cs-dec__text { max-width: 44rem; } .cs-dec--wide .cs-duo { grid-template-columns: 1fr 1fr; gap: 1.5rem; align-items: start; } }
+    .cs-dec__num { font-size: .8125rem; font-weight: 700; letter-spacing: .14em; color: var(--accent); margin-bottom: .6rem; font-variant-numeric: tabular-nums; }
+    .cs-dec h3 { font-size: clamp(1.3rem, 2.2vw, 1.65rem); font-weight: 700; letter-spacing: -.015em; line-height: 1.2; margin-bottom: .9rem; }
+    .cs-dec p { font-size: 1.0625rem; line-height: 1.65; color: var(--secondary); }
+    .cs-ruled { margin-top: 1.2rem; padding-left: 1rem; border-left: 2px solid var(--accent); }
+    .cs-ruled span { display: block; font-size: .75rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--primary); margin-bottom: .3rem; }
+    .cs-ruled p { font-size: .9688rem; }
+    .cs-duo { display: grid; gap: 1rem; }
+
+    /* wireframe to final */
+    .cs-evo { display: grid; gap: 2.5rem; }
+    .cs-evo__row { display: grid; gap: 1.5rem; }
+    @media (min-width: 960px) { .cs-evo__row { grid-template-columns: minmax(0, 3fr) minmax(0, 4.5fr) minmax(0, 4.5fr); gap: 1.75rem; align-items: start; } }
+    .cs-evo h3 { font-size: 1.2rem; font-weight: 700; letter-spacing: -.01em; line-height: 1.25; margin-bottom: .6rem; }
+    .cs-evo p { font-size: 1rem; line-height: 1.6; color: var(--secondary); }
+    .cs-evo figure { margin: 0; }
+    .cs-evo .cs-shot img { aspect-ratio: 16 / 10; object-fit: cover; object-position: left top; }
+    .cs-tag { display: inline-block; font-size: .6875rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; padding: .28rem .6rem; border-radius: 999px; border: 1px solid var(--border); color: var(--secondary); margin-bottom: .6rem; }
+    .cs-tag--final { border-color: var(--accent); color: var(--accent); }
+
+    /* gallery */
+    .screen-card.cs-card { width: min(78vw, 560px); }
+    .cs-carousel { --cw: min(76vw, 760px); }
+    .cs-carousel { --pad: 2.5rem; --fade: 11rem; }
+    @media (max-width: 1279px) { .cs-carousel { --pad: 2rem; } .cs-carousel .scroll-btn { width: 32px; } .cs-carousel .scroll-btn--prev { left: -32px; } .cs-carousel .scroll-btn--next { right: -32px; } }
+    @media (max-width: 1023px) { .cs-carousel .scroll-btn { width: 24px; } .cs-carousel .scroll-btn--prev { left: -24px; } .cs-carousel .scroll-btn--next { right: -24px; } }
+    @media (max-width: 1023px) { .cs-carousel { --pad: 1.25rem; --fade: 2.5rem; } }
+    .cs-carousel .h-scroll { gap: 3.5rem; padding: 1rem var(--pad) 2rem; margin: -1rem calc(var(--pad) * -1) 0; scroll-padding-inline: var(--pad); }
+    .cs-carousel .h-scroll { -webkit-mask-image: linear-gradient(to right, transparent 0, #000 var(--pad), #000 calc(100% - var(--fade)), transparent 100%); mask-image: linear-gradient(to right, transparent 0, #000 var(--pad), #000 calc(100% - var(--fade)), transparent 100%); }
+    .cs-carousel.at-end .h-scroll { -webkit-mask-image: linear-gradient(to left, transparent 0, #000 var(--pad), #000 calc(100% - var(--fade)), transparent 100%); mask-image: linear-gradient(to left, transparent 0, #000 var(--pad), #000 calc(100% - var(--fade)), transparent 100%); }
+    .cs-carousel .h-scroll > .cs-card:last-child { scroll-snap-align: end; }
+    .cs-carousel .h-scroll > .cs-card { width: var(--cw); flex: none; scroll-snap-align: start; transform-origin: left center; opacity: .3; filter: blur(1.5px); transform: scale(.96); transition: opacity .35s ease, filter .35s ease, transform .35s ease; cursor: pointer; }
+    .cs-carousel .h-scroll > .cs-card.is-active { opacity: 1; filter: none; transform: none; cursor: auto; }
+    .cs-carousel .h-scroll > .cs-card:not(.is-active) img { pointer-events: none; }
+    .cs-carousel .scroll-btn { transition: opacity .25s ease, color .2s; }
+    .cs-carousel .scroll-btn.is-hidden { opacity: 0; pointer-events: none; visibility: hidden; }
+    .cs-carousel .card-text p { max-width: 38rem; }
+    @media (prefers-reduced-motion: reduce) { .cs-carousel .h-scroll > .cs-card { transition: none; } }
+    .screen-card.cs-card .card-text { height: auto; min-height: 5.2rem; margin-bottom: 0; margin-top: 1rem; overflow: visible; }
+    .cs-card h3 { font-size: 1.0625rem; font-weight: 700; margin-bottom: .3rem; }
+    .cs-card p { font-size: .9375rem; line-height: 1.55; color: var(--secondary); }
+    .cs-card .cs-shot img { aspect-ratio: 16 / 10; object-fit: cover; object-position: left top; }
+    .cs-cta { margin-top: 0; display: flex; flex-wrap: wrap; gap: 1rem 1.5rem; align-items: center; }
+    .cs-cta p { font-size: 1rem; color: var(--secondary); }
+
+    /* AI */
+    .cs-two { display: grid; gap: 1.25rem; margin-top: 2.5rem; }
+    @media (min-width: 860px) { .cs-two { grid-template-columns: 1fr 1fr; gap: 1.5rem; } }
+    .cs-two > div { padding: 1.6rem 1.7rem 1.8rem; border: 1px solid var(--border); border-radius: 16px; background: var(--surface, #fff); }
+    .cs-two h3 { font-size: 1.0625rem; font-weight: 700; margin-bottom: .9rem; }
+    .cs-two ul { list-style: none; padding: 0; margin: 0; display: grid; gap: .7rem; }
+    .cs-two li { position: relative; padding-left: 1.3rem; font-size: 1rem; line-height: 1.55; color: var(--secondary); }
+    .cs-two li::before { content: ""; position: absolute; left: 0; top: .6em; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+
+    /* takeaway */
+    .cs-quote { font-size: clamp(1.5rem, 3.2vw, 2.4rem); font-weight: 600; letter-spacing: -.02em; line-height: 1.2; max-width: 22em; }
+    .cs-quote + .cs-p { margin-top: 1.5rem; }
+
+    /* StageUp additions */
+    .cs-hero-band .cs-shot--plain { max-width: min(68rem, calc((100svh - 11.5rem) * 1.79)); }
+    .cs-shot--plain { border: 0; background: transparent; }
+    .cs-plats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-top: 2.5rem; }
+    @media (min-width: 860px) { .cs-plats { grid-template-columns: repeat(4, 1fr); gap: 1.25rem; } }
+    .cs-plats > div { padding: 1.2rem 1.3rem 1.3rem; border: 1px solid var(--border); border-radius: 16px; background: var(--surface, #fff); }
+    .cs-plats h3 { font-size: 1rem; font-weight: 700; margin-bottom: .3rem; }
+    .cs-plats p { font-size: .9375rem; line-height: 1.5; color: var(--secondary); }
+    .cs-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-top: 2.5rem; }
+    @media (min-width: 860px) { .cs-stats { grid-template-columns: repeat(4, 1fr); gap: 1.25rem; } }
+    .cs-stats > div { padding: 1.4rem 1.4rem 1.3rem; border: 1px solid var(--border); border-radius: 16px; background: var(--surface, #fff); }
+    .cs-stats strong { display: block; font-size: clamp(2rem, 4vw, 2.75rem); font-weight: 700; letter-spacing: -.03em; line-height: 1; color: var(--primary); }
+    .cs-stats > div:first-child strong { color: var(--accent); }
+    .cs-stats span { display: block; margin-top: .6rem; font-size: .9375rem; line-height: 1.4; color: var(--secondary); }
+    .cs-two p { font-size: 1rem; line-height: 1.6; color: var(--secondary); }
+    .cs-two .cs-ruled { margin-top: 1rem; }
+    .cs-tri { display: grid; gap: 1.5rem; margin-top: 3rem; }
+    @media (min-width: 860px) { .cs-tri { grid-template-columns: repeat(3, 1fr); } }
+    .cs-tri figure { margin: 0; }
+    .cs-tri .cs-shot img { aspect-ratio: 16 / 9; object-fit: cover; object-position: center; }
+    .cs-sub { font-size: 1.2rem; font-weight: 700; letter-spacing: -.01em; margin: 3.5rem 0 .6rem; }
+    .cs-swatches { display: flex; flex-wrap: wrap; align-items: stretch; gap: 1rem; margin-top: 1.5rem; }
+    .cs-swatch { display: flex; align-items: center; gap: .9rem; padding: .9rem 1.2rem .9rem .9rem; border: 1px solid var(--border); border-radius: 14px; background: var(--surface, #fff); }
+    .cs-swatch i { width: 2.75rem; height: 2.75rem; border-radius: 10px; flex: none; }
+    .cs-swatch b { display: block; font-size: .9375rem; }
+    .cs-swatch span { display: block; font-size: .875rem; color: var(--secondary); }
+    .cs-wide { margin-top: 2.5rem; }
+    .cs-wide figcaption { margin-top: .9rem; font-size: .9375rem; line-height: 1.55; color: var(--secondary); max-width: 44rem; }
+    .cs-dec .cs-shot--plain img { border-radius: 14px; }
+    .cs-gap p { text-wrap: wrap; }
+    .cs-phones { --pad: 2.5rem; margin-top: 2.5rem; }
+    @media (max-width: 1279px) { .cs-phones { --pad: 2rem; } .cs-phones .scroll-btn { width: 32px; } .cs-phones .scroll-btn--prev { left: -32px; } .cs-phones .scroll-btn--next { right: -32px; } }
+    @media (max-width: 1023px) { .cs-phones { --pad: 1.25rem; } .cs-phones .scroll-btn { width: 24px; } .cs-phones .scroll-btn--prev { left: -24px; } .cs-phones .scroll-btn--next { right: -24px; } }
+    .cs-phones .h-scroll { gap: var(--pad); padding: 1rem var(--pad) 2rem; margin: -1rem calc(var(--pad) * -1) 0; scroll-padding-inline: var(--pad); -webkit-mask-image: linear-gradient(to right, transparent 0, #000 var(--pad), #000 calc(100% - var(--pad)), transparent 100%); mask-image: linear-gradient(to right, transparent 0, #000 var(--pad), #000 calc(100% - var(--pad)), transparent 100%); }
+    .cs-phones { --n: 4; }
+    @media (max-width: 1023px) { .cs-phones { --n: 3; } }
+    @media (max-width: 639px) { .cs-phones { --n: 2; } }
+    .cs-phone { flex: none; width: calc((100% - (var(--n) - 1) * var(--pad)) / var(--n)); scroll-snap-align: start; }
+    .cs-phone figure { max-width: 100%; }
+    .cs-phone figure { margin: 0; padding: 7px; border-radius: 2.5rem; background: #0b1020; box-shadow: 0 24px 50px -28px rgba(20, 20, 60, .45), 0 2px 8px rgba(20, 20, 60, .06); }
+    .cs-phone img { display: block; width: 100%; height: auto; border-radius: 2.1rem; }
+    .cs-phone h3 { font-size: 1rem; font-weight: 700; margin: 1.1rem 0 .3rem; }
+    .cs-phone p { font-size: .9063rem; line-height: 1.5; color: var(--secondary); }
+    .cs-phones .scroll-btn.is-hidden { opacity: 0; pointer-events: none; visibility: hidden; }
+
+    /* Lightbox */
+    #img-lightbox { display:none; position:fixed; inset:0; z-index:9999; background:rgba(0,0,0,0.97); flex-direction:column; align-items:center; justify-content:flex-start; overflow-y:auto; cursor:zoom-out; }
+    .lb-figure { display:flex; flex-direction:column; gap:14px; flex:none; }
+    .lb-media { position:relative; display:flex; align-items:flex-start; }
+    #img-lightbox-img { display:block; width:100%; height:auto; border-radius:12px; box-shadow:0 8px 64px rgba(0,0,0,0.6); }
+    .lb-caption { width:100%; text-align:left; cursor:default; }
+    .lb-cap-top { display:flex; align-items:flex-end; justify-content:space-between; gap:24px; margin-bottom:4px; }
+    .lb-tag { font-size:.65rem; font-weight:600; letter-spacing:.18em; text-transform:uppercase; color:var(--accent); margin-bottom:4px; }
+    .lb-title { font-size:1rem; font-weight:700; line-height:1.3; color:#FAFAFA; }
+    .lb-count { flex:none; font-size:.75rem; font-weight:500; letter-spacing:.08em; color:rgba(250,250,250,.45); font-variant-numeric:tabular-nums; }
+    .lb-desc { font-size:.85rem; line-height:1.5; color:rgba(250,250,250,.6); display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+    .lb-nav { position:absolute; top:50%; transform:translateY(-50%); width:40px; height:40px; padding:0; background:none; border:none; color:#FAFAFA; opacity:.7; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:color .2s, opacity .2s; }
+    .lb-nav:hover { color:var(--accent); opacity:1; }
+    .lb-nav[hidden] { display:none; }
+    .lb-nav--prev { left:-56px; }
+    .lb-nav--next { right:-56px; }
+    .lb-close { position:fixed; top:16px; right:20px; width:40px; height:40px; padding:0; background:none; border:none; color:#FAFAFA; opacity:.7; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:color .2s, opacity .2s; }
+    .lb-close:hover { color:var(--accent); opacity:1; }
+    @media (max-width: 767px) {
+      .lb-figure { gap:12px; }
+      .lb-title { font-size:.95rem; }
+      .lb-desc { font-size:.8rem; }
+      .lb-nav { width:28px; }
+      .lb-nav--prev { left:-32px; }
+      .lb-nav--next { right:-32px; }
+      .lb-close { top:8px; right:8px; }
+    }
+    .zoomable { cursor:zoom-in !important; }
+
+    /* Scroll wrap + arrow buttons */
+    .scroll-wrap { position: relative; }
+    .scroll-btn {
+      position: absolute; top: 50%; transform: translateY(-50%); z-index: 10;
+      width: 40px; height: 40px; padding: 0;
+      background: none; border: none; color: var(--primary); opacity: .7;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: color .2s, opacity .2s;
+    }
+    .scroll-btn:hover { color: var(--accent); opacity: 1; }
+    .scroll-btn--prev { left: -48px; }
+    .scroll-btn--next { right: -48px; }
+    @media (max-width: 767px) {
+      .scroll-btn { width: 24px; }
+      .scroll-btn--prev { left: -24px; }
+      .scroll-btn--next { right: -24px; }
+    }
+    .h-scroll { cursor: grab; user-select: none; }
+    .h-scroll.is-dragging { cursor: grabbing; scroll-snap-type: none; }
   </style>
 </head>
 
 <body class="text-primary font-sans antialiased overflow-x-hidden">
+  <!-- Lightbox -->
+  <div id="img-lightbox" role="dialog" aria-modal="true" aria-label="Image preview">
+    <button class="lb-close" aria-label="Close preview">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <div class="lb-figure" id="img-lightbox-figure">
+      <div class="lb-media" id="img-lightbox-media">
+        <button class="lb-nav lb-nav--prev" aria-label="Previous image">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+        </button>
+        <img id="img-lightbox-img" alt="" />
+        <button class="lb-nav lb-nav--next" aria-label="Next image">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/></svg>
+        </button>
+      </div>
+      <div class="lb-caption" id="img-lightbox-caption"></div>
+    </div>
+  </div>
+
 
   <!-- ─── NAVBAR ─────────────────────────────────────────────────────────── -->
   <header class="site-header">
@@ -63,717 +325,283 @@
 
 
   <!-- ─── HERO ───────────────────────────────────────────────────────────── -->
-  <section class="relative pt-32 pb-16 md:pt-40 md:pb-24 bg-surface-alt border-b border-border overflow-hidden">
-    <div class="dot-patch dot-patch--md" style="top: -4%; left: -40px;" aria-hidden="true"></div>
-    <div class="dot-patch dot-patch--sm" style="bottom: 6%; right: 3%;" aria-hidden="true"></div>
+  <section class="relative pt-32 pb-12 md:pt-40 md:pb-14 bg-surface-alt overflow-hidden">
     <div class="max-w-6xl mx-auto px-6 lg:px-8 relative z-10">
 
       <div class="reveal flex items-center gap-2 text-xs text-secondary/60 font-500 mb-8">
         <a href="index.html#projects" class="hover:text-accent transition-colors cursor-pointer">Projects</a>
         <span>/</span>
-        <span class="text-primary">StageUp Mobile App</span>
+        <span class="text-primary">StageUp</span>
       </div>
 
-      <p class="reveal text-xs font-600 tracking-[0.25em] uppercase text-accent mb-4">UX / UI · Product Design</p>
+      <p class="reveal text-xs font-600 tracking-[0.25em] uppercase text-accent mb-6">Mobile Learning App</p>
 
-      <h1 class="reveal text-5xl sm:text-6xl md:text-7xl font-800 leading-tight tracking-tight text-primary max-w-4xl" style="transition-delay:.1s">
-        StageUp Mobile App
-      </h1>
+      <h1 class="reveal text-5xl sm:text-6xl md:text-7xl font-800 leading-tight tracking-tight text-primary max-w-4xl" style="transition-delay:.1s">StageUp</h1>
 
-      <p class="reveal text-lg md:text-xl text-secondary font-400 mt-6 max-w-2xl leading-relaxed" style="transition-delay:.2s">
-        A product design case study on bringing scattered learning together into one clear view of career growth.
-      </p>
+      <p class="reveal cs-hero-line" style="transition-delay:.15s">One clear view of career growth, built from learning scattered across four platforms.</p>
 
-      <div class="reveal grid grid-cols-2 sm:grid-cols-4 gap-x-12 gap-y-8 mt-12 pt-10 border-t border-border" style="transition-delay:.3s">
+      <div class="reveal cs-actions" style="transition-delay:.18s">
+        <a class="cs-btn" href="https://www.figma.com/proto/l6Ii38tMQMS8XgUMwXT6dO/STAGEUP-FINAL?node-id=1-88&t=3u9mv1QqKXfNfY5C-1&scaling=scale-down&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=1%3A88" target="_blank" rel="noopener noreferrer">View prototype <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z"/><path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z"/></svg></a>
+      </div>
+
+      <div class="reveal grid grid-cols-2 sm:grid-cols-4 gap-x-12 gap-y-8 mt-12 pt-10 border-t border-border" style="transition-delay:.2s">
         <div class="min-w-0">
-          <p class="text-sm font-bold uppercase tracking-wider text-primary mb-2">My Role</p>
-          <p class="text-sm font-normal text-secondary opacity-60 leading-relaxed">Solo Product Designer</p>
+          <p class="text-sm font-bold uppercase tracking-wider text-primary mb-2">Role</p>
+          <p class="text-sm font-normal text-secondary opacity-60 leading-relaxed">Product Designer<br>Solo project</p>
+        </div>
+        <div class="min-w-0">
+          <p class="text-sm font-bold uppercase tracking-wider text-primary mb-2">Scope</p>
+          <p class="text-sm font-normal text-secondary opacity-60 leading-relaxed">Research to tested prototype</p>
+        </div>
+        <div class="min-w-0">
+          <p class="text-sm font-bold uppercase tracking-wider text-primary mb-2">Testing</p>
+          <p class="text-sm font-normal text-secondary opacity-60 leading-relaxed">5 participants<br>UMUX Lite 88.33</p>
         </div>
         <div class="min-w-0">
           <p class="text-sm font-bold uppercase tracking-wider text-primary mb-2">Tools</p>
-          <p class="text-sm font-normal text-secondary opacity-60 leading-relaxed">Figma, FigJam, Notion, Claude Code</p>
-        </div>
-        <div class="min-w-0">
-          <p class="text-sm font-bold uppercase tracking-wider text-primary mb-2">Platform</p>
-          <p class="text-sm font-normal text-secondary opacity-60 leading-relaxed">Mobile</p>
-        </div>
-        <div class="min-w-0">
-          <p class="text-sm font-bold uppercase tracking-wider text-primary mb-2">Deliverables</p>
-          <p class="text-sm font-normal text-secondary opacity-60 leading-relaxed">Research, Information Architecture, Task Flow, Wireframes, High Fidelity UI, Interactive Prototype</p>
+          <p class="text-sm font-normal text-secondary opacity-60 leading-relaxed">Figma · FigJam · Notion</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Hero image -->
-  <div class="w-full bg-[#F0FDF4] flex items-center justify-center py-14 px-6">
-    <img src="img/stageup.jpeg" alt="StageUp app screens" class="w-full max-w-4xl h-auto object-contain rounded-2xl shadow-[0_8px_48px_-4px_rgba(22,163,74,0.15)]" />
+  <!-- The finished product, first -->
+  <div class="cs-hero-band">
+    <figure class="cs-shot cs-shot--plain"><img src="img/stageup/hero.webp" width="2400" height="1340" alt="Three StageUp screens showing connecting learning sources, the welcome screen and setting a career goal" class="zoomable" /></figure>
   </div>
 
 
-  <!-- ─── PROJECT OVERVIEW ──────────────────────────────────────────────── -->
-  <section class="py-20 md:py-28 border-b border-border">
-    <div class="max-w-6xl mx-auto px-6 lg:px-8">
-      <div class="max-w-3xl">
-        <p class="reveal text-xs font-600 tracking-[0.25em] uppercase text-accent mb-3">Overview</p>
-        <h2 class="reveal text-3xl md:text-4xl font-700 tracking-tight mb-8">Project Overview</h2>
-        <p class="reveal text-secondary text-base leading-relaxed mb-4">
-          StageUp is an original product design project created to solve a problem I experienced firsthand as a learner. Professionals today learn from multiple platforms at the same time. Coursera, Udemy, YouTube, and LinkedIn Learning are all great on their own. But each platform tracks progress independently, leaving learners with no single place to understand their overall skill growth or how close they are to their career goals.
-        </p>
-        <p class="reveal text-secondary text-base leading-relaxed mb-4">
-          This case study walks through my full design process, from identifying the core problem through research and information architecture to wireframing, high fidelity design, and an interactive prototype. The result is a product that connects scattered learning to real career outcomes.
-        </p>
-      </div>
-    </div>
-  </section>
-
-
-  <!-- ─── PROBLEM STATEMENT ─────────────────────────────────────────────── -->
-  <section class="relative py-20 md:py-28 bg-surface-alt border-b border-border overflow-hidden">
-    <div class="dot-patch dot-patch--lg" style="top: -10%; left: -50px;" aria-hidden="true"></div>
-    <div class="max-w-6xl mx-auto px-6 lg:px-8 relative z-10">
-
-      <div class="reveal grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-12">
+  <!-- ─── AT A GLANCE ─────────────────────────────────────────────────────── -->
+  <section class="cs-sec">
+    <div class="cs-wrap">
+      <p class="reveal cs-eyebrow">At a glance</p>
+      <div class="reveal cs-glance">
         <div>
-          <p class="text-xs font-600 tracking-[0.25em] uppercase text-accent mb-3">Problem</p>
-          <h2 class="text-3xl md:text-4xl font-700 tracking-tight mb-6">Problem Statement</h2>
-          <p class="text-secondary text-base leading-relaxed">
-            Learners building professional skills today face a fragmented experience. Using multiple platforms at the same time creates challenges that go beyond just staying organized.
-          </p>
+          <h3>The problem</h3>
+          <p>People building new skills learn across Coursera, Udemy, LinkedIn Learning and YouTube. Each one tracks progress its own way, so nobody can see their overall growth or how close they are to a career goal.</p>
         </div>
-        <img src="img/stageup3.jpeg" alt="StageUp problem" onclick="openLightbox('img/stageup3.jpeg','Problem Statement')" class="w-3/4 mx-auto h-auto object-contain rounded-xl mix-blend-multiply cursor-zoom-in" />
-      </div>
-
-      <div class="reveal grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-
-        <div class="p-6 rounded-2xl bg-surface-alt border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
-          <h3 class="text-sm font-700 text-primary mb-2">Fragmented Progress Tracking</h3>
-          <p class="text-sm text-secondary leading-relaxed">Learning progress is scattered across platforms with no unified view.</p>
-          <p class="read-more-extra text-sm text-secondary leading-relaxed mt-2">Learners using multiple platforms must manually check each one separately, a process that is time consuming and often abandoned.</p>
-          <button class="read-more-btn text-xs font-600 text-accent hover:underline cursor-pointer mt-3 block" onclick="toggleReadMore(this)">Read more</button>
-        </div>
-
-        <div class="p-6 rounded-2xl bg-surface-alt border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
-          <h3 class="text-sm font-700 text-primary mb-2">Inconsistent Progress Metrics</h3>
-          <p class="text-sm text-secondary leading-relaxed">Each platform measures progress in a completely different way.</p>
-          <p class="read-more-extra text-sm text-secondary leading-relaxed mt-2">Some platforms use certificates, others use percentage watched, hours logged, or no tracking at all. This inconsistency makes it impossible to get a true picture of overall development.</p>
-          <button class="read-more-btn text-xs font-600 text-accent hover:underline cursor-pointer mt-3 block" onclick="toggleReadMore(this)">Read more</button>
-        </div>
-
-        <div class="p-6 rounded-2xl bg-surface-alt border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
-          <h3 class="text-sm font-700 text-primary mb-2">Weak Connection to Career Goals</h3>
-          <p class="text-sm text-secondary leading-relaxed">Finishing a course does not tell you how close you are to your career goal.</p>
-          <p class="read-more-extra text-sm text-secondary leading-relaxed mt-2">Most platforms focus on course completion rather than long term skill development. Users are left to make the connection between their learning and their career ambitions entirely on their own.</p>
-          <button class="read-more-btn text-xs font-600 text-accent hover:underline cursor-pointer mt-3 block" onclick="toggleReadMore(this)">Read more</button>
-        </div>
-
-        <div class="p-6 rounded-2xl bg-surface-alt border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
-          <h3 class="text-sm font-700 text-primary mb-2">Low Motivation Over Time</h3>
-          <p class="text-sm text-secondary leading-relaxed">Without visible progress, learners lose momentum and stop.</p>
-          <p class="read-more-extra text-sm text-secondary leading-relaxed mt-2">When growth feels invisible, it is easy to believe you are not making progress even when you are. Motivation drops and learning frequency decreases over time without a feedback loop that shows real growth.</p>
-          <button class="read-more-btn text-xs font-600 text-accent hover:underline cursor-pointer mt-3 block" onclick="toggleReadMore(this)">Read more</button>
-        </div>
-
-        <div class="p-6 rounded-2xl bg-surface-alt border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)] sm:col-span-2 lg:col-span-1">
-          <h3 class="text-sm font-700 text-primary mb-2">Difficulty Demonstrating Skills</h3>
-          <p class="text-sm text-secondary leading-relaxed">Learners struggle to prove their skills when applying for jobs.</p>
-          <p class="read-more-extra text-sm text-secondary leading-relaxed mt-2">With progress spread across five different platforms, there is no single profile that shows what a learner actually knows. This creates real barriers when communicating skill level to potential employers.</p>
-          <button class="read-more-btn text-xs font-600 text-accent hover:underline cursor-pointer mt-3 block" onclick="toggleReadMore(this)">Read more</button>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-
-  <!-- ─── SOLUTION ──────────────────────────────────────────────────────── -->
-  <section class="relative py-20 md:py-28 border-b border-border overflow-hidden">
-    <div class="dot-patch dot-patch--lg" style="top: -8%; left: -60px;" aria-hidden="true"></div>
-    <div class="max-w-6xl mx-auto px-6 lg:px-8 relative z-10">
-
-      <div class="reveal mb-10">
-        <p class="text-xs font-600 tracking-[0.25em] uppercase text-accent mb-3">Solution</p>
-        <h2 class="text-3xl md:text-4xl font-700 tracking-tight">The Solution</h2>
-      </div>
-
-      <p class="reveal text-secondary text-base leading-relaxed max-w-3xl mb-4">
-        StageUp acts as a connective layer between learning platforms. It syncs learning activity from Coursera, Udemy, LinkedIn Learning and others, maps everything to a unified skill profile, and recommends next steps based on the user's career goals.
-      </p>
-      <p class="reveal text-secondary text-base leading-relaxed max-w-3xl mb-12">
-        Rather than replacing existing platforms, StageUp makes them work together. Users get one place to understand their growth, track their progress across all platforms, and stay motivated toward a real career outcome.
-      </p>
-
-      <div class="reveal grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-
-        <div class="p-6 rounded-2xl bg-surface-alt border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
-          <h3 class="text-sm font-700 text-primary mb-2">Learning Sync</h3>
-          <p class="text-sm text-secondary leading-relaxed">Connects to multiple platforms and pulls in learning activity automatically.</p>
-        </div>
-
-        <div class="p-6 rounded-2xl bg-surface-alt border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
-          <h3 class="text-sm font-700 text-primary mb-2">Skill Mapping</h3>
-          <p class="text-sm text-secondary leading-relaxed">Translates completed courses into skill tags such as UX Design, Data Analysis, and Product Strategy.</p>
-        </div>
-
-        <div class="p-6 rounded-2xl bg-surface-alt border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
-          <h3 class="text-sm font-700 text-primary mb-2">Skill Growth Visualization</h3>
-          <p class="text-sm text-secondary leading-relaxed">Shows how skills are developing over time through charts and progress indicators.</p>
-        </div>
-
-        <div class="p-6 rounded-2xl bg-surface-alt border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
-          <h3 class="text-sm font-700 text-primary mb-2">Skill Gap Identification</h3>
-          <p class="text-sm text-secondary leading-relaxed">Compares current skills against a chosen career goal and highlights what is missing.</p>
-        </div>
-
-        <div class="p-6 rounded-2xl bg-surface-alt border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
-          <h3 class="text-sm font-700 text-primary mb-2">Personalized Recommendations</h3>
-          <p class="text-sm text-secondary leading-relaxed">Suggests the next course or learning path based on where the user is and where they want to go.</p>
-        </div>
-
-        <div class="p-6 rounded-2xl bg-surface-alt border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
-          <h3 class="text-sm font-700 text-primary mb-2">Shareable Skill Profile</h3>
-          <p class="text-sm text-secondary leading-relaxed">Consolidates all earned skills into a single profile users can share with employers, so their learning becomes growth they can show and prove.</p>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-
-  <!-- ─── PERSONA ───────────────────────────────────────────────────────── -->
-  <section class="relative py-20 md:py-28 bg-surface-alt border-b border-border overflow-hidden">
-    <div class="dot-patch dot-patch--sm" style="bottom: 8%; right: 5%;" aria-hidden="true"></div>
-    <div class="max-w-6xl mx-auto px-6 lg:px-8 relative z-10">
-
-      <div class="reveal mb-4">
-        <p class="text-xs font-600 tracking-[0.25em] uppercase text-accent mb-3">Persona</p>
-        <h2 class="text-3xl md:text-4xl font-700 tracking-tight mb-4">Sarah, The Ambitious Career Switcher</h2>
-        <p class="text-secondary text-base leading-relaxed max-w-3xl">
-          Before defining how the solution would work, I needed to understand exactly who I was designing for. Sarah represents the core user who experienced every problem StageUp was built to solve.
-        </p>
-      </div>
-
-      <div class="reveal grid grid-cols-1 lg:grid-cols-3 gap-8 mt-10">
-
-        <!-- About -->
-        <div class="lg:col-span-1 p-6 rounded-2xl bg-surface-alt border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
-          <div class="flex items-center gap-4 mb-6">
-            <div class="w-14 h-14 rounded-full bg-gradient-to-br from-[#14532D] to-[#16A34A] flex items-center justify-center text-white font-700 text-xl shrink-0">S</div>
-            <div>
-              <p class="text-base font-700 text-primary">Sarah Mitchell, 26</p>
-              <p class="text-xs text-secondary">The Ambitious Career Switcher</p>
-            </div>
-          </div>
-          <h3 class="text-xs font-700 text-primary uppercase tracking-widest mb-2">About</h3>
-          <p class="text-sm text-secondary leading-relaxed">
-            Sarah is a marketing coordinator transitioning into UX design, learning across Coursera, Udemy, and YouTube with no clear view of her progress or how far she is from landing her first UX role.
-          </p>
-        </div>
-
-        <!-- Goals, Frustrations, Behaviours -->
-        <div class="lg:col-span-2 grid grid-cols-1 sm:grid-cols-3 gap-4">
-
-          <div class="p-6 rounded-2xl bg-surface-alt border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
-            <h3 class="text-xs font-700 text-accent uppercase tracking-widest mb-4">Goals</h3>
-            <ul class="space-y-2.5 text-sm text-secondary">
-              <li class="flex items-start gap-2"><span class="text-accent shrink-0 mt-0.5">•</span>Track all learning in one place</li>
-              <li class="flex items-start gap-2"><span class="text-accent shrink-0 mt-0.5">•</span>Understand what skills she has built</li>
-              <li class="flex items-start gap-2"><span class="text-accent shrink-0 mt-0.5">•</span>Know what's missing before applying for UX roles</li>
-            </ul>
-          </div>
-
-          <div class="p-6 rounded-2xl bg-surface-alt border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
-            <h3 class="text-xs font-700 text-red-400 uppercase tracking-widest mb-4">Frustrations</h3>
-            <ul class="space-y-2.5 text-sm text-secondary">
-              <li class="flex items-start gap-2"><span class="text-red-400 shrink-0 mt-0.5">•</span>Checks three platforms just to understand progress</li>
-              <li class="flex items-start gap-2"><span class="text-red-400 shrink-0 mt-0.5">•</span>Can't connect courses to real job requirements</li>
-              <li class="flex items-start gap-2"><span class="text-red-400 shrink-0 mt-0.5">•</span>Loses motivation when growth feels invisible</li>
-            </ul>
-          </div>
-
-          <div class="p-6 rounded-2xl bg-surface-alt border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
-            <h3 class="text-xs font-700 text-secondary uppercase tracking-widest mb-4">Behaviours</h3>
-            <ul class="space-y-2.5 text-sm text-secondary">
-              <li class="flex items-start gap-2"><span class="text-accent shrink-0 mt-0.5">•</span>Learns in short mobile sessions during commutes</li>
-              <li class="flex items-start gap-2"><span class="text-accent shrink-0 mt-0.5">•</span>Checks progress frequently for reassurance</li>
-              <li class="flex items-start gap-2"><span class="text-accent shrink-0 mt-0.5">•</span>Uses LinkedIn to research designers in her target role</li>
-            </ul>
-          </div>
-
-        </div>
-      </div>
-    </div>
-  </section>
-
-
-  <!-- ─── RESEARCH INSIGHTS ─────────────────────────────────────────────── -->
-  <section class="py-20 md:py-28 border-b border-border">
-    <div class="max-w-6xl mx-auto px-6 lg:px-8">
-
-      <div class="reveal grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-12">
-        <img src="img/Stageup-research.jpeg" alt="StageUp research" onclick="openLightbox('img/Stageup-research.jpeg','Research Insights')" class="w-3/4 mx-auto h-auto object-contain rounded-xl mix-blend-multiply cursor-zoom-in order-last lg:order-first" />
         <div>
-          <p class="text-xs font-600 tracking-[0.25em] uppercase text-accent mb-3">Research</p>
-          <h2 class="text-3xl md:text-4xl font-700 tracking-tight mb-4">Research Insights</h2>
-          <p class="text-secondary text-base leading-relaxed mb-4">
-            Sarah's experience was not unique. Research across the major platforms that professionals use most confirmed the same patterns at scale.
-          </p>
-          <p class="text-secondary text-base leading-relaxed">
-            Through a competitive analysis of <a href="https://www.coursera.org" target="_blank" rel="noopener noreferrer" class="text-accent hover:underline font-600">Coursera</a>, <a href="https://www.udemy.com" target="_blank" rel="noopener noreferrer" class="text-accent hover:underline font-600">Udemy</a>, <a href="https://www.linkedin.com/learning" target="_blank" rel="noopener noreferrer" class="text-accent hover:underline font-600">LinkedIn Learning</a>, and <a href="https://www.youtube.com" target="_blank" rel="noopener noreferrer" class="text-accent hover:underline font-600">YouTube</a>, I evaluated how each platform handles progress tracking, goal setting, and skill visibility, and identified what was consistently missing across all of them.
-          </p>
+          <h3>My role</h3>
+          <p>A solo project that started from a problem I had as a learner. I ran the research, defined the structure and flows, designed every screen and tested the prototype.</p>
         </div>
-      </div>
-
-      <div class="reveal grid grid-cols-1 sm:grid-cols-2 gap-4">
-
-        <div class="p-6 rounded-2xl bg-surface-alt border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
-          <h3 class="text-sm font-700 text-primary mb-2">Guided Onboarding Improves Engagement</h3>
-          <p class="text-sm text-secondary leading-relaxed">Learners understand the product faster when onboarding is structured and goal oriented.</p>
-          <p class="read-more-extra text-sm text-secondary leading-relaxed mt-2">Platforms that drop users directly into a course library see significantly higher drop off rates. A guided first experience that communicates the product's value leads to stronger retention and more active long term usage.</p>
-          <button class="read-more-btn text-xs font-600 text-accent hover:underline cursor-pointer mt-3 block" onclick="toggleReadMore(this)">Read more</button>
-        </div>
-
-        <div class="p-6 rounded-2xl bg-surface-alt border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
-          <h3 class="text-sm font-700 text-primary mb-2">Goal Driven Personalization Increases Retention</h3>
-          <p class="text-sm text-secondary leading-relaxed">Connecting learning to a real career goal keeps users engaged longer than generic recommendations.</p>
-          <p class="read-more-extra text-sm text-secondary leading-relaxed mt-2">Users are more likely to return and continue when every recommendation feels relevant to where they want to go. Generic course suggestions do not create the same sense of purpose as a personalized path tied to a specific career outcome.</p>
-          <button class="read-more-btn text-xs font-600 text-accent hover:underline cursor-pointer mt-3 block" onclick="toggleReadMore(this)">Read more</button>
-        </div>
-
-        <div class="p-6 rounded-2xl bg-surface-alt border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
-          <h3 class="text-sm font-700 text-primary mb-2">Visual Progress Motivates Learners</h3>
-          <p class="text-sm text-secondary leading-relaxed">Seeing growth visually makes progress feel real and worth continuing.</p>
-          <p class="read-more-extra text-sm text-secondary leading-relaxed mt-2">Charts, milestones, and skill indicators sustain motivation far better than text based summaries alone. Platforms that use visual progress tracking consistently see higher completion rates and stronger daily engagement.</p>
-          <button class="read-more-btn text-xs font-600 text-accent hover:underline cursor-pointer mt-3 block" onclick="toggleReadMore(this)">Read more</button>
-        </div>
-
-        <div class="p-6 rounded-2xl bg-surface-alt border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
-          <h3 class="text-sm font-700 text-primary mb-2">Mobile Users Need Simplified Dashboards</h3>
-          <p class="text-sm text-secondary leading-relaxed">Mobile users need information that is scannable and immediately meaningful.</p>
-          <p class="read-more-extra text-sm text-secondary leading-relaxed mt-2">Most learners check their progress quickly during short breaks or commutes. Complex, data heavy screens with buried menus cause frustration on mobile. The first screen a user sees needs to instantly answer the question "How am I doing?"</p>
-          <button class="read-more-btn text-xs font-600 text-accent hover:underline cursor-pointer mt-3 block" onclick="toggleReadMore(this)">Read more</button>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-
-  <!-- ─── CORE DESIGN CHALLENGE ─────────────────────────────────────────── -->
-  <section class="relative py-20 md:py-28 bg-surface-alt border-b border-border overflow-hidden">
-    <div class="dot-patch dot-patch--md" style="bottom: -8%; right: -50px;" aria-hidden="true"></div>
-    <div class="max-w-6xl mx-auto px-6 lg:px-8 relative z-10">
-
-      <div class="reveal grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-12">
         <div>
-          <p class="text-xs font-600 tracking-[0.25em] uppercase text-accent mb-3">Challenge</p>
-          <h2 class="text-3xl md:text-4xl font-700 tracking-tight mb-4">Core Design Challenge</h2>
-          <h3 class="text-xl font-700 text-primary mb-4">Normalizing Learning Data Across Platforms</h3>
-          <p class="text-secondary text-base leading-relaxed">
-            The research made it clear that the core problem was structural rather than behavioral. Different platforms track learning in completely different ways, with no universal standard to work from.
-          </p>
+          <h3>The result</h3>
+          <p>A tested prototype that scored 88.33 on UMUX Lite, a Grade A result, with five participants. Two issues found in testing shaped the final design.</p>
         </div>
-        <img src="img/stageup1.jpeg" alt="StageUp design challenge" onclick="openLightbox('img/stageup1.jpeg','Core Design Challenge')" class="w-3/4 mx-auto h-auto object-contain rounded-xl mix-blend-multiply cursor-zoom-in" />
       </div>
-
-      <div class="reveal grid grid-cols-2 sm:grid-cols-4 gap-4 mb-12">
-
-        <div class="p-5 rounded-2xl bg-surface-alt border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)] text-center">
-          <p class="text-sm font-700 text-primary mb-1">
-            <a href="https://www.coursera.org" target="_blank" rel="noopener noreferrer" class="hover:text-accent transition-colors">Coursera</a>
-          </p>
-          <p class="text-xs text-secondary leading-relaxed">tracks progress through certificates and course completion.</p>
-        </div>
-
-        <div class="p-5 rounded-2xl bg-surface-alt border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)] text-center">
-          <p class="text-sm font-700 text-primary mb-1">
-            <a href="https://www.udemy.com" target="_blank" rel="noopener noreferrer" class="hover:text-accent transition-colors">Udemy</a>
-          </p>
-          <p class="text-xs text-secondary leading-relaxed">tracks progress through percentage of video content watched.</p>
-        </div>
-
-        <div class="p-5 rounded-2xl bg-surface-alt border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)] text-center">
-          <p class="text-sm font-700 text-primary mb-1">
-            <a href="https://www.linkedin.com/learning" target="_blank" rel="noopener noreferrer" class="hover:text-accent transition-colors">LinkedIn Learning</a>
-          </p>
-          <p class="text-xs text-secondary leading-relaxed">tracks progress through hours spent learning.</p>
-        </div>
-
-        <div class="p-5 rounded-2xl bg-surface-alt border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)] text-center">
-          <p class="text-sm font-700 text-primary mb-1">
-            <a href="https://www.youtube.com" target="_blank" rel="noopener noreferrer" class="hover:text-accent transition-colors">YouTube</a>
-          </p>
-          <p class="text-xs text-secondary leading-relaxed">has no progress tracking at all.</p>
-        </div>
-
-      </div>
-
-      <p class="reveal text-secondary text-base leading-relaxed max-w-3xl mb-6">
-        The challenge was how to take four completely different data formats and turn them into one meaningful skill profile.
-      </p>
-
-      <div class="reveal p-6 md:p-8 rounded-2xl bg-surface-alt border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)] max-w-3xl">
-        <h3 class="text-sm font-700 text-primary uppercase tracking-widest mb-4">The Solution to the Challenge</h3>
-        <p class="text-sm text-secondary leading-relaxed mb-4">
-          StageUp solves this by converting all learning activity into skill tags weighted by engagement depth. Completing a full course sends a strong signal. Watching part of a video sends a lighter signal. Courses that include hands on projects carry a higher weight than passive video content.
-        </p>
-        <div class="read-more-extra">
-          <p class="text-sm text-secondary leading-relaxed mb-4">
-            This creates a dynamic skill profile that reflects what users actually know, beyond what they started or clicked on.
-          </p>
-          <p class="text-sm text-secondary leading-relaxed font-600 text-primary">
-            This was the most important systems design decision in the project, because the rest of the product depended on it.
-          </p>
-        </div>
-        <button class="text-xs font-600 text-accent hover:underline cursor-pointer mt-2 block" onclick="toggleReadMore(this)">Read more</button>
-      </div>
-
     </div>
   </section>
 
 
-  <!-- ─── INFORMATION ARCHITECTURE ─────────────────────────────────────── -->
-  <section class="py-20 md:py-28 border-b border-border">
-    <div class="max-w-6xl mx-auto px-6 lg:px-8">
-
-      <div class="reveal mb-10">
-        <p class="text-xs font-600 tracking-[0.25em] uppercase text-accent mb-3">Structure</p>
-        <h2 class="text-3xl md:text-4xl font-700 tracking-tight mb-4">Information Architecture</h2>
-        <p class="text-secondary text-base leading-relaxed max-w-3xl">
-          With Sarah's journey mapped and the core data challenge solved, I could define the full product structure. The IA reflects exactly how a user like Sarah moves through the product, from first landing on the app to connecting her learning platforms and reaching her personalised dashboard. It separates the logged out marketing and sign in experience from the logged in product experience.
-        </p>
-      </div>
-
-      <p class="reveal text-secondary text-base leading-relaxed max-w-3xl mb-10">
-        Before login, users see the landing page, features, pricing, and authentication. After login, they start with onboarding, where they connect their learning sources and set their career goal, and then move into the main dashboard.
-      </p>
-
-      <div class="reveal mb-4">
-        <div class="flex items-center justify-between mb-4">
-          <h3 class="text-sm font-700 text-primary uppercase tracking-widest">IA Diagram</h3>
-          <button onclick="openLightbox('img/stageup-information-architecture.jpeg','Information Architecture')" class="text-xs font-600 text-accent hover:underline cursor-pointer flex items-center gap-1">View full <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor"><path d="M3 4a1 1 0 011-1h4a1 1 0 010 2H6.414l2.293 2.293a1 1 0 11-1.414 1.414L5 6.414V8a1 1 0 01-2 0V4zm9 1a1 1 0 010-2h4a1 1 0 011 1v4a1 1 0 01-2 0V6.414l-2.293 2.293a1 1 0 11-1.414-1.414L13.586 5H12zm-9 7a1 1 0 012 0v1.586l2.293-2.293a1 1 0 111.414 1.414L6.414 15H8a1 1 0 010 2H4a1 1 0 01-1-1v-4zm13 2a1 1 0 01-2 0v-1.586l-2.293 2.293a1 1 0 01-1.414-1.414L13.586 15H12a1 1 0 010-2h4a1 1 0 011 1v4z"/></svg></button>
-        </div>
-        <img src="img/stageup-information-architecture.jpeg" alt="StageUp information architecture" onclick="openLightbox('img/stageup-information-architecture.jpeg','Information Architecture')" class="w-full rounded-2xl shadow-[0_8px_48px_-4px_rgba(22,163,74,0.15)] cursor-zoom-in mb-10" />
-      </div>
-
-      <div class="reveal mb-4">
-        <div class="flex items-center justify-between mb-4">
-          <h3 class="text-sm font-700 text-primary uppercase tracking-widest">Key User Flow for Connecting a Learning Source</h3>
-          <button onclick="openLightbox('img/user-flow.jpg','Key User Flow')" class="text-xs font-600 text-accent hover:underline cursor-pointer flex items-center gap-1">View full <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor"><path d="M3 4a1 1 0 011-1h4a1 1 0 010 2H6.414l2.293 2.293a1 1 0 11-1.414 1.414L5 6.414V8a1 1 0 01-2 0V4zm9 1a1 1 0 010-2h4a1 1 0 011 1v4a1 1 0 01-2 0V6.414l-2.293 2.293a1 1 0 11-1.414-1.414L13.586 5H12zm-9 7a1 1 0 012 0v1.586l2.293-2.293a1 1 0 111.414 1.414L6.414 15H8a1 1 0 010 2H4a1 1 0 01-1-1v-4zm13 2a1 1 0 01-2 0v-1.586l-2.293 2.293a1 1 0 01-1.414-1.414L13.586 15H12a1 1 0 010-2h4a1 1 0 011 1v4z"/></svg></button>
-        </div>
-        <p class="text-sm text-secondary leading-relaxed mb-4">The most critical onboarding action is connecting a learning platform. Without learning data the product cannot generate skill insights or personalized recommendations. The flow includes a recovery path in case the platform connection fails, so users always have a next step.</p>
-        <img src="img/user-flow.jpg" alt="StageUp key user flow" onclick="openLightbox('img/user-flow.jpg','Key User Flow')" class="w-full rounded-2xl shadow-[0_8px_48px_-4px_rgba(22,163,74,0.15)] cursor-zoom-in" />
-      </div>
-
-    </div>
-  </section>
-
-
-  <!-- ─── DESIGN PROCESS ────────────────────────────────────────────────── -->
-  <section class="relative py-20 md:py-28 bg-surface-alt border-b border-border overflow-hidden">
-    <div class="dot-patch dot-patch--lg" style="top: -6%; right: -60px;" aria-hidden="true"></div>
-    <div class="dot-patch dot-patch--sm" style="bottom: 5%; left: 4%;" aria-hidden="true"></div>
-    <div class="max-w-6xl mx-auto px-6 lg:px-8 relative z-10">
-
-      <div class="reveal mb-12">
-        <p class="text-xs font-600 tracking-[0.25em] uppercase text-accent mb-3">Design Process</p>
-        <h2 class="text-3xl md:text-4xl font-700 tracking-tight">Design Process</h2>
-      </div>
-
-      <!-- Low fi -->
-      <div class="reveal mb-14">
-        <h3 class="text-xl font-700 text-primary mb-4">Low Fidelity Wireframes</h3>
-        <p class="text-secondary text-base leading-relaxed max-w-3xl mb-6">
-          I started with low fidelity wireframes to establish the core structure, layout, and user flow before introducing any visual decisions. The focus at this stage was entirely on getting the screens and navigation right. The wireframes cover two areas, the onboarding and home experience and the main dashboard and profile views. These became the foundation for the mid fidelity prototype.
-        </p>
-        <div class="flex items-center justify-between mb-4">
-          <span></span>
-          <button onclick="openLightbox('img/stageup-low-fid-wireframe.jpeg','Low Fidelity Wireframes')" class="text-xs font-600 text-accent hover:underline cursor-pointer flex items-center gap-1">View full <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor"><path d="M3 4a1 1 0 011-1h4a1 1 0 010 2H6.414l2.293 2.293a1 1 0 11-1.414 1.414L5 6.414V8a1 1 0 01-2 0V4zm9 1a1 1 0 010-2h4a1 1 0 011 1v4a1 1 0 01-2 0V6.414l-2.293 2.293a1 1 0 11-1.414-1.414L13.586 5H12zm-9 7a1 1 0 012 0v1.586l2.293-2.293a1 1 0 111.414 1.414L6.414 15H8a1 1 0 010 2H4a1 1 0 01-1-1v-4zm13 2a1 1 0 01-2 0v-1.586l-2.293 2.293a1 1 0 01-1.414-1.414L13.586 15H12a1 1 0 010-2h4a1 1 0 011 1v4z"/></svg></button>
-        </div>
-        <img src="img/stageup-low-fid-wireframe.jpeg" alt="StageUp low fidelity wireframes" onclick="openLightbox('img/stageup-low-fid-wireframe.jpeg','Low Fidelity Wireframes')" class="w-full h-auto object-contain rounded-2xl shadow-[0_8px_48px_-4px_rgba(22,163,74,0.15)] cursor-zoom-in" />
-      </div>
-
-      <!-- Mid fi -->
-      <div class="reveal mb-14">
-        <h3 class="text-xl font-700 text-primary mb-4">Mid Fidelity Prototype</h3>
-        <p class="text-secondary text-base leading-relaxed max-w-3xl mb-4">
-          From the wireframes I moved into mid fidelity, introducing real content, refining the visual hierarchy, and defining the core UI components. I then tested this prototype with 5 participants and asked each one to connect a learning source, set a career goal, and navigate the dashboard.
-        </p>
-        <p class="text-secondary text-base leading-relaxed max-w-3xl mb-8">
-          Two clear issues came out of those sessions, both of which directly shaped the high fidelity design.
-        </p>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-3xl mb-8">
-
-          <div class="p-5 rounded-2xl bg-surface-alt border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
-            <div class="w-7 h-7 rounded-full bg-red-100 flex items-center justify-center mb-3">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-red-400" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
-            </div>
-            <p class="text-sm font-700 text-primary mb-1">Sign Up Flow Was Confusing</p>
-            <p class="text-xs text-secondary leading-relaxed mb-2">One participant hesitated at the sign up step after entering their email and found it unnecessary. The distinction between new and returning users was unclear.</p>
-            <p class="text-xs font-600 text-accent">Fix → Split into two separate screens, "Get Started" for new users and "Log In" for returning users, each with its own dedicated flow.</p>
-          </div>
-
-          <div class="p-5 rounded-2xl bg-surface-alt border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
-            <div class="w-7 h-7 rounded-full bg-red-100 flex items-center justify-center mb-3">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-red-400" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
-            </div>
-            <p class="text-sm font-700 text-primary mb-1">Greyscale Felt Flat and Disengaging</p>
-            <p class="text-xs text-secondary leading-relaxed mb-2">Two participants found the greyscale palette hard to connect with emotionally. One described the app as feeling visually plain and suggested colour would make it feel more polished.</p>
-            <p class="text-xs font-600 text-accent">Fix → High fi introduced a full colour system with primary green for growth, colour coded icon backgrounds, real course imagery, and stronger typographic hierarchy.</p>
-          </div>
-
-        </div>
-
-        <p class="text-secondary text-base leading-relaxed max-w-3xl mb-6">
-          To measure usability, I ran a <strong class="text-primary font-700">UMUX-LITE</strong> questionnaire with all 5 participants after testing. The score came back at <strong class="text-primary font-700">88.33, a Grade A result</strong>, confirming the design was performing well despite the two issues identified. Those issues became the direct brief for the high fidelity redesign.
-        </p>
-
-        <!-- UMUX images -->
-        <div class="mb-4">
-          <div class="rounded-2xl bg-surface-alt border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)] overflow-hidden mb-4">
-            <img src="img/score.jpeg" alt="UMUX Participant Scores" onclick="openLightbox('img/score.jpeg','UMUX Participant Scores')" class="w-full cursor-zoom-in" />
-          </div>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8 items-start">
-            <div class="rounded-2xl bg-surface-alt border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)] overflow-hidden">
-              <img src="img/UMUXover.jpeg" alt="UMUX Score Overview" onclick="openLightbox('img/UMUXover.jpeg','UMUX Score Overview')" class="w-full cursor-zoom-in" />
-            </div>
-            <div class="rounded-2xl bg-surface-alt border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)] overflow-hidden">
-              <img src="img/UMUXchart.jpeg" alt="UMUX Testing Chart" onclick="openLightbox('img/UMUXchart.jpeg','UMUX Testing Chart')" class="w-full cursor-zoom-in" />
-            </div>
-          </div>
-        </div>
-
-        <div class="flex items-center justify-between mb-4">
-          <span></span>
-          <button onclick="openLightbox('img/stageup-mid-fid.jpeg','Mid Fidelity Prototype')" class="text-xs font-600 text-accent hover:underline cursor-pointer flex items-center gap-1">View full <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor"><path d="M3 4a1 1 0 011-1h4a1 1 0 010 2H6.414l2.293 2.293a1 1 0 11-1.414 1.414L5 6.414V8a1 1 0 01-2 0V4zm9 1a1 1 0 010-2h4a1 1 0 011 1v4a1 1 0 01-2 0V6.414l-2.293 2.293a1 1 0 11-1.414-1.414L13.586 5H12zm-9 7a1 1 0 012 0v1.586l2.293-2.293a1 1 0 111.414 1.414L6.414 15H8a1 1 0 010 2H4a1 1 0 01-1-1v-4zm13 2a1 1 0 01-2 0v-1.586l-2.293 2.293a1 1 0 01-1.414-1.414L13.586 15H12a1 1 0 010-2h4a1 1 0 011 1v4z"/></svg></button>
-        </div>
-        <img src="img/stageup-mid-fid.jpeg" alt="StageUp mid fidelity prototype" onclick="openLightbox('img/stageup-mid-fid.jpeg','Mid Fidelity Prototype')" class="w-full h-auto object-contain rounded-2xl shadow-[0_8px_48px_-4px_rgba(22,163,74,0.15)] cursor-zoom-in mb-4" />
-        <a href="https://www.figma.com/proto/yepF52QARjfNiK8x8hRl3x/Mid-Fidelity-Prototype?node-id=1-75&t=cGNTNcGP0Out01ge-1&scaling=scale-down&content-scaling=fixed&page-id=0%3A1" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-sm font-600 text-accent hover:underline cursor-pointer">
-          View in Figma →
-        </a>
-      </div>
-
-      <!-- High fi -->
+  <!-- ─── 01 THE CHALLENGE ────────────────────────────────────────────────── -->
+  <section class="cs-sec cs-sec--alt">
+    <div class="cs-wrap">
       <div class="reveal">
-        <h3 class="text-xl font-700 text-primary mb-4">High Fidelity Prototype</h3>
-        <p class="text-secondary text-base leading-relaxed max-w-3xl mb-4">
-          The high fidelity design directly addressed what the mid fi testing revealed. I separated the sign up and login flows, introduced a full colour system, and strengthened the visual hierarchy across every screen. Testing it again confirmed the improvements worked.
-        </p>
-        <p class="text-secondary text-base leading-relaxed max-w-3xl mb-6">
-          After completing the prototype, I also ran an accessibility check on the colour system. The original green failed WCAG AA, so I replaced it with a darker green that passes. This fix was applied consistently across every button, active state, and progress indicator.
-        </p>
-
-        <!-- Contrast comparison -->
-        <div class="flex flex-col sm:flex-row items-start gap-3 max-w-sm mb-10">
-          <div class="flex-1 rounded-2xl overflow-hidden border border-red-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
-            <div class="h-14" style="background:#00DB4F;"></div>
-            <div class="p-4 bg-surface-alt">
-              <p class="text-sm font-700 text-primary font-mono mb-1">#00DB4F</p>
-              <p class="text-xs text-secondary mb-2">Contrast ratio: 1.86:1</p>
-              <span class="inline-flex text-xs bg-red-50 text-red-500 px-2 py-0.5 rounded-full font-600 border border-red-100">Fails WCAG AA</span>
-            </div>
-          </div>
-          <div class="flex items-center justify-center self-center text-secondary/30 text-lg font-300 px-1">→</div>
-          <div class="flex-1 rounded-2xl overflow-hidden border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
-            <div class="h-14" style="background:#15803D;"></div>
-            <div class="p-4 bg-surface-alt">
-              <p class="text-sm font-700 text-primary font-mono mb-1">#15803D</p>
-              <p class="text-xs text-secondary mb-2">Contrast ratio: 5.01:1</p>
-              <span class="inline-flex text-xs bg-[#F0FDF4] text-accent px-2 py-0.5 rounded-full font-600 border border-green-100">Passes WCAG AA</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-3xl mb-8">
-
-          <div class="p-5 rounded-2xl bg-surface-alt border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
-            <div class="w-7 h-7 rounded-full bg-accent/10 flex items-center justify-center mb-3">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-accent" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-            </div>
-            <p class="text-sm font-700 text-primary mb-1">Sign Up Flow Was Clear</p>
-            <p class="text-xs text-secondary leading-relaxed">The split between "Get Started" and "Log In" removed the confusion from mid fi. Users immediately understood whether the app was treating them as new or returning.</p>
-          </div>
-
-          <div class="p-5 rounded-2xl bg-surface-alt border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
-            <div class="w-7 h-7 rounded-full bg-accent/10 flex items-center justify-center mb-3">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-accent" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-            </div>
-            <p class="text-sm font-700 text-primary mb-1">Visual Design Landed Well</p>
-            <p class="text-xs text-secondary leading-relaxed">Users described the interface as clean, motivating, and easy to use. The colour system addressed the flatness flagged in mid fi testing.</p>
-          </div>
-
-          <div class="p-5 rounded-2xl bg-surface-alt border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
-            <div class="w-7 h-7 rounded-full bg-accent/10 flex items-center justify-center mb-3">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-accent" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-            </div>
-            <p class="text-sm font-700 text-primary mb-1">Skill Chart Was Highly Engaging</p>
-            <p class="text-xs text-secondary leading-relaxed">Users found the 8 week skill growth chart compelling and said it made them want to keep learning.</p>
-          </div>
-
-          <div class="p-5 rounded-2xl bg-surface-alt border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)]">
-            <div class="w-7 h-7 rounded-full bg-accent/10 flex items-center justify-center mb-3">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-accent" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-            </div>
-            <p class="text-sm font-700 text-primary mb-1">Felt Like a Real Product</p>
-            <p class="text-xs text-secondary leading-relaxed">Multiple participants said StageUp felt like something they would download and use immediately.</p>
-          </div>
-
-        </div>
-
-        <div class="flex items-center justify-between mb-4">
-          <span></span>
-          <button onclick="openLightbox('img/stageup-high-fid.jpeg','High Fidelity Prototype')" class="text-xs font-600 text-accent hover:underline cursor-pointer flex items-center gap-1">View full <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor"><path d="M3 4a1 1 0 011-1h4a1 1 0 010 2H6.414l2.293 2.293a1 1 0 11-1.414 1.414L5 6.414V8a1 1 0 01-2 0V4zm9 1a1 1 0 010-2h4a1 1 0 011 1v4a1 1 0 01-2 0V6.414l-2.293 2.293a1 1 0 11-1.414-1.414L13.586 5H12zm-9 7a1 1 0 012 0v1.586l2.293-2.293a1 1 0 111.414 1.414L6.414 15H8a1 1 0 010 2H4a1 1 0 01-1-1v-4zm13 2a1 1 0 01-2 0v-1.586l-2.293 2.293a1 1 0 01-1.414-1.414L13.586 15H12a1 1 0 010-2h4a1 1 0 011 1v4z"/></svg></button>
-        </div>
-        <img src="img/stageup-high-fid.jpeg" alt="StageUp high fidelity prototype" onclick="openLightbox('img/stageup-high-fid.jpeg','High Fidelity Prototype')" class="w-full h-auto object-contain rounded-2xl shadow-[0_8px_48px_-4px_rgba(22,163,74,0.15)] cursor-zoom-in mb-4" />
-        <a href="https://www.figma.com/proto/xqp4QvUCPa4g2vx7qUaBKl/High-fidelity-prototype?node-id=1-88&t=vK9xWqMMgIAFNzBE-1&scaling=scale-down&content-scaling=fixed&page-id=0%3A1" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-sm font-600 text-accent hover:underline cursor-pointer">
-          View in Figma →
-        </a>
+        <p class="cs-eyebrow">01 · The challenge</p>
+        <h2 class="cs-h2">Four platforms, four ways of measuring progress</h2>
+        <p class="cs-p">Picture Sarah, a marketing coordinator moving into UX design. She learns on three platforms in short sessions on her phone, and she cannot tell how far she is from her first UX role.</p>
+        <p class="cs-p">Comparing the major platforms showed the problem was structural. No shared standard exists for what progress means.</p>
       </div>
 
-    </div>
-  </section>
-
-
-  <!-- ─── KEY DESIGN DECISIONS ──────────────────────────────────────────── -->
-  <section class="py-20 md:py-28 border-b border-border">
-    <div class="max-w-6xl mx-auto px-6 lg:px-8">
-
-      <div class="reveal mb-10">
-        <p class="text-xs font-600 tracking-[0.25em] uppercase text-accent mb-3">Decisions</p>
-        <h2 class="text-3xl md:text-4xl font-700 tracking-tight">Key Design Decisions</h2>
+      <div class="reveal cs-plats">
+        <div><h3>Coursera</h3><p>Certificates and course completion.</p></div>
+        <div><h3>Udemy</h3><p>Percentage of video watched.</p></div>
+        <div><h3>LinkedIn Learning</h3><p>Hours spent learning.</p></div>
+        <div><h3>YouTube</h3><p>No tracking at all.</p></div>
       </div>
 
-      <div class="reveal grid grid-cols-1 sm:grid-cols-2 gap-6">
-
-        <div class="rounded-2xl bg-surface-alt border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)] overflow-hidden flex flex-col">
-          <div class="bg-[#F0FDF4] overflow-hidden">
-            <img src="img/skillgrowth.jpeg" alt="Skill Growth Visualization" onclick="openLightbox('img/skillgrowth.jpeg','Skill Growth Visualization')" class="w-full h-auto cursor-zoom-in" />
-          </div>
-          <div class="h-px bg-green-100"></div>
-          <div class="p-6">
-            <h3 class="text-sm font-700 text-primary mb-2">Skill Growth Visualization</h3>
-            <p class="text-sm text-secondary leading-relaxed">Research showed visual progress motivates learners far better than text summaries alone. I used an 8 week chart so users see momentum building over time.</p>
-            <div class="read-more-extra">
-              <p class="text-sm text-secondary leading-relaxed mt-2">Platforms with visual tracking consistently see higher completion rates and daily engagement. A chart that grows is harder to ignore than a static number.</p>
-            </div>
-            <button class="text-xs font-600 text-accent hover:underline cursor-pointer mt-3 block" onclick="toggleReadMore(this)">Read more</button>
-          </div>
-        </div>
-
-        <div class="rounded-2xl bg-surface-alt border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)] overflow-hidden flex flex-col">
-          <div class="bg-[#F0FDF4] overflow-hidden">
-            <img src="img/careergoal.jpeg" alt="Career Goal Tracking" onclick="openLightbox('img/careergoal.jpeg','Career Goal Tracking')" class="w-full h-auto cursor-zoom-in" />
-          </div>
-          <div class="h-px bg-green-100"></div>
-          <div class="p-6">
-            <h3 class="text-sm font-700 text-primary mb-2">Career Goal Tracking</h3>
-            <p class="text-sm text-secondary leading-relaxed">Research confirmed goal driven personalisation keeps users engaged longer. I made the career goal the anchor of every screen. The dashboard always shows how far the user is and what is still missing.</p>
-            <div class="read-more-extra">
-              <p class="text-sm text-secondary leading-relaxed mt-2">This turns course completion from a finish line into a stepping stone. Instead of "I finished a course," the user sees "I am 67% of the way to becoming a UX Designer."</p>
-            </div>
-            <button class="text-xs font-600 text-accent hover:underline cursor-pointer mt-3 block" onclick="toggleReadMore(this)">Read more</button>
-          </div>
-        </div>
-
-        <div class="rounded-2xl bg-surface-alt border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)] overflow-hidden flex flex-col">
-          <div class="bg-[#F0FDF4] overflow-hidden">
-            <img src="img/aflow.jpeg" alt="Split Authentication Flow" onclick="openLightbox('img/aflow.jpeg','Split Authentication Flow')" class="w-full h-auto cursor-zoom-in" />
-          </div>
-          <div class="h-px bg-green-100"></div>
-          <div class="p-6">
-            <h3 class="text-sm font-700 text-primary mb-2">Split Authentication Flow</h3>
-            <p class="text-sm text-secondary leading-relaxed">Mid fi testing showed users were confused by a combined sign up and login screen, so I split it into two dedicated flows, "Get Started" for new users and "Log In" for returning users.</p>
-            <div class="read-more-extra">
-              <p class="text-sm text-secondary leading-relaxed mt-2">High fi testing confirmed the fix worked, and users knew right away which path was theirs. Before this, one confusing screen was the only thing standing between a new user and the rest of the product.</p>
-            </div>
-            <button class="text-xs font-600 text-accent hover:underline cursor-pointer mt-3 block" onclick="toggleReadMore(this)">Read more</button>
-          </div>
-        </div>
-
-        <div class="rounded-2xl bg-surface-alt border border-green-100 shadow-[0_2px_12px_rgba(22,163,74,0.06)] overflow-hidden flex flex-col">
-          <div class="bg-[#F0FDF4] overflow-hidden">
-            <img src="img/keymetrics.jpeg" alt="All Key Metrics at a Glance" onclick="openLightbox('img/keymetrics.jpeg','All Key Metrics at a Glance')" class="w-full h-auto cursor-zoom-in" />
-          </div>
-          <div class="h-px bg-green-100"></div>
-          <div class="p-6">
-            <h3 class="text-sm font-700 text-primary mb-2">All Key Metrics at a Glance</h3>
-            <p class="text-sm text-secondary leading-relaxed">I designed the home screen so users can see Skill Growth, Weekly Activity, Current Streak, and Goal Progress all above the fold with no scrolling needed.</p>
-            <div class="read-more-extra">
-              <p class="text-sm text-secondary leading-relaxed mt-2">The question I asked was what 4 things a learner needs to know the moment they open the app. Each card answers one of them. How am I growing? How active am I? Am I consistent? How close am I to my goal?</p>
-            </div>
-            <button class="text-xs font-600 text-accent hover:underline cursor-pointer mt-3 block" onclick="toggleReadMore(this)">Read more</button>
-          </div>
-        </div>
-
+      <div class="reveal cs-gap">
+        <strong>The answer</strong>
+        <p>StageUp turns all learning activity into skill tags, weighted by depth of engagement. A finished course counts for more than part of a video, and a course with a hands on project counts for more than passive watching. Every other part of the product depends on this one decision.</p>
       </div>
     </div>
   </section>
 
 
-  <!-- ─── REFLECTION ────────────────────────────────────────────────────── -->
-  <section class="relative py-20 md:py-28 bg-ink text-on-ink overflow-hidden">
-    <div class="dot-patch dot-patch--on-dark dot-patch--xl" style="top: -14%; right: -60px;" aria-hidden="true"></div>
-    <div class="dot-patch dot-patch--on-dark dot-patch--sm" style="bottom: 6%; left: 6%;" aria-hidden="true"></div>
-    <div class="max-w-6xl mx-auto px-6 lg:px-8 relative z-10">
-
-      <div class="reveal mb-10">
-        <p class="text-xs font-600 tracking-[0.25em] uppercase text-accent mb-3">Reflection</p>
-        <h2 class="text-3xl md:text-4xl font-700 tracking-tight mb-6">Reflection</h2>
+  <!-- ─── 02 KEY DECISIONS ────────────────────────────────────────────────── -->
+  <section class="cs-sec">
+    <div class="cs-wrap">
+      <div class="reveal">
+        <p class="cs-eyebrow">02 · Key decisions</p>
+        <h2 class="cs-h2">Four decisions, each tied to evidence</h2>
       </div>
-
-      <p class="reveal text-on-ink/70 text-base leading-relaxed max-w-3xl mb-4">
-        StageUp taught me that the hardest design challenges are structural rather than visual. The biggest problem was creating a meaningful system from learning data that was never designed to work together.
-      </p>
-      <div class="reveal max-w-3xl mb-12">
-        <div class="read-more-extra">
-          <p class="text-on-ink/70 text-base leading-relaxed mb-4">
-            Reframing the problem was the most important decision I made. Users do not want to simply sync their learning platforms. They want to become UX designers, get promoted, or transition into new careers. By focusing on career goals rather than course completion, StageUp turns scattered learning activity into a clear path for growth.
-          </p>
-          <p class="text-on-ink/70 text-base leading-relaxed">
-            Designing a long term feedback loop where the product becomes more useful the more it is used was the most valuable lesson from this project.
-          </p>
+      
+      <div class="reveal cs-dec">
+        <div class="cs-dec__text">
+          <p class="cs-dec__num">01</p>
+          <h3>The career goal anchors every screen</h3>
+          <p>The dashboard always shows how far the user is from the goal and what is still missing. Finishing a course stops being the finish line. The user reads 67% of the way to UX Designer.</p>
+          <div class="cs-ruled"><span>Based on</span><p>Platform research. Recommendations tied to a real career goal keep learners coming back longer than generic course suggestions.</p></div>
         </div>
-        <button class="text-xs font-600 text-accent hover:underline cursor-pointer mt-2 block" onclick="toggleReadMore(this)">Read more</button>
+        <figure class="cs-shot"><img src="img/stageup/careergoal.webp" width="1800" height="1013" alt="Goal card showing UX Designer at 67% with a three month timeline" class="zoomable" loading="lazy" decoding="async" /></figure>
       </div>
+      
+      <div class="reveal cs-dec cs-dec--flip">
+        <div class="cs-dec__text">
+          <p class="cs-dec__num">02</p>
+          <h3>Four numbers answer how am I doing</h3>
+          <p>The home screen shows skill growth, weekly activity, current streak and goal progress with no scrolling. Each card answers one question a learner has the moment the app opens.</p>
+          <div class="cs-ruled"><span>Based on</span><p>How people use it. Learners check progress in short breaks and commutes, so the first screen has to be read at a glance.</p></div>
+        </div>
+        <figure class="cs-shot"><img src="img/stageup/keymetrics.webp" width="1800" height="1013" alt="Four metric cards for skill growth, weekly activity, current streak and goal progress" class="zoomable" loading="lazy" decoding="async" /></figure>
+      </div>
+      
+      <div class="reveal cs-dec">
+        <div class="cs-dec__text">
+          <p class="cs-dec__num">03</p>
+          <h3>Growth is a line that climbs</h3>
+          <p>Skill score is drawn as a chart over recent weeks, so the user sees momentum building. A line that rises is harder to ignore than a single static number.</p>
+          <div class="cs-ruled"><span>Based on</span><p>Platform research. Visual progress keeps learners motivated far better than text summaries.</p></div>
+        </div>
+        <figure class="cs-shot"><img src="img/stageup/skillgrowth.webp" width="1800" height="1013" alt="Skill growth chart rising week over week with a 32% increase" class="zoomable" loading="lazy" decoding="async" /></figure>
+      </div>
+      
+      <div class="reveal cs-dec cs-dec--flip">
+        <div class="cs-dec__text">
+          <p class="cs-dec__num">04</p>
+          <h3>Sign up and log in became separate paths</h3>
+          <p>New users choose Get started and returning users choose Log in, each with its own flow. One unclear screen had been the only thing between a new user and the product.</p>
+          <div class="cs-ruled"><span>Based on</span><p>Usability testing. A participant hesitated at the combined screen and could not tell whether the app saw them as new or returning.</p></div>
+        </div>
+        <figure class="cs-shot"><img src="img/stageup/aflow.webp" width="1800" height="1013" alt="Two buttons, Get started for free and Log in" class="zoomable" loading="lazy" decoding="async" /></figure>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ─── 03 TESTING ──────────────────────────────────────────────────────── -->
+  <section class="cs-sec cs-sec--alt">
+    <div class="cs-wrap">
+      <div class="reveal">
+        <p class="cs-eyebrow">03 · Testing</p>
+        <h2 class="cs-h2">Tested with five people, then redesigned</h2>
+        <p class="cs-p">Five participants used the mid fidelity prototype. Each one connected a learning source, set a career goal and found their way around the dashboard, then completed a UMUX Lite questionnaire.</p>
+      </div>
+
+      <div class="reveal cs-stats">
+        <div><strong>88.33</strong><span>Mean UMUX Lite score</span></div>
+        <div><strong>A</strong><span>Usability grade</span></div>
+        <div><strong>5</strong><span>Participants</span></div>
+        <div><strong>3</strong><span>Tasks per session</span></div>
+      </div>
+
+      <div class="reveal cs-two">
+        <div>
+          <h3>Sign up was confusing</h3>
+          <p>One participant hesitated after entering an email. The difference between a new and a returning user was not clear.</p>
+          <div class="cs-ruled"><span>What changed</span><p>Two separate screens, Get started and Log in, each with a dedicated flow.</p></div>
+        </div>
+        <div>
+          <h3>Greyscale felt flat</h3>
+          <p>Two participants found the grey palette hard to connect with. One called the app visually plain.</p>
+          <div class="cs-ruled"><span>What changed</span><p>A full colour system with green for growth, colour coded icons, real course imagery and stronger type hierarchy.</p></div>
+        </div>
+      </div>
+
+      <div class="reveal cs-tri">
+        <figure><span class="cs-tag">Wireframes</span><figure class="cs-shot"><img src="img/stageup/low.webp" width="1920" height="1080" alt="Low fidelity wireframes of onboarding, home, dashboard and profile" class="zoomable" loading="lazy" decoding="async" /></figure></figure>
+        <figure><span class="cs-tag">Tested</span><figure class="cs-shot"><img src="img/stageup/mid.webp" width="1835" height="943" alt="Mid fidelity greyscale prototype used in testing" class="zoomable" loading="lazy" decoding="async" /></figure></figure>
+        <figure><span class="cs-tag cs-tag--final">Final</span><figure class="cs-shot"><img src="img/stageup/high.webp" width="2400" height="1340" alt="High fidelity screens with the green colour system" class="zoomable" loading="lazy" decoding="async" /></figure></figure>
+      </div>
+
+      <p class="reveal cs-p" style="margin-top:2.5rem">A second round on the high fidelity prototype confirmed both fixes. Participants knew at once which path was theirs, and described the interface as clean, motivating and easy to use.</p>
 
       <div class="reveal">
-        <h3 class="text-sm font-700 text-on-ink uppercase tracking-widest mb-6">What I Would Build Next</h3>
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-
-          <div class="p-6 rounded-2xl border border-white/10 bg-white/5">
-            <h4 class="text-sm font-700 text-on-ink mb-2">AI Powered Skill Recommendations</h4>
-            <p class="text-sm text-on-ink/60 leading-relaxed">A smarter recommendation engine that learns from user behavior over time and suggests the most impactful next step toward their career goal.</p>
-          </div>
-
-          <div class="p-6 rounded-2xl border border-white/10 bg-white/5">
-            <h4 class="text-sm font-700 text-on-ink mb-2">Employer Integration</h4>
-            <p class="text-sm text-on-ink/60 leading-relaxed">Connecting skill profiles to real job requirements so users can see exactly how their learning maps to roles they are applying for.</p>
-          </div>
-
-          <div class="p-6 rounded-2xl border border-white/10 bg-white/5">
-            <h4 class="text-sm font-700 text-on-ink mb-2">Progress Sharing</h4>
-            <p class="text-sm text-on-ink/60 leading-relaxed">Allowing users to share their skill profile publicly, giving them a way to demonstrate real growth to employers beyond a traditional resume.</p>
-          </div>
-
+        <h3 class="cs-sub">One more fix, for accessibility</h3>
+        <p class="cs-p">A contrast check on the finished colour system showed the original green failed WCAG AA. I replaced it with a darker green across every button, active state and progress indicator.</p>
+        <div class="cs-swatches">
+          <div class="cs-swatch"><i style="background:#00DB4F"></i><div><b>#00DB4F</b><span>1.86 to 1, fails AA</span></div></div>
+          <div class="cs-swatch"><i style="background:#15803D"></i><div><b>#15803D</b><span>5.01 to 1, passes AA</span></div></div>
         </div>
       </div>
-
     </div>
   </section>
 
 
-  <!-- ─── NEXT PROJECT ───────────────────────────────────────────────────── -->
-  <section class="py-16 border-t border-white/10 bg-ink">
-    <div class="max-w-6xl mx-auto px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-6">
-      <a href="monstrum.html" class="text-sm font-600 text-on-ink/50 hover:text-on-ink transition-colors cursor-pointer flex items-center gap-2">
+  <!-- ─── 04 THE PRODUCT ──────────────────────────────────────────────────── -->
+  <section class="cs-sec">
+    <div class="cs-wrap">
+      <div class="reveal">
+        <p class="cs-eyebrow">04 · The product</p>
+        <h2 class="cs-h2">From first launch to a personal dashboard</h2>
+        <p class="cs-p">The flow came first. A new user connects their learning platforms, sets a career goal and lands on a dashboard built around that goal.</p>
+      </div>
+
+      <figure class="reveal cs-wide">
+        <figure class="cs-shot"><img src="img/stageup/flow.webp" width="3200" height="779" alt="User flow for connecting a learning source, including a recovery path when the connection fails" class="zoomable" loading="lazy" decoding="async" /></figure>
+        <figcaption>Connecting a learning source is the step the whole product depends on, so the flow includes a recovery path. If a connection fails, the user always has a next step. The screens below follow this flow.</figcaption>
+      </figure>
+
+      <div class="scroll-wrap cs-phones reveal">
+        <button class="scroll-btn scroll-btn--prev is-hidden" aria-label="Previous screens"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"/></svg></button>
+        <div class="h-scroll" tabindex="0" role="region" aria-label="Product screens, scrolls sideways">
+          <div class="cs-phone">
+            <figure><img src="img/stageup/s-welcome.webp" width="770" height="1673" alt="Welcome screen with four benefits and separate Get started and Log in buttons" class="zoomable" loading="lazy" decoding="async" /></figure>
+            <h3>Welcome</h3><p>Four benefits, then two clear paths for new and returning users.</p>
+          </div>
+          <div class="cs-phone">
+            <figure><img src="img/stageup/s-sources.webp" width="770" height="1673" alt="Setup step one, connect your learning sources" class="zoomable" loading="lazy" decoding="async" /></figure>
+            <h3>Connect sources</h3><p>Step one of three. Pick the platforms to sync, or skip for now.</p>
+          </div>
+          <div class="cs-phone">
+            <figure><img src="img/stageup/s-goal.webp" width="770" height="1673" alt="Setup step two, set your career goal with popular goals and a timeline" class="zoomable" loading="lazy" decoding="async" /></figure>
+            <h3>Set a career goal</h3><p>Choose a goal and a timeline. Everything after this points at it.</p>
+          </div>
+          <div class="cs-phone">
+            <figure><img src="img/stageup/s-newhome.webp" width="770" height="1673" alt="Home screen for a new user with the goal at 0% and three courses to start" class="zoomable" loading="lazy" decoding="async" /></figure>
+            <h3>Day one home</h3><p>A new user sees the goal and where to start, not empty charts.</p>
+          </div>
+          <div class="cs-phone">
+            <figure><img src="img/stageup/s-home.webp" width="770" height="1673" alt="Home screen with four metric cards and the skill growth chart" class="zoomable" loading="lazy" decoding="async" /></figure>
+            <h3>Home</h3><p>Four numbers and one chart answer how am I doing.</p>
+          </div>
+          <div class="cs-phone">
+            <figure><img src="img/stageup/s-courses.webp" width="770" height="1673" alt="My courses screen with three courses in progress from different platforms" class="zoomable" loading="lazy" decoding="async" /></figure>
+            <h3>Courses</h3><p>Courses from every platform in one list, with time remaining.</p>
+          </div>
+          <div class="cs-phone">
+            <figure><img src="img/stageup/s-skills.webp" width="770" height="1673" alt="Your skills screen split into strong skills and developing skills" class="zoomable" loading="lazy" decoding="async" /></figure>
+            <h3>Skills</h3><p>Strong and developing skills, scored from all learning activity.</p>
+          </div>
+          <div class="cs-phone">
+            <figure><img src="img/stageup/s-goals.webp" width="770" height="1673" alt="Goals screen showing UX Designer at 67% with five milestones" class="zoomable" loading="lazy" decoding="async" /></figure>
+            <h3>Goal</h3><p>Progress toward the role, broken into milestones.</p>
+          </div>
+        </div>
+        <button class="scroll-btn scroll-btn--next" aria-label="Next screens"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/></svg></button>
+      </div>
+
+      <div class="reveal cs-cta" style="margin-top:1rem">
+        <a class="cs-btn" href="https://www.figma.com/proto/l6Ii38tMQMS8XgUMwXT6dO/STAGEUP-FINAL?node-id=1-88&t=3u9mv1QqKXfNfY5C-1&scaling=scale-down&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=1%3A88" target="_blank" rel="noopener noreferrer">Open the full prototype <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z"/><path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z"/></svg></a>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ─── 05 TAKEAWAY ─────────────────────────────────────────────────────── -->
+  <section class="cs-sec">
+    <div class="cs-wrap">
+      <div class="reveal">
+        <p class="cs-eyebrow">05 · Takeaway</p>
+        <h2 class="cs-h2">Nobody wants synced platforms. They want the career.</h2>
+        <p class="cs-p">Reframing the problem around career goals, and away from course completion, shaped every decision that followed. The hardest part of StageUp was structural. It meant building one meaningful system from learning data that was never designed to work together.</p>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ─── NEXT PROJECT ──────────────────────────────────────────────────────── -->
+  <section class="relative py-16 border-t border-border bg-surface-alt overflow-hidden">
+    <div class="dot-patch dot-patch--sm" style="top: 10%; left: 6%;" aria-hidden="true"></div>
+    <div class="max-w-6xl mx-auto px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-6 relative z-10">
+      <a href="monstrum.html" class="text-sm font-600 text-secondary/50 hover:text-primary transition-colors cursor-pointer flex items-center gap-2">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
           <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
         </svg>
         Back to Monstrum
       </a>
-      <a href="rbc.html" class="text-sm font-600 text-on-ink hover:text-accent transition-colors cursor-pointer flex items-center gap-2">
-        Next: RBC Mobile App
+      <a href="rbc.html" class="text-sm font-600 text-primary hover:text-accent transition-colors cursor-pointer flex items-center gap-2">
+        Next: RBC Mobile
         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
           <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
         </svg>
@@ -786,22 +614,188 @@
   <!-- ─── FOOTER ─────────────────────────────────────────────────────────── -->
   <footer class="site-footer">
     <div class="site-wrap site-footer__inner">
-      <p>© 2025 Alaa El Banna. All rights reserved.</p>
+      <p>© 2026 Alaa El Banna. All rights reserved.</p>
       <p>Product Designer · Toronto, Canada</p>
     </div>
   </footer>
 
-  <!-- Lightbox -->
-  <div id="lightbox" class="fixed inset-0 z-[999] bg-black/90 backdrop-blur-sm hidden items-center justify-center p-4" onclick="closeLightbox()">
-    <button onclick="closeLightbox()" class="absolute top-5 right-5 text-white/60 hover:text-white cursor-pointer">
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" viewBox="0 0 20 20" fill="currentColor">
-        <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
-      </svg>
-    </button>
-    <img id="lightbox-img" src="" alt="" class="max-w-full max-h-[90vh] object-contain rounded-xl shadow-2xl" onclick="event.stopPropagation()" />
-  </div>
-
   <script>
+    // Lightbox
+    var lb = document.getElementById('img-lightbox');
+    var lbImg = document.getElementById('img-lightbox-img');
+    var lbCap = document.getElementById('img-lightbox-caption');
+    var lbPrev = lb.querySelector('.lb-nav--prev');
+    var lbNext = lb.querySelector('.lb-nav--next');
+    var lbGroup = [], lbIndex = 0;
+
+    function lbText(el) { return el ? el.textContent.replace(/\s+/g, ' ').trim() : ''; }
+
+    function lbEl(tag, cls, text) {
+      var el = document.createElement(tag);
+      el.className = cls;
+      if (text) el.textContent = text;
+      return el;
+    }
+
+    function lbRenderCaption(img, i) {
+      var card = img.closest('.competitor-card, .screen-card');
+      if (!card) { lbCap.replaceChildren(); return; }
+      var ps = card.querySelectorAll('p');
+      var title = lbText(card.querySelector('h3')), tag = '', desc = '';
+      if (card.classList.contains('competitor-card')) { tag = lbText(ps[0]); desc = lbText(ps[1]); }
+      else { desc = lbText(ps[0]); }
+      var top = lbEl('div', 'lb-cap-top');
+      var head = lbEl('div', '');
+      if (tag) head.appendChild(lbEl('p', 'lb-tag', tag));
+      head.appendChild(lbEl('h3', 'lb-title', title));
+      top.appendChild(head);
+      if (lbGroup.length > 1) top.appendChild(lbEl('span', 'lb-count', (i + 1) + ' / ' + lbGroup.length));
+      lbCap.replaceChildren(top);
+      if (desc) lbCap.appendChild(lbEl('p', 'lb-desc', desc));
+    }
+
+    function lbShow(i) {
+      lbIndex = i;
+      var img = lbGroup[i];
+      lbImg.src = img.src;
+      lbImg.alt = img.alt;
+      lbRenderCaption(img, i);
+      lbPrev.hidden = i === 0;
+      lbNext.hidden = i === lbGroup.length - 1;
+    }
+
+    // Every image in a group gets the same width, image area and caption height, so
+    // stepping through never shifts anything. The block is then centred vertically.
+    var lbFig = document.getElementById('img-lightbox-figure');
+    var lbMedia = document.getElementById('img-lightbox-media');
+    function lbCaptionHeight(w) {
+      lbFig.style.width = w + 'px';
+      lbCap.style.minHeight = '';
+      var h = 0;
+      lbGroup.forEach(function(g, i) { lbRenderCaption(g, i); h = Math.max(h, Math.ceil(lbCap.getBoundingClientRect().height)); });
+      return h;
+    }
+    function lbLayout() {
+      var mobile = window.innerWidth < 768;
+      // UX Flows have no card text, so their images get the full height
+      var hasCaption = lbGroup.some(function(g) { return g.closest('.competitor-card, .screen-card'); });
+      var margin = mobile ? 24 : 32, gap = hasCaption ? (mobile ? 12 : 14) : 0;
+      lbCap.hidden = !hasCaption;
+      var maxW = Math.min(window.innerWidth - (mobile ? 72 : 176), 1680);
+      var ratios = lbGroup.map(function(g) { return (g.naturalWidth / g.naturalHeight) || 1.6; });
+      function fit(capH) {
+        var availH = window.innerHeight - 2 * margin - gap - capH - 2;
+        var w = maxW;
+        ratios.forEach(function(r) { w = Math.min(w, availH * r); });
+        return Math.max(200, Math.floor(w));
+      }
+      var w = fit(hasCaption ? (mobile ? 160 : 110) : 0);
+      var capH = 0;
+      if (hasCaption) {
+        capH = lbCaptionHeight(w);
+        w = fit(capH);
+        capH = lbCaptionHeight(w);
+      } else {
+        lbFig.style.width = w + 'px';
+      }
+      var tallest = Math.ceil(Math.max.apply(null, ratios.map(function(r) { return w / r; })));
+      lbMedia.style.height = tallest + 'px';
+      lbCap.style.minHeight = capH + 'px';
+      // Floor and shave a pixel so sub-pixel rounding never triggers a scrollbar that shifts the image
+      var pad = Math.max(margin, Math.floor((window.innerHeight - tallest - gap - capH) / 2) - 1);
+      lb.style.padding = pad + 'px 0';
+    }
+
+    function lbClose() { lb.style.display = 'none'; document.body.style.overflow = ''; }
+
+    document.querySelectorAll('.zoomable').forEach(function(img) {
+      img.addEventListener('click', function() {
+        var container = img.closest('.h-scroll') || img.parentElement;
+        lbGroup = Array.from(container.querySelectorAll('.zoomable'));
+        lb.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+        lbLayout();
+        lbShow(lbGroup.indexOf(img));
+      });
+    });
+    window.addEventListener('resize', function() {
+      if (lb.style.display !== 'flex') return;
+      lbLayout();
+      lbShow(lbIndex);
+    });
+    lbPrev.addEventListener('click', function(e) { e.stopPropagation(); if (lbIndex > 0) lbShow(lbIndex - 1); });
+    lbNext.addEventListener('click', function(e) { e.stopPropagation(); if (lbIndex < lbGroup.length - 1) lbShow(lbIndex + 1); });
+    lbCap.addEventListener('click', function(e) { e.stopPropagation(); });
+    lb.addEventListener('click', lbClose);
+    document.addEventListener('keydown', function(e) {
+      if (lb.style.display !== 'flex') return;
+      if (e.key === 'Escape') lbClose();
+      else if (e.key === 'ArrowLeft' && lbIndex > 0) { e.preventDefault(); lbShow(lbIndex - 1); }
+      else if (e.key === 'ArrowRight' && lbIndex < lbGroup.length - 1) { e.preventDefault(); lbShow(lbIndex + 1); }
+    });
+
+    // Drag-to-scroll + arrow navigation for all .scroll-wrap containers
+    document.querySelectorAll('.scroll-wrap').forEach(function(wrap) {
+      var track = wrap.querySelector('.h-scroll');
+      var btnPrev = wrap.querySelector('.scroll-btn--prev');
+      var btnNext = wrap.querySelector('.scroll-btn--next');
+      if (!track) return;
+
+      // Center arrows on the images, not the whole card (cards include text above/below)
+      function centerArrows() {
+        var img = track.querySelector('img');
+        if (!img) return;
+        var r = img.getBoundingClientRect();
+        var top = (r.top - wrap.getBoundingClientRect().top + r.height / 2) + 'px';
+        if (btnPrev) btnPrev.style.top = top;
+        if (btnNext) btnNext.style.top = top;
+      }
+      centerArrows();
+      track.querySelectorAll('img').forEach(function(i) { i.addEventListener('load', centerArrows); });
+      window.addEventListener('load', centerArrows);
+      window.addEventListener('resize', centerArrows);
+
+      function cardWidth() {
+        var first = track.children[0];
+        if (!first) return 320;
+        var gap = parseInt(getComputedStyle(track).gap) || 24;
+        return first.offsetWidth + gap;
+      }
+
+      if (btnPrev) btnPrev.addEventListener('click', function() {
+        track.scrollBy({ left: -cardWidth(), behavior: 'smooth' });
+      });
+      if (btnNext) btnNext.addEventListener('click', function() {
+        track.scrollBy({ left: cardWidth(), behavior: 'smooth' });
+      });
+
+      var isDown = false, moved = false, startX, scrollLeft;
+      // A drag that ends over an image would otherwise fire a click and open the preview
+      track.addEventListener('click', function(e) {
+        if (moved) { e.stopPropagation(); e.preventDefault(); moved = false; }
+      }, true);
+      track.addEventListener('mousedown', function(e) {
+        isDown = true;
+        moved = false;
+        track.classList.add('is-dragging');
+        startX = e.pageX - track.getBoundingClientRect().left;
+        scrollLeft = track.scrollLeft;
+        e.preventDefault();
+      });
+      document.addEventListener('mouseup', function() {
+        if (!isDown) return;
+        isDown = false;
+        track.classList.remove('is-dragging');
+      });
+      track.addEventListener('mousemove', function(e) {
+        if (!isDown) return;
+        e.preventDefault();
+        var x = e.pageX - track.getBoundingClientRect().left;
+        if (Math.abs(x - startX) > 5) moved = true;
+        track.scrollLeft = scrollLeft - (x - startX);
+      });
+    });
+
     const observer = new IntersectionObserver(
       entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
       { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
@@ -812,29 +806,51 @@
     const mobileMenu = document.getElementById('mobile-menu');
     if (toggle) toggle.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
     function closeMobileMenu() { if (mobileMenu) mobileMenu.classList.add('hidden'); }
-
-    function openLightbox(src, alt) {
-      const lb = document.getElementById('lightbox');
-      document.getElementById('lightbox-img').src = src;
-      document.getElementById('lightbox-img').alt = alt;
-      lb.classList.remove('hidden');
-      lb.classList.add('flex');
-      document.body.style.overflow = 'hidden';
-    }
-    function closeLightbox() {
-      const lb = document.getElementById('lightbox');
-      lb.classList.add('hidden');
-      lb.classList.remove('flex');
-      document.body.style.overflow = '';
-    }
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
-
-    function toggleReadMore(btn) {
-      const extra = btn.parentElement.querySelector('.read-more-extra');
-      const isOpen = extra.classList.toggle('open');
-      btn.textContent = isOpen ? 'Read less' : 'Read more';
-    }
   </script>
 
+
+  <script>
+    document.querySelectorAll('.cs-carousel').forEach(function (wrap) {
+      var track = wrap.querySelector('.h-scroll'); if (!track) return;
+      var cards = Array.prototype.slice.call(track.children);
+      var prev = wrap.querySelector('.scroll-btn--prev'), next = wrap.querySelector('.scroll-btn--next');
+      var active = -1, tick = false;
+      function update() {
+        tick = false;
+        var t = track.getBoundingClientRect(), best = 0, bd = Infinity, max = track.scrollWidth - track.clientWidth;
+        var pad = parseFloat(getComputedStyle(track).paddingLeft) || 0;
+        cards.forEach(function (c, i) { var d = Math.abs(c.getBoundingClientRect().left - t.left - pad); if (d < bd) { bd = d; best = i; } });
+        if (track.scrollLeft >= max - 4) best = cards.length - 1;
+        if (track.scrollLeft <= 4) best = 0;
+        if (best === active) return;
+        active = best;
+        cards.forEach(function (c, i) { c.classList.toggle('is-active', i === best); });
+        if (prev) prev.classList.toggle('is-hidden', best === 0);
+        if (next) next.classList.toggle('is-hidden', best === cards.length - 1);
+        wrap.classList.toggle('at-end', best === cards.length - 1);
+      }
+      track.addEventListener('scroll', function () { if (!tick) { tick = true; requestAnimationFrame(update); } }, { passive: true });
+      window.addEventListener('resize', update);
+      cards.forEach(function (c, i) {
+        c.addEventListener('click', function (e) {
+          if (i === active) return;
+          e.preventDefault(); e.stopPropagation();
+          var t = track.getBoundingClientRect(), r = c.getBoundingClientRect();
+          track.scrollBy({ left: r.left - t.left - (parseFloat(getComputedStyle(track).paddingLeft) || 0), behavior: 'smooth' });
+        }, true);
+      });
+      track.scrollLeft = 0; update();
+    });
+  </script>
+
+  <script>
+    document.querySelectorAll('.cs-phones').forEach(function (wrap) {
+      var t = wrap.querySelector('.h-scroll'), p = wrap.querySelector('.scroll-btn--prev'), n = wrap.querySelector('.scroll-btn--next');
+      function u() { var max = t.scrollWidth - t.clientWidth; p.classList.toggle('is-hidden', t.scrollLeft <= 4); n.classList.toggle('is-hidden', t.scrollLeft >= max - 4); }
+      function page(dir) { return function (e) { e.stopImmediatePropagation(); var pad = parseFloat(getComputedStyle(t).paddingLeft) || 0; t.scrollBy({ left: dir * (t.clientWidth - pad), behavior: 'smooth' }); }; }
+      p.addEventListener('click', page(-1), true); n.addEventListener('click', page(1), true);
+      t.addEventListener('scroll', u, { passive: true }); window.addEventListener('resize', u); window.addEventListener('load', u); u();
+    });
+  </script>
 </body>
 </html>
